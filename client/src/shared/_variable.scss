@@ -1,0 +1,22 @@
+$text-color: #454545;
+$blue-color: #5085E8;
+$post-color: #555555;
+$background-color: #F6F6F9;
+
+//responsive
+$mobile-width: 320px;
+$tablet-width: 480px;
+$desktop-width: 768px;
+$large-desktop-width: 1024px;
+
+$min-mobile-width: 320px;
+$min-tablet-width: 321px;
+$min-desktop-width: 481px;
+$min-large-desktop-width: 769px;
+
+:export {
+  text-color: $text-color;
+  blue-color: $blue-color;
+  post-color: $post-color;
+  background-color: $background-color;
+}

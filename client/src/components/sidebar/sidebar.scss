@@ -1,0 +1,67 @@
+@import "../../shared/_variable";
+
+.sidebar {
+  padding: 49px 65.8px 30px 30px;
+  background-color: #F2F2F5;
+  height: 100vh;
+  position: fixed;
+
+  .sidebar-menu {
+    margin-top: 49px;
+    
+    h5 {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 29px;
+    }
+
+    .sidebar-menu__list {
+
+    }
+
+    .sidebar-menu__item {
+      display: flex;
+      align-items: center;
+      gap: 0 15px;
+      color: $text-color;
+      opacity: 0.7;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 25px;
+
+      &:hover {
+        opacity: 1;
+        font-weight: 700;
+      }
+
+      .menu-icon {
+        color: $text-color;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+  .sidebar {
+    display: none;
+  }
+}
+
+@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+  .sidebar {
+    display: none;
+  }
+}
+
+@media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
+  .sidebar {
+    display: none;
+  }
+}
+
+@media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
+  .sidebar {
+    display: none;
+  }
+}

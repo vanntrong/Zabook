@@ -1,0 +1,10 @@
+@import "../../shared/_variable";
+
+.feed {
+  margin-top: 25px;
+  .post-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}

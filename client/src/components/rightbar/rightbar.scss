@@ -1,0 +1,76 @@
+@import "../../shared/_variable";
+
+.rightBar {
+  background-color: white;
+  width: 100%;
+  max-width: calc(1403px - 867px - 100px);
+  height: 100vh;
+  position: fixed;
+  padding: 25px;
+  border-radius: 8px;
+
+  .rightBar-wrapper {
+    margin-bottom: 30px;
+    .rightBar-title {
+      font-size: 20px;
+      color: $text-color;
+      margin-bottom: 30px;
+    }
+
+    .story-list {
+      display: flex;
+      align-items: center;
+      gap: 0 15px;
+    }
+
+    .stories {
+      width: 77px;
+      height: 77px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid $blue-color;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    }
+
+    .your-stories {
+      background-color: $blue-color;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .event-item {
+    .event-img {
+      width: 100%;
+      height: 100%;
+      max-height: 200px;
+      img {
+        width: 100%;
+        height: 100%;
+        max-height: 200px;
+        object-fit: cover;
+      }
+    }
+    .event-info {
+      margin-top: 30px;
+      h5 {
+        font-size: 17px;
+        color: $text-color;
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+      span {
+        font-size: 13px;
+        color: $text-color;
+        opacity: 0.4;
+      }
+    }
+  }
+}

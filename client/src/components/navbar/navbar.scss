@@ -1,0 +1,50 @@
+@import "../../shared/_variable";
+
+.navbar {
+  padding-bottom: 20px;
+  border-bottom: 0.5px solid rgb(235, 234, 234);
+  width: 100%;
+  background-color: transparent;
+
+  .navbar-list {
+    display: flex;
+    align-items: center;
+    gap: 0 30px;
+  }
+
+  .navbar-item {
+    cursor: pointer;
+    &.active {
+      span {
+        border-bottom: 2px solid $blue-color;
+      }
+    }
+    &:hover {
+      span {
+        font-weight: 700;
+        opacity: 1;
+      }
+    }
+    span {
+      font-size: 18px;
+      font-weight: 400;
+      color: $text-color;
+      opacity: 0.5;
+      
+      padding-bottom: 18px;
+    }
+  }
+}
+
+@media screen and (max-width: $mobile-width){
+  .navbar {
+    .navbar-list {
+      gap: 0 10px;
+    }
+    .navbar-item {
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+}

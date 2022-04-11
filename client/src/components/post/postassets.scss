@@ -1,0 +1,131 @@
+@import "../../shared/_variable";
+
+.wrapper-1 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 10px;
+  .wrapper-1__item {
+    width: 100%;
+    height: 100%;
+    max-height: 500px;
+    cursor: pointer;
+    img {
+      width: 100%;
+      max-height: 500px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+  }
+}
+
+.wrapper-3 {
+  .wrapper-3__item1 {
+    width: 100%;
+    height: 100%;
+    max-height: 500px;
+    cursor: pointer;
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 6px;
+      max-height: 500px;
+      object-fit: cover;
+    }
+  }
+  .wrapper-3__item2 {
+    display: flex;
+    margin-top: 10px;
+    gap: 10px;
+    .wrapper-3__item {
+      width: 100%;
+      height: 100%;
+      max-height: 300px;
+      cursor: pointer;
+      position: relative;
+      img {
+        width: 100%;
+        max-height: 300px;
+        border-radius: 6px;
+        object-fit: cover;
+      }
+
+      .bonus_count {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 24px;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+  .wrapper-3 {
+    .wrapper-3__item1  {
+      img {
+        max-height: 250px;
+      }
+    }
+    .wrapper-3__item2 {
+      .wrapper-3__item {
+        img {
+          height: 150px;
+        }
+      }
+    }
+  } 
+}
+
+@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+  .wrapper-3 {
+    .wrapper-3__item1  {
+      img {
+        max-height: 350px;
+      }
+    }
+    .wrapper-3__item2 {
+      .wrapper-3__item {
+        img {
+          height: 250px;
+        }
+      }
+    }
+  } 
+}
+
+@media screen and (max-width: $desktop-width) and (min-width:$min-desktop-width){
+  .wrapper-3 {
+    .wrapper-3__item2 {
+      .wrapper-3__item {
+        img {
+          height: 300px;
+        }
+      }
+    }
+  } 
+}
+
+@media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width){
+  .wrapper-3 {
+    .wrapper-3__item1 {
+      img {
+        max-height: 350px;
+      }
+    }
+    .wrapper-3__item2 {
+      .wrapper-3__item {
+        img {
+          height: 250px;
+        }
+      }
+    }
+  } 
+}
