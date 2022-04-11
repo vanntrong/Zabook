@@ -1,0 +1,75 @@
+@import "../../shared/_variable";
+
+.home {
+  display: flex;
+
+  .sidebarHome {
+    flex: 3;
+    width: 100%;
+    max-width: 390px;
+  }
+
+  .home-feature {
+    flex: 6;
+    padding: 47px 70px 0 30px;
+    position: relative;
+    margin-left: 400px;
+
+    .home-section {
+      margin-top: 31px;
+      display: flex;
+      gap: 0 100px;
+
+      .home-feed {
+        flex: 6;
+      }
+
+      .home-right {
+        flex: 3;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+  .home {
+    .home-feature {
+      margin-left: 0;
+
+      .home-right {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+  .home {
+    .home-feature {
+      margin-left: 0;
+      
+      .home-right {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
+  .home {
+    .home-feature {
+      margin-left: 0;
+      .home-right {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
+  .home {
+    .home-feature {
+      margin-left: 0;
+    }
+  }
+}
