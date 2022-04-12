@@ -29,16 +29,21 @@
       font-size: 18px;
       font-weight: 500;
       margin-bottom: 25px;
+      text-decoration: none;
 
       &:hover {
         opacity: 1;
         font-weight: 700;
       }
-
       .menu-icon {
         color: $text-color;
       }
+      &.active {
+          font-weight: 700;
+          opacity: 1;
+      }
     }
+    
   }
 }
 

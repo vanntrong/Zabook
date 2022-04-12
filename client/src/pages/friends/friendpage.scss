@@ -1,0 +1,126 @@
+@import "../../shared/_variable";
+
+.friends {
+  min-height: 100vh;
+  padding-right: 70px;
+  .friends-wrapper {
+    margin-left: 390px;
+    height: 100%;
+    padding-top: 80px;
+  }
+  .friend-list {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 20px 40px;
+  }
+  .friend-info {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    min-width: 450px;
+    max-width: 450px;
+    padding-right: 10px;
+    box-shadow: -1px 2px 5px 0px rgba(89,80,80,0.64);
+    -webkit-box-shadow: -1px 2px 5px 0px rgba(89,80,80,0.64);
+    -moz-box-shadow: -1px 2px 5px 0px rgba(89,80,80,0.64);
+
+    .friend-info-avatar {
+      max-width: 133px;
+      max-height: 133px;
+      margin-right: 20px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .friend-info-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: black;
+      margin-bottom: 5px;
+    }
+
+    .friend-info-status {
+      font-size: 12px;
+      color: $text-color;
+      opacity: 0.6;
+    }
+
+    .friend-info-action {
+      margin-left: auto;
+      cursor: pointer;
+    }
+  }
+}
+
+@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+  .friends {
+    .friends-wrapper {
+      margin-left: 20px;
+      min-width: 320px;
+    }
+    .friend-list {
+      grid-template-columns: 1fr;
+      grid-gap: 10px;
+     }
+    .friend-info {
+      min-width: 320px;
+      max-width: 320px;
+    }
+  }
+}
+
+@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+  .friends {
+    .friends-wrapper {
+      margin-left: 50px;
+      min-width: 320px;
+    }
+    .friend-list {
+      grid-template-columns: 1fr;
+      grid-gap: 10px;
+     }
+    .friend-info {
+      min-width: 320px;
+      max-width: 320px;
+    }
+  }
+}
+
+@media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
+  .friends {
+    .friends-wrapper {
+      margin-left: 70px;
+      .friends-right {
+        display: none;
+      }
+    }
+    .friend-list {
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 10px;
+     }
+    .friend-info {
+      min-width: 320px;
+      max-width: 320px;
+    }
+  }
+}
+
+@media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
+  .friends {
+    .friends-wrapper {
+      margin-left: 100px;
+    }
+    .friend-list {
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 10px;
+     }
+    .friend-info {
+      min-width: 290px;
+      max-width: 290px;
+    }
+  }
+}

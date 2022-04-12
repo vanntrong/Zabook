@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import ThumbUpRoundedIcon from '@mui/icons-material/ThumbUpRounded';
-import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
-import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 
 import './post.scss';
-import { Paper } from '@mui/material';
+import { Avatar, Paper } from '@mui/material';
 import PostAssets from './PostAssets';
 
 const assets = [
@@ -39,9 +39,10 @@ const Post = () => {
       <div className="post-info">
         <div className="post-info__left">
           <div className="post-user__image">
-            <img
+            <Avatar
               src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
               alt=""
+              sx={{ width: 60, height: 60 }}
             />
           </div>
           <div className="post-user__info">
@@ -68,15 +69,15 @@ const Post = () => {
       <div className="post-action">
         <div className="post-action__list">
           <div className="post-action__item" onClick={handleLikePost}>
-            <ThumbUpRoundedIcon color={isLiked ? 'primary' : 'inherit'} />
+            <ThumbUpOutlinedIcon color={isLiked ? 'primary' : 'inherit'} />
             <span>32</span>
           </div>
           <div className="post-action__item">
-            <ChatBubbleRoundedIcon color="inherit" />
+            <ChatBubbleOutlineOutlinedIcon color="inherit" />
             <span>12</span>
           </div>
           <div className="post-action__item">
-            <ReplyRoundedIcon color="inherit" />
+            <ReplyOutlinedIcon color="inherit" />
             <span>22</span>
           </div>
         </div>

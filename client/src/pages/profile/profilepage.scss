@@ -1,0 +1,136 @@
+@import "../../shared/_variable";
+
+.profile {
+  min-height: 100vh;
+  padding-right: 70px;
+  .profile-wrapper {
+    margin-left: 390px;
+    height: 100%;
+    padding-top: 80px;
+  
+    .profile-info-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0 100px;
+    }
+
+    .post-wrapper {
+      margin-top: 40px;
+
+      .post-item {
+        display: flex;
+        align-items: center;
+        gap: 0 20px;
+
+        .post-item__input {
+          flex: 2;
+        }
+
+        .post-info {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background-color: white;
+          padding: 10px 20px;
+          border-radius: 12px;
+          gap: 0 20px;
+          flex: 1;
+          box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+          .info-item {
+            color: $blue-color;
+            span {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      .post-list {
+        margin-top: 20px;
+        .post-list__title {
+          margin-bottom: 20px;
+          font-size: 25px;
+          font-weight: 600;
+          color: $text-color;
+        }
+        .post-list__wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+      }
+    }
+  }
+  
+}
+
+@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+  .profile {
+    .profile-wrapper {
+      margin-left: 20px;
+      min-width: 320px;
+
+      .profile-info-wrapper {
+        gap: 0;
+      }
+
+      .profile-right {
+        display: none;
+      }
+
+      .post-wrapper .post-item {
+        flex-direction: column-reverse;
+        gap: 30px 0;
+        align-items: flex-start;
+      }
+    }
+    .profile-info p {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+  .profile {
+    .profile-wrapper {
+      margin-left: 50px;
+      min-width: 320px;
+
+      .profile-info-wrapper {
+        gap: 0;
+      }
+
+      .profile-right {
+        display: none;
+      }
+
+      .post-wrapper .post-item {
+        flex-direction: column-reverse;
+        gap: 30px 0;
+        align-items: flex-start;
+      }
+    }
+    .profile-info p {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
+  .profile {
+    .profile-wrapper {
+      margin-left: 70px;
+      .profile-right {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
+  .profile {
+    .profile-wrapper {
+      margin-left: 100px;
+    }
+  }
+}
