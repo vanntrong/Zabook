@@ -9,6 +9,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
 
 import './information.scss';
+// import SkeletonLoading from 'components/SkeletonLoading';
 
 const InformationPage = () => {
   return (
@@ -18,6 +19,7 @@ const InformationPage = () => {
       <div className="information-wrapper">
         <UserInfo />
         <div className="overviews">
+          {/* <SkeletonLoading type="info" /> */}
           <div className="overview">
             <CakeIcon />
             47 years

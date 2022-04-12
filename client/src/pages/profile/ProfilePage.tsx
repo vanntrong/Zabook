@@ -6,6 +6,7 @@ import './profilepage.scss';
 import UserInfo from 'components/userinfo/UserInfo';
 import InputPost from 'components/input/InputPost/InputPost';
 import Post from 'components/post/Post';
+// import SkeletonLoading from 'components/SkeletonLoading';
 
 const ProfilePage = () => {
   return (
@@ -39,6 +40,7 @@ const ProfilePage = () => {
           <div className="post-list">
             <h3 className="post-list__title">Publications</h3>
             <div className="post-list__wrapper">
+              {/* <SkeletonLoading type="post" /> */}
               <Post />
               <Post />
               <Post />
