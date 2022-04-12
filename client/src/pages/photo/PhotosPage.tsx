@@ -1,5 +1,6 @@
 import Navbar from 'components/navbar/Navbar';
 import Sidebar from 'components/sidebar/Sidebar';
+// import SkeletonLoading from 'components/SkeletonLoading';
 import UserInfo from 'components/userinfo/UserInfo';
 import React from 'react';
 
@@ -13,6 +14,7 @@ const PhotosPage = () => {
       <div className="photos-wrapper">
         <UserInfo />
         <div className="photo-list">
+          {/* <SkeletonLoading type="photo" /> */}
           <div className="photo-item">
             <img
               src="https://images.unsplash.com/photo-1587502537104-aac10f5fb6f7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxzZWFyY2h8MXx8bmF0dXJlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
