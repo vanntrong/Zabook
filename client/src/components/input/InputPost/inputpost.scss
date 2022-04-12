@@ -8,12 +8,6 @@
   border-radius: 12px;
   .user-image {
     margin-right: 25px;
-    img {
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
-      border-radius: 50%;
-    }
   }
   .form-post__group {
     display: flex;
@@ -40,10 +34,6 @@
   .form-post {
     .user-image {
       margin-right: 10px;
-      img {
-        width: 30px;
-        height: 30px;
-      }
     }
 
     .form-post__group {
@@ -63,10 +53,6 @@
   .form-post {
     .user-image {
       margin-right: 10px;
-      img {
-        width: 30px;
-        height: 30px;
-      }
     }
 
     .form-post__group {
