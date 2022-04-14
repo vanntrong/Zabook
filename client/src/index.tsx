@@ -1,21 +1,27 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
+import History from 'utils/history';
 import App from './App';
 import { store } from './store/store';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 
-ReactDOM.render(
+//https://stackoverflow.com/questions/68399876/how-to-navigate-outside-of-react-component-using-react-router-6/70002872#70002872
+const NavigateSetter = () => {
+  History.navigate = useNavigate();
+
+  return null;
+};
+
+const container = document.getElementById('root') as HTMLElement;
+const root = createRoot(container);
+root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <NavigateSetter />
         <App />
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA

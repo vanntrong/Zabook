@@ -8,11 +8,14 @@ import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlin
 import { NavLink } from 'react-router-dom';
 
 import './sidebar.scss';
+import { useAppSelector } from 'store/hooks';
+import { selectCurrentUser } from 'store/slice/userSlice';
 interface sidebarProps {
   className?: string;
 }
 
 const Sidebar: FC<sidebarProps> = ({ className }) => {
+  const currentUser = useAppSelector(selectCurrentUser);
   return (
     <div className={`sidebar ${className ? className : ''}`}>
       <div className="sidebar-menu">
@@ -34,14 +37,14 @@ const Sidebar: FC<sidebarProps> = ({ className }) => {
           </NavLink>
           <NavLink
             className={({ isActive }) => 'sidebar-menu__item ' + (isActive && 'active')}
-            to="/:username/friends" // update username to match the username of the user
+            to={`/${currentUser?.username}/friends`}
           >
             <PersonOutlineOutlinedIcon className="menu-icon" />
             <span>Friends</span>
           </NavLink>
           <NavLink
             className={({ isActive }) => 'sidebar-menu__item ' + (isActive && 'active')}
-            to="/groups"
+            to={`/${currentUser?.username}/groups`}
           >
             <PeopleAltOutlinedIcon className="menu-icon" />
             <span>Groups</span>
@@ -55,7 +58,7 @@ const Sidebar: FC<sidebarProps> = ({ className }) => {
           </NavLink>
           <NavLink
             className={({ isActive }) => 'sidebar-menu__item ' + (isActive && 'active')}
-            to="/:username" // update username to match the username of the user
+            to={`/${currentUser?.username}`}
           >
             <ManageAccountsOutlinedIcon className="menu-icon" />
             <span>Manage account</span>

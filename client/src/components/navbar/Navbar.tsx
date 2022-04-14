@@ -13,11 +13,14 @@ import { NavLink, Link } from 'react-router-dom';
 
 import './navbar.scss';
 import { Avatar } from '@mui/material';
+import { useAppSelector } from 'store/hooks';
+import { selectCurrentUser } from 'store/slice/userSlice';
 interface NavbarProps {
   className?: string;
 }
 
 const Navbar: FC<NavbarProps> = ({ className }) => {
+  const currentUser = useAppSelector(selectCurrentUser);
   return (
     <div className={`navbar ${className ? className : ''}`}>
       <div className="navbar-search">
@@ -34,34 +37,39 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
           <HomeIcon fontSize="large" className="navbar-icon" />
           <div className="navbar-item__name">Home</div>
         </NavLink>
-        <NavLink className={({ isActive }) => 'navbar-item ' + (isActive && 'active')} to="photos">
+        <NavLink
+          className={({ isActive }) => 'navbar-item ' + (isActive && 'active')}
+          to={`/${currentUser?.username}/photos`}
+        >
           <PhotoIcon fontSize="large" className="navbar-icon" />
           <div className="navbar-item__name">Photos</div>
         </NavLink>
-        <NavLink className={({ isActive }) => 'navbar-item ' + (isActive && 'active')} to="videos">
+        <NavLink
+          className={({ isActive }) => 'navbar-item ' + (isActive && 'active')}
+          to={`/${currentUser?.username}/videos`}
+        >
           <OndemandVideoIcon fontSize="large" className="navbar-icon" />
           <div className="navbar-item__name">Videos</div>
         </NavLink>
-        <NavLink className={({ isActive }) => 'navbar-item ' + (isActive && 'active')} to="/groups">
+        <NavLink
+          className={({ isActive }) => 'navbar-item ' + (isActive && 'active')}
+          to={`/${currentUser?.username}/groups`}
+        >
           <GroupIcon fontSize="large" className="navbar-icon" />
           <div className="navbar-item__name">Groups</div>
         </NavLink>
         <NavLink
           className={({ isActive }) => 'navbar-item ' + (isActive && 'active')}
-          to="/favorites"
+          to={`/${currentUser?.username}/favorites`}
         >
           <FavoriteIcon fontSize="large" className="navbar-icon" />
           <div className="navbar-item__name">Favorites</div>
         </NavLink>
       </div>
       <div className="navbar-user">
-        <Link className="navbar-user__info" to="/:username">
-          <Avatar
-            src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            alt=""
-            sx={{ width: 35, height: 35 }}
-          />
-          <span>Jacky</span>
+        <Link className="navbar-user__info" to={`/${currentUser?.username}`}>
+          <Avatar src={currentUser?.avatar} alt="" sx={{ width: 35, height: 35 }} />
+          <span>{currentUser?.lastName}</span>
         </Link>
         <div className="navbar-user__action">
           <Link to="/messages">

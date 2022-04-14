@@ -1,7 +1,7 @@
 import React from 'react';
-
+// import Post from './../post/Post';
 import './feed.scss';
-import Post from './../post/Post';
+
 // import SkeletonLoading from '../SkeletonLoading';
 
 const Feed = () => {
@@ -9,11 +9,11 @@ const Feed = () => {
     <div className="feed">
       <div className="post-wrapper">
         {/* <SkeletonLoading type="post" /> */}
+        {/* <Post />
         <Post />
         <Post />
         <Post />
-        <Post />
-        <Post />
+        <Post /> */}
       </div>
     </div>
   );
