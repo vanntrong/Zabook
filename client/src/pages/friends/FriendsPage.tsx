@@ -2,10 +2,14 @@ import Navbar from 'components/navbar/Navbar';
 import Sidebar from 'components/sidebar/Sidebar';
 import UserInfo from 'components/userinfo/UserInfo';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import './friendpage.scss';
-// import SkeletonLoading from 'components/SkeletonLoading';
+import { useParams } from 'react-router-dom';
+import { UserType } from 'shared/types';
+import { useAppSelector } from 'store/hooks';
+import { selectCurrentUser } from 'store/slice/userSlice';
+import SkeletonLoading from 'components/SkeletonLoading';
 
 interface FriendInfoProps {
   name: string;
@@ -31,64 +35,31 @@ const FriendInfo: FC<FriendInfoProps> = ({ name, avatar, status }) => {
 };
 
 const FriendsPage = () => {
+  const [user, setUser] = useState<UserType | null>(null);
+  const params = useParams();
+  const currentUser = useAppSelector(selectCurrentUser);
+  const [isFetchingFriendsInfo, setIsFetchingFriendsInfo] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (params.username !== currentUser?.username) {
+      setUser(null);
+    } else {
+      setUser(currentUser);
+      setIsFetchingFriendsInfo(false);
+    }
+  }, [params.username, currentUser]);
   return (
     <div className="friends">
       <Sidebar />
       <Navbar />
       <div className="friends-wrapper">
-        <UserInfo />
+        {user && <UserInfo user={user} />}
         <div className="friend-list">
-          {/* <SkeletonLoading type="friend" /> */}
-          <FriendInfo
-            name="Elon Musk"
-            avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            status="Space X"
-          />
-          <FriendInfo
-            name="Elon Musk"
-            avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            status="Space X"
-          />
-          <FriendInfo
-            name="Elon Musk"
-            avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            status="Space X"
-          />
-          <FriendInfo
-            name="Elon Musk"
-            avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            status="Space X"
-          />
-          <FriendInfo
-            name="Elon Musk"
-            avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            status="Space X"
-          />
-          <FriendInfo
-            name="Elon Musk"
-            avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            status="Space X"
-          />
-          <FriendInfo
-            name="Elon Musk"
-            avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            status="Space X"
-          />
-          <FriendInfo
-            name="Elon Musk"
-            avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            status="Space X"
-          />
-          <FriendInfo
-            name="Elon Musk"
-            avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            status="Space X"
-          />
-          <FriendInfo
-            name="Elon Musk"
-            avatar="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-            status="Space X"
-          />
+          {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+          {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+          {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+          {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+          {/* {!isFetchingFriendsInfo && user?.friends.length > 0 && user?.friends.map((friend)) => ()} */}
         </div>
       </div>
     </div>
