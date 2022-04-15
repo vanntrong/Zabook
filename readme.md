@@ -7,3 +7,5 @@ Chức năng chính:
   ... còn tiếp
 
 - Home page: search, new post, show post, logout
+
+-tomorrow :implement debounce function

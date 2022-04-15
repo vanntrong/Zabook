@@ -4,9 +4,12 @@ import * as errorController from "../controllers/errorController.js";
 
 export async function createPostHandler(req, res) {
   try {
+    if (req.body.userPost !== req.user.id) {
+      return res.status(403).json("You are not allowed to create this post");
+    }
     const newPost = new Post({ ...req.body });
     await newPost.save();
-    await User.findByIdAndUpdate(req.body.userPost, { $push: { posts: newPost._id } });
+    // await User.findByIdAndUpdate(req.body.userPost, { $push: { posts: newPost._id } });
     res.status(201).json(newPost._doc);
   } catch (error) {
     errorController.serverErrorHandler(error, res);

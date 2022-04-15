@@ -11,8 +11,7 @@ router.post("/:refreshToken/refresh", (req, res) => {
   }
   jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET, (err, user) => {
     if (err) return res.status(401).json({ message: "Invalid refresh token" });
-    const userNewToken = { _id: user.id, email: user.email };
-    const accessToken = generateToken(userNewToken);
+    const accessToken = generateToken(user.id);
     res.status(200).json(accessToken);
   });
 });

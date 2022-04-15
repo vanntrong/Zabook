@@ -13,15 +13,11 @@ router.delete("/:userId", verifyToken, userController.deleteUserHandler);
 //get post of user
 router.get("/:userId/posts", verifyToken, userController.getPostsHandler);
 
-//get profile
-router.get("/", verifyToken, userController.getUserHandler);
-
 //get profile friend
-router.get("/:username", verifyToken, userController.getFriendProfileHandler);
+router.get("/:username/", verifyToken, userController.getOtherUserProfileHandler);
 
 //add and remove friends
 router.put("/:userId/friends", verifyToken, userController.addAndRemoveFriendHandler);
-
-// router.post("/search", verifyToken, userController.searchUserHandler);
+// router.get("/search/", verifyToken, userController.searchUserHandler);
 
 export default router;
