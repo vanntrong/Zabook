@@ -4,12 +4,6 @@ import * as userController from "../controllers/userController.js";
 
 const router = express.Router();
 
-// register
-router.post("/register", userController.registerHandler);
-
-//login
-router.post("/login", userController.loginHandler);
-
 //update
 router.put("/:userId", verifyToken, userController.updateUserHandler);
 
@@ -27,5 +21,7 @@ router.get("/:username", verifyToken, userController.getFriendProfileHandler);
 
 //add and remove friends
 router.put("/:userId/friends", verifyToken, userController.addAndRemoveFriendHandler);
+
+// router.post("/search", verifyToken, userController.searchUserHandler);
 
 export default router;
