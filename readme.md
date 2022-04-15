@@ -5,3 +5,5 @@ Chức năng chính:
 - Bạn bè: kết bạn | hủy kết bạn
 - Profile: chỉnh sửa profile | xóa account
   ... còn tiếp
+
+- Home page: search, new post, show post, logout

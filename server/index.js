@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
+import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import postRoute from "./routes/posts.js";
 import tokenRouter from "./routes/token.js";
@@ -19,6 +20,7 @@ app.use(cookieParser());
 
 const PORT = process.env.PORT || 8800;
 
+app.use("/auth", authRoute);
 app.use("/users", usersRoute);
 app.use("/posts", postRoute);
 app.use("/token", tokenRouter);

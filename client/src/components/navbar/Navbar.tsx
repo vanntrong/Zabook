@@ -1,26 +1,29 @@
-import React, { FC } from 'react';
-import HomeIcon from '@mui/icons-material/Home';
-import PhotoIcon from '@mui/icons-material/Photo';
-import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
-import GroupIcon from '@mui/icons-material/Group';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import SearchIcon from '@mui/icons-material/Search';
-import ChatIcon from '@mui/icons-material/Chat';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
-import Logo from './Logo';
-import { NavLink, Link } from 'react-router-dom';
-
-import './navbar.scss';
+import ChatIcon from '@mui/icons-material/Chat';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import GroupIcon from '@mui/icons-material/Group';
+import HomeIcon from '@mui/icons-material/Home';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
+import PhotoIcon from '@mui/icons-material/Photo';
+import SearchIcon from '@mui/icons-material/Search';
 import { Avatar } from '@mui/material';
+import Backdrop from 'components/Backdrop';
+import SearchResultModal from 'components/searchResultModal/SearchResultModal';
+import React, { FC, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
+import Logo from './Logo';
+import './navbar.scss';
+
 interface NavbarProps {
   className?: string;
 }
 
 const Navbar: FC<NavbarProps> = ({ className }) => {
   const currentUser = useAppSelector(selectCurrentUser);
+  const [isShowSearchBox, setIsShowSearchBox] = useState<boolean>(false);
   return (
     <div className={`navbar ${className ? className : ''}`}>
       <div className="navbar-search">
@@ -29,8 +32,15 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
         </Link>
         <div className="navbar-search__box">
           <SearchIcon htmlColor="#666" />
-          <input type="text" placeholder="Search..." />
+          <input type="text" placeholder="Search..." onClick={() => setIsShowSearchBox(true)} />
+          {isShowSearchBox && <SearchResultModal handleClose={setIsShowSearchBox} />}
         </div>
+        <Backdrop
+          isShow={isShowSearchBox}
+          setIsShow={setIsShowSearchBox}
+          color="#fff"
+          opacity={0}
+        />
       </div>
       <div className="navbar-list">
         <NavLink className={({ isActive }) => 'navbar-item ' + (isActive && 'active')} to="/">
