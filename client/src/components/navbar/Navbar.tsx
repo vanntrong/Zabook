@@ -31,7 +31,7 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
           <Logo />
         </Link>
         <div className="navbar-search__box">
-          <SearchIcon htmlColor="#666" />
+          <SearchIcon htmlColor="#666" onClick={() => setIsShowSearchBox(true)} />
           <input type="text" placeholder="Search..." onClick={() => setIsShowSearchBox(true)} />
           {isShowSearchBox && <SearchResultModal handleClose={setIsShowSearchBox} />}
         </div>

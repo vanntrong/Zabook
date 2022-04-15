@@ -17,6 +17,7 @@ export interface UserType {
   _id: string;
   firstName: string;
   lastName: string;
+  fullName: string;
   avatar: string;
   dateOfBirth: string;
   email: string;
@@ -29,6 +30,7 @@ export interface UserType {
   school?: string;
   posts: [string];
   friends: [string];
+  historySearch: [string];
   createdAt: Date;
 }
 

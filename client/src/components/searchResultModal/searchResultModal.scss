@@ -11,6 +11,7 @@
   max-height: 500px;
   overflow-y: hidden;
   animation: fadeIn 0.3s cubic-bezier(0.39, 0.575, 0.565, 1);
+  border-radius: 10px;
 
   .search-result__top {
     display: flex;
@@ -60,6 +61,13 @@
       display: flex;
       flex-direction: column;
       gap: 5px 0;
+      .no-result {
+        margin-top: 10px;
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        color: #999;
+      }
     }
   }
 }

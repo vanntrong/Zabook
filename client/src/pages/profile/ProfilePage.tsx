@@ -2,16 +2,16 @@ import InputPost from 'components/input/InputPost/InputPost';
 import Navbar from 'components/navbar/Navbar';
 import Post from 'components/post/Post';
 import Sidebar from 'components/sidebar/Sidebar';
+import SkeletonLoading from 'components/SkeletonLoading';
 import UserInfo from 'components/userinfo/UserInfo';
 import React, { useEffect } from 'react';
-import { UserType, PostType } from 'shared/types';
+import { useParams } from 'react-router-dom';
+import { PostType, UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
-import { useParams } from 'react-router-dom';
 import './profilepage.scss';
-import { getPostsApi, getProfileFriendApi } from 'api/userApi';
-
-import SkeletonLoading from 'components/SkeletonLoading';
+import { getPostsApi } from 'api/postApi';
+import { getProfileOtherApi } from 'api/userApi';
 
 const ProfilePage = () => {
   const [user, setUser] = React.useState<null | UserType>(null);
@@ -22,7 +22,7 @@ const ProfilePage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   useEffect(() => {
     const getFriendProfile = async (username: string) => {
-      const data: UserType = await getProfileFriendApi(username);
+      const data: UserType = await getProfileOtherApi(username);
       setUser(data);
     };
     if (params.username !== currentUser?.username) {

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store/store';
-import { LoginFormData, SignUpFormData, User } from '../../shared/types';
+import { LoginFormData, UserType } from '../../shared/types';
 
 export interface userState {
-  currentUser: User | null;
+  currentUser: UserType | null;
   isLoggedIn: boolean;
   logging: boolean;
 }
@@ -19,7 +19,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<User>) => {
+    setUser: (state, action: PayloadAction<UserType>) => {
       state.currentUser = action.payload;
       state.isLoggedIn = true;
       state.logging = false;
@@ -43,6 +43,7 @@ export const userAction = userSlice.actions;
 
 export const selectIsLoggedIn = (state: RootState) => state.user.isLoggedIn;
 export const selectCurrentUser = (state: RootState) => state.user.currentUser;
+export const selectHistorySearch = (state: RootState) => state.user.currentUser!.historySearch;
 export const selectLogging = (state: RootState) => state.user.logging;
 
 export default userSlice.reducer;

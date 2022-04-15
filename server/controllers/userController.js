@@ -1,81 +1,58 @@
+import Post from "../models/Post.js";
 import User from "../models/User.js";
+import * as errorController from "./errorController.js";
+import * as factoryController from "./factoryController.js";
 
 export async function updateUserHandler(req, res) {
   try {
-    const user = await User.findById(req.params.userId);
-    if (!user) {
-      return res.status(404).json("User not found");
+    if (req.params.userId !== req.user.id) {
+      return res.status(403).json("You are not allowed to update this user");
     }
-    if (user) {
-      if (req.user.id !== user._id.toString()) {
-        return res.status(403).json("You are not allowed to update this user");
-      }
-      const updatedUser = await User.findByIdAndUpdate(user.id, { $set: req.body }, { new: true });
-      res.status(200).json(updatedUser);
-    }
+    factoryController.updateOne(User, req.params.userId, { $set: req.body }, res);
   } catch (error) {
-    console.log(error);
-    res.status(500).json("Internal server error");
+    errorController.serverErrorHandler(error, res);
   }
 }
 
 export async function deleteUserHandler(req, res) {
   try {
-    const user = await User.findById(req.user.id);
-    if (!user) {
-      return res.status(404).json("User not found");
+    if (req.params.userId !== req.user.id) {
+      return res.status(403).json("You are not allowed to delete this user");
     }
-    if (user) {
-      if (req.user.id !== user._id.toString()) {
-        return res.status(403).json("You are not allowed to delete this user");
-      }
-      await User.findByIdAndDelete(user.id);
-      res.status(200).json("User deleted");
-    }
+    factoryController.deleteOne(User, req.params.userId, res);
   } catch (error) {
-    console.log(error);
-    res.status(500).json("Internal server error");
+    errorController.serverErrorHandler(error, res);
   }
 }
 
 export async function getPostsHandler(req, res) {
   try {
-    const userPost = await User.findById(req.params.userId).populate("posts");
+    const userPost = await factoryController.findAll(User, { _id: req.params.userId }, 0, {
+      path: "posts",
+      options: {
+        limit: 10,
+        skip: 10 * 0,
+      },
+    });
     if (!userPost) {
       return res.status(404).json("Posts not found");
     }
-    res.status(200).json(userPost.posts);
+    res.status(200).json(userPost[0].posts);
   } catch (error) {
-    console.log(error);
-    res.status(500).json("Internal server error");
+    errorController.serverErrorHandler(error, res);
   }
 }
 
-export async function getUserHandler(req, res) {
+export async function getOtherUserProfileHandler(req, res) {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await factoryController.findOne(User, { username: req.params.username }, null);
     if (!user) {
       return res.status(404).json("User not found");
     }
     const { password, ...other } = user._doc;
     res.status(200).json({ ...other });
   } catch (error) {
-    console.log(error);
-    res.status(500).json("Internal server error");
-  }
-}
-
-export async function getFriendProfileHandler(req, res) {
-  try {
-    const user = await User.findOne({ username: req.params.username });
-    if (!user) {
-      return res.status(404).json("User not found");
-    }
-    const { password, ...other } = user._doc;
-    res.status(200).json({ ...other });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json("Internal server error");
+    errorController.serverErrorHandler(error, res);
   }
 }
 
@@ -106,15 +83,16 @@ export async function addAndRemoveFriendHandler(req, res) {
       res.status(200).json("Friend removed");
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json("Internal server error");
+    errorController.serverErrorHandler(error, res);
   }
 }
 
-// export async function searchUserHandler(req, res) {
-//   try {
-//     const se
-//   } catch (error) {
-
-//   }
-// }
+export async function searchUserHandler(req, res) {
+  try {
+    const regex = new RegExp(factoryController.escapeRegex(req.query.q), "gi");
+    const result = await User.find({ fullName: regex }).limit(10).select("username avatar fullName _id");
+    res.status(200).json(result);
+  } catch (error) {
+    errorController.serverErrorHandler(error, res);
+  }
+}

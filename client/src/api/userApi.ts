@@ -8,20 +8,23 @@ interface loginResponse {
   user: UserType;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const registerUser = (data: SignUpFormData): Promise<any> =>
-  axiosAuthClient.post('users/register', data);
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  axiosAuthClient.post('auth/register', data);
+
 export const loginUser = (data: LoginFormData): Promise<loginResponse> =>
-  axiosAuthClient.post('users/login', data);
+  axiosAuthClient.post('auth/login', data);
+
+//get profile of current user
+export const getProfileApi = (): Promise<UserType> => axiosClient.get('auth');
+
+//get profile of other user
+export const getProfileOtherApi = (username: string): Promise<UserType> =>
+  axiosClient.get(`users/${username}`);
 
 export const updateUserApi = (user: UserType, id: string): Promise<UserType> =>
   axiosClient.put(`users/${id}`, user);
 
-export const getProfileApi = (): Promise<UserType> => axiosClient.get('users');
+export const deleteUserApi = (id: string): Promise<any> => axiosClient.delete(`users/${id}`);
 
-export const getProfileFriendApi = (username: string): Promise<UserType> =>
-  axiosClient.get(`users/${username}`);
-
-export const getPostsApi = (id: string): Promise<[PostType]> =>
-  axiosClient.get(`users/${id}/posts`);
+export const searchUserApi = (searchQuery: string): Promise<any[]> =>
+  axiosClient.get('search', { params: { q: searchQuery } });
