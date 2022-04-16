@@ -16,7 +16,6 @@ interface PostProps {
 
 const Post: FC<PostProps> = ({ post, user }) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
-
   const handleLikePost = () => {
     setIsLiked((prevState) => !prevState);
   };

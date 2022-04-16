@@ -54,8 +54,7 @@ const SignUpForm: FC<SignUpFormProps> = ({ setIsShow }) => {
 
   const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
     try {
-      const res = await registerUser(data);
-      console.log(res);
+      await registerUser(data);
       setIsShow(false);
     } catch (error) {
       console.log(error);

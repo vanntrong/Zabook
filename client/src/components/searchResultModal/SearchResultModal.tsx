@@ -1,5 +1,5 @@
-import ResultUser from 'components/resultuser/ResultUser';
-import React, { FC, useEffect, useState } from 'react';
+import ResultUser from 'components/searchResultModal/resultuser/ResultUser';
+import React, { FC, useRef, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import './searchResultModal.scss';
@@ -23,21 +23,27 @@ const SearchResultModal: FC<SearchResultModalProps> = ({ handleClose }) => {
   const historySearch = useAppSelector(selectHistorySearch);
   const [searchText, setSearchText] = useState<string>('');
   const [searchResult, setSearchResult] = useState<searchResult[]>([]);
+  const typingTimeout = useRef<any>(null);
 
-  useEffect(() => {
-    const getSearchResult = async () => {
-      if (searchText.trim().length === 0) {
+  const handleChangeSearchText = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchText(value);
+
+    if (typingTimeout.current) {
+      clearTimeout(typingTimeout.current);
+    }
+    typingTimeout.current = setTimeout(async () => {
+      if (value.trim().length === 0) {
         setSearchResult([]);
       } else {
-        const res = await searchUserApi(searchText);
+        const params = {
+          q: value,
+        };
+        const res = await searchUserApi(params);
         setSearchResult(res);
       }
-    };
-
-    getSearchResult();
-  }, [searchText, setSearchResult]);
-
-  console.log(searchResult);
+    }, 300);
+  };
 
   return (
     <div className="search-result">
@@ -53,7 +59,7 @@ const SearchResultModal: FC<SearchResultModalProps> = ({ handleClose }) => {
             placeholder="Search facebook"
             autoFocus
             defaultValue={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={handleChangeSearchText}
           />
         </div>
       </div>

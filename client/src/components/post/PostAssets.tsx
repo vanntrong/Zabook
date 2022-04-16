@@ -2,7 +2,12 @@ import React, { FC } from 'react';
 import './postassets.scss';
 
 interface PostAssetsProps {
-  assets: string[];
+  assets: [
+    {
+      media_type?: string;
+      url: string;
+    }
+  ];
 }
 
 const PostAssets: FC<PostAssetsProps> = ({ assets }) => {
@@ -11,7 +16,7 @@ const PostAssets: FC<PostAssetsProps> = ({ assets }) => {
       <div className="wrapper-1">
         {assets?.map((asset, index) => (
           <div key={index} className="wrapper-1__item">
-            <img src={asset} alt="" />
+            <img src={asset.url} alt="" />
           </div>
         ))}
       </div>
@@ -21,14 +26,14 @@ const PostAssets: FC<PostAssetsProps> = ({ assets }) => {
     return (
       <div className="wrapper-3">
         <div className="wrapper-3__item1">
-          <img src={assets[0]} alt="" />
+          <img src={assets[0].url} alt="" />
         </div>
         <div className="wrapper-3__item2">
           {assets?.map((asset, index) => (
             <>
               {index !== 0 && index <= 3 && (
                 <div className="wrapper-3__item" key={index}>
-                  <img src={asset} alt="" />
+                  <img src={asset.url} alt="" />
                   {assets.length > 4 && index === 3 && (
                     <div className="bonus_count">
                       <span>+ {assets.length - 4}</span>

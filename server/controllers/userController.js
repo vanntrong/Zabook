@@ -32,6 +32,7 @@ export async function getPostsHandler(req, res) {
       options: {
         limit: 10,
         skip: 10 * 0,
+        sort: { createdAt: -1 },
       },
     });
     if (!userPost) {

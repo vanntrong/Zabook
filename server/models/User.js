@@ -18,6 +18,7 @@ const userSchema = mongoose.Schema(
     },
     dateOfBirth: {
       type: Date,
+      required: true,
     },
     email: {
       type: String,
@@ -43,7 +44,9 @@ const userSchema = mongoose.Schema(
     gender: {
       type: String,
       enum: ["Male", "Female", "Other"],
+      require: true,
     },
+    bio: String,
     school: String,
     // posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
