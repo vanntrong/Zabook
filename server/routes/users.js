@@ -14,7 +14,7 @@ router.delete("/:userId", verifyToken, userController.deleteUserHandler);
 router.get("/:userId/posts", verifyToken, userController.getPostsHandler);
 
 //get profile friend
-router.get("/:username/", verifyToken, userController.getOtherUserProfileHandler);
+router.get("/:username/profile", verifyToken, userController.getOtherUserProfileHandler);
 
 //add and remove friends
 router.put("/:userId/friends", verifyToken, userController.addAndRemoveFriendHandler);

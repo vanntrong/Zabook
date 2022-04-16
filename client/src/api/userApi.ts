@@ -8,6 +8,12 @@ interface loginResponse {
   user: UserType;
 }
 
+interface searchUserParams {
+  q: string;
+  page?: number;
+  limit?: number;
+}
+
 export const registerUser = (data: SignUpFormData): Promise<any> =>
   axiosAuthClient.post('auth/register', data);
 
@@ -19,12 +25,12 @@ export const getProfileApi = (): Promise<UserType> => axiosClient.get('auth');
 
 //get profile of other user
 export const getProfileOtherApi = (username: string): Promise<UserType> =>
-  axiosClient.get(`users/${username}`);
+  axiosClient.get(`users/${username}/profile`);
 
 export const updateUserApi = (user: UserType, id: string): Promise<UserType> =>
   axiosClient.put(`users/${id}`, user);
 
 export const deleteUserApi = (id: string): Promise<any> => axiosClient.delete(`users/${id}`);
 
-export const searchUserApi = (searchQuery: string): Promise<any[]> =>
-  axiosClient.get('search', { params: { q: searchQuery } });
+export const searchUserApi = (params: searchUserParams): Promise<any[]> =>
+  axiosClient.get('search', { params });

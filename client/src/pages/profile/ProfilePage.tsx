@@ -20,6 +20,7 @@ const ProfilePage = () => {
 
   const params = useParams();
   const currentUser = useAppSelector(selectCurrentUser);
+
   useEffect(() => {
     const getFriendProfile = async (username: string) => {
       const data: UserType = await getProfileOtherApi(username);
@@ -38,10 +39,14 @@ const ProfilePage = () => {
         document.title = `${user.firstName} ${user.lastName}`;
         const posts: [PostType] = await getPostsApi(user?._id);
         setPosts(posts);
-        setIsFetchingPosts(false);
       }
     };
     getPostsOfUser();
+    const timer = setTimeout(() => {
+      setIsFetchingPosts(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, [user]);
   return (
     <div className="profile">
@@ -66,7 +71,7 @@ const ProfilePage = () => {
                 <span>Friends</span>
               </div>
               <div className="info-item">
-                <h5>{user?.posts.length}</h5>
+                <h5>{posts?.length}</h5>
                 <span>Posts</span>
               </div>
             </div>
@@ -75,13 +80,16 @@ const ProfilePage = () => {
             <h3 className="post-list__title">Publications</h3>
             <div className="post-list__wrapper">
               {isFetchingPosts && <SkeletonLoading type="post" />}
-              {isFetchingPosts && <SkeletonLoading type="post" />}
-              {isFetchingPosts && <SkeletonLoading type="post" />}
               {!isFetchingPosts &&
                 posts &&
                 posts.map(
                   (post: PostType) => user && <Post key={post._id} post={post} user={user} />
                 )}
+              {!isFetchingPosts && posts?.length === 0 && (
+                <h3 style={{ textAlign: 'center', marginTop: '20px' }}>
+                  This user has no posts yet
+                </h3>
+              )}
             </div>
           </div>
         </div>

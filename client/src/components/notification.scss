@@ -1,0 +1,89 @@
+.notification {
+  position: fixed;
+  bottom: 50px;
+  left: 20px;
+  min-width: 250px;
+  max-width: 300px;
+  height: 64px;
+  background-color: white;
+  display: flex;
+  padding: 10px 10px 20px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 10px 30px;
+
+  .notification-main {
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+    margin-right: auto;
+
+    .notification-content {
+      color: #6c757d;
+      width: 100%;
+      line-height: 1.25;
+    }
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 7px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    animation: progressBar 3.5s ease-in-out forwards;
+    background: #c9ffbf; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+      to right,
+      #ffafbd,
+      #c9ffbf
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+      to right,
+      #ffafbd,
+      #c9ffbf
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+
+  &.notification-show {
+    animation: notificationFadeIn 1s ease-in-out forwards;
+  }
+
+  &.notification-hide {
+    animation: notificationFadeOut 1s ease-in-out forwards;
+  }
+}
+
+@keyframes notificationFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes notificationFadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50px);
+  }
+}
+
+@keyframes progressBar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}

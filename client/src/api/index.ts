@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import jwt_decode from 'jwt-decode';
+import queryString from 'query-string';
 
 const access_token = (localStorage.getItem('token') as string) || '';
 
@@ -30,6 +31,7 @@ const axiosClient = axios.create({
     'content-type': 'application/json',
     Authorization: `Bearer ${access_token}`,
   },
+  paramsSerializer: (params) => queryString.stringify(params),
 });
 
 axiosClient.interceptors.request.use(

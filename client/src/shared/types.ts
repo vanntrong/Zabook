@@ -22,6 +22,7 @@ export interface UserType {
   dateOfBirth: string;
   email: string;
   username: string;
+  bio?: string;
   password?: string;
   city?: string;
   relationship?: 'Single' | 'Date' | 'Married';
@@ -34,13 +35,25 @@ export interface UserType {
   createdAt: Date;
 }
 
+interface assets {
+  media_type: string;
+  url: string;
+}
+
 export interface PostType {
   _id: string;
   userPost: string;
-  assets?: [string];
+  assets?: [assets];
   content: string;
   likes?: [string];
   shares?: [string];
   comments?: [string];
   createdAt: Date;
+}
+
+export interface formPostData {
+  userPost: string;
+  content: string;
+  // assets?: [any];
+  assets?: any;
 }

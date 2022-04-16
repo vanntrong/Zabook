@@ -6,7 +6,12 @@ const postSchema = mongoose.Schema({
     ref: "User",
     required: true,
   },
-  assets: [{ type: String }],
+  assets: [
+    {
+      media_type: String,
+      url: String,
+    },
+  ],
   content: {
     type: String,
     required: true,
