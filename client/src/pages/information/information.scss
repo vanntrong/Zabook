@@ -1,11 +1,13 @@
-@import "../../shared/_variable";
+@import '../../shared/_variable';
 
 .information {
   min-height: 100vh;
-  padding-right: 70px;
-  
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 100;
+
   .information-wrapper {
-    margin-left: 390px;
     height: 100%;
     padding-top: 80px;
   }
@@ -36,6 +38,7 @@
 
 @media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
   .information {
+    padding-left: 20px;
     .information-wrapper {
       margin-left: 20px;
     }

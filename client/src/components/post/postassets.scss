@@ -10,11 +10,16 @@
     height: 100%;
     max-height: 500px;
     cursor: pointer;
-    img {
-      // width: 100%;
-      max-height: 500px;
+    .wrapper-1__item__image {
+      width: 100%;
+      max-width: 100%;
+      height: 400px;
       border-radius: 6px;
       object-fit: cover;
+      background-image: none;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
     }
   }
 }
@@ -69,6 +74,9 @@
 }
 
 @media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+  .wrapper-1 .wrapper-1__item .wrapper-1__item__image {
+    height: 250px;
+  }
   .wrapper-3 {
     .wrapper-3__item1 {
       img {
@@ -86,6 +94,9 @@
 }
 
 @media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+  .wrapper-1 .wrapper-1__item .wrapper-1__item__image {
+    height: 300px;
+  }
   .wrapper-3 {
     .wrapper-3__item1 {
       img {

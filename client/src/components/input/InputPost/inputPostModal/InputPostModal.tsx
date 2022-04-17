@@ -6,6 +6,8 @@ import { createPostApi } from 'api/postApi';
 import { Picker } from 'emoji-mart';
 import React, { FC, useState } from 'react';
 import { formPostData, UserType } from 'shared/types';
+import { useAppDispatch } from 'store/hooks';
+import { postAction } from 'store/slice/postSlice';
 
 interface InputPostModalProps {
   currentUser: UserType | null;
@@ -18,6 +20,7 @@ const InputPostModal: FC<InputPostModalProps> = ({ currentUser, onSubmit, setIsS
   const [postContent, setPostContent] = useState<string>('');
   const [filesPreview, setFilesPreview] = useState<any[]>([]);
   const [assetsData, setAssetsData] = useState<any[]>([]);
+  const dispatch = useAppDispatch();
 
   const selectEmojiHandler = (emoji: any) => {
     setPostContent(postContent + emoji.native);
@@ -33,7 +36,7 @@ const InputPostModal: FC<InputPostModalProps> = ({ currentUser, onSubmit, setIsS
     if (assetsData.length > 0) {
       data.assets = assetsData;
     }
-    await createPostApi(data);
+    dispatch(postAction.createNewPostRequest(data));
     setPostContent('');
     setIsShowPostModal(false);
   };

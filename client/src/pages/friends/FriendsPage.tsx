@@ -49,20 +49,24 @@ const FriendsPage = () => {
     }
   }, [params.username, currentUser]);
   return (
-    <div className="friends">
+    <>
       <Sidebar />
       <Navbar />
-      <div className="friends-wrapper">
-        {user && <UserInfo user={user} />}
-        <div className="friend-list">
-          {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
-          {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
-          {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
-          {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
-          {/* {!isFetchingFriendsInfo && user?.friends.length > 0 && user?.friends.map((friend)) => ()} */}
+      <div className="friends">
+        <div className="friends-wrapper">
+          {user && <UserInfo user={user} />}
+          <div className="friend-list">
+            {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+            {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+            {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+            {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+            {/* {!isFetchingFriendsInfo && user && user?.friends.length > 0 && user?.friends.map((friend)) => (
+              <FriendInfo />
+            } */}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

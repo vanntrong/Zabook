@@ -1,20 +1,28 @@
-import { getPostsApi } from 'api/postApi';
-import { call, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
-import { PostType } from 'shared/types';
+import { call, put, take, takeLatest } from 'redux-saga/effects';
+import { formPostData, PostType } from 'shared/types';
 import { postAction } from '../slice/postSlice';
+import * as postApi from 'api/postApi';
 
 // { payload, type }: { payload: string; type: string }
-function* getPosts({ payload, type }: { payload: string; type: string }) {
+function* getPostsSaga({ payload, type }: { payload: string; type: string }) {
   try {
-    console.log('Handle get posts saga');
-    const posts: PostType[] = yield call(getPostsApi, payload);
+    const posts: PostType[] = yield call(postApi.getPostsApi, payload);
     yield put(postAction.setUserPosts(posts));
-    // console.log(posts);
   } catch (error) {
-    yield put(postAction.getCurrentUserPostsFailure(error));
+    yield put(postAction.getCurrentUserPostsFailure(error.response.data));
+  }
+}
+
+function* createPostSaga({ payload, type }: { payload: formPostData; type: string }) {
+  try {
+    const post: PostType = yield call(postApi.createPostApi, payload);
+    yield put(postAction.createNewPostSuccess(post));
+  } catch (error) {
+    yield put(postAction.createNewPostFailure(error.response.data));
   }
 }
 
 export function* postSaga() {
-  yield takeEvery(postAction.getCurrentUserPostsRequest.type, getPosts);
+  yield takeLatest(postAction.getCurrentUserPostsRequest.type, getPostsSaga);
+  yield takeLatest(postAction.createNewPostRequest.type, createPostSaga);
 }

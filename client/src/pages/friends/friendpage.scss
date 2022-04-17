@@ -1,10 +1,10 @@
-@import "../../shared/_variable";
+@import '../../shared/_variable';
 
 .friends {
   min-height: 100vh;
-  padding-right: 70px;
+  display: flex;
+  justify-content: center;
   .friends-wrapper {
-    margin-left: 390px;
     height: 100%;
     padding-top: 80px;
   }
@@ -21,9 +21,9 @@
     min-width: 450px;
     max-width: 450px;
     padding-right: 10px;
-    box-shadow: -1px 2px 5px 0px rgba(89,80,80,0.64);
-    -webkit-box-shadow: -1px 2px 5px 0px rgba(89,80,80,0.64);
-    -moz-box-shadow: -1px 2px 5px 0px rgba(89,80,80,0.64);
+    box-shadow: -1px 2px 5px 0px rgba(89, 80, 80, 0.64);
+    -webkit-box-shadow: -1px 2px 5px 0px rgba(89, 80, 80, 0.64);
+    -moz-box-shadow: -1px 2px 5px 0px rgba(89, 80, 80, 0.64);
 
     .friend-info-avatar {
       max-width: 133px;
@@ -58,6 +58,7 @@
 
 @media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
   .friends {
+    padding-left: 20px;
     .friends-wrapper {
       margin-left: 20px;
       min-width: 320px;
@@ -65,7 +66,7 @@
     .friend-list {
       grid-template-columns: 1fr;
       grid-gap: 10px;
-     }
+    }
     .friend-info {
       min-width: 320px;
       max-width: 320px;
@@ -75,6 +76,7 @@
 
 @media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
   .friends {
+    padding-right: 50px;
     .friends-wrapper {
       margin-left: 50px;
       min-width: 320px;
@@ -82,7 +84,7 @@
     .friend-list {
       grid-template-columns: 1fr;
       grid-gap: 10px;
-     }
+    }
     .friend-info {
       min-width: 320px;
       max-width: 320px;
@@ -92,6 +94,7 @@
 
 @media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
   .friends {
+    padding-right: 70px;
     .friends-wrapper {
       margin-left: 70px;
       .friends-right {
@@ -101,7 +104,7 @@
     .friend-list {
       grid-template-columns: 1fr 1fr;
       grid-gap: 10px;
-     }
+    }
     .friend-info {
       min-width: 320px;
       max-width: 320px;
@@ -111,13 +114,14 @@
 
 @media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
   .friends {
+    padding-right: 100px;
     .friends-wrapper {
       margin-left: 100px;
     }
     .friend-list {
       grid-template-columns: 1fr 1fr 1fr;
       grid-gap: 10px;
-     }
+    }
     .friend-info {
       min-width: 290px;
       max-width: 290px;

@@ -1,15 +1,9 @@
 import React, { FC } from 'react';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
-import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
-import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import { NavLink } from 'react-router-dom';
-
-import './sidebar.scss';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
+import './sidebar.scss';
+
 interface sidebarProps {
   className?: string;
 }
@@ -25,42 +19,42 @@ const Sidebar: FC<sidebarProps> = ({ className }) => {
             className={({ isActive }) => 'sidebar-menu__item ' + (isActive && 'active')}
             to="/"
           >
-            <HomeOutlinedIcon className="menu-icon" />
+            <img src="/assets/images/home.png" alt="" />
             <span>News</span>
           </NavLink>
           <NavLink
             className={({ isActive }) => 'sidebar-menu__item ' + (isActive && 'active')}
             to="/messages"
           >
-            <MessageOutlinedIcon className="menu-icon" />
+            <img src="/assets/images/message.png" alt="" />
             <span>Messages</span>
           </NavLink>
           <NavLink
             className={({ isActive }) => 'sidebar-menu__item ' + (isActive && 'active')}
             to={`/${currentUser?.username}/friends`}
           >
-            <PersonOutlineOutlinedIcon className="menu-icon" />
+            <img src="/assets/images/friend.png" alt="" />
             <span>Friends</span>
           </NavLink>
           <NavLink
             className={({ isActive }) => 'sidebar-menu__item ' + (isActive && 'active')}
             to={`/${currentUser?.username}/groups`}
           >
-            <PeopleAltOutlinedIcon className="menu-icon" />
+            <img src="/assets/images/group.png" alt="" />
             <span>Groups</span>
           </NavLink>
           <NavLink
             className={({ isActive }) => 'sidebar-menu__item ' + (isActive && 'active')}
             to="/events"
           >
-            <EventOutlinedIcon className="menu-icon" />
+            <img src="/assets/images/event.png" alt="" />
             <span>Events</span>
           </NavLink>
           <NavLink
             className={({ isActive }) => 'sidebar-menu__item ' + (isActive && 'active')}
             to={`/${currentUser?.username}`}
           >
-            <ManageAccountsOutlinedIcon className="menu-icon" />
+            <img src="/assets/images/settings.png" alt="" />
             <span>Manage account</span>
           </NavLink>
         </div>

@@ -18,7 +18,6 @@ export async function createPostHandler(req, res) {
           };
         })
       );
-      console.log(results);
       const { assets, ...other } = req.body;
       const data = { ...other };
       data.assets = results;

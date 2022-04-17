@@ -31,46 +31,48 @@ const InformationPage = () => {
     }
   }, [params.username, currentUser]);
   return (
-    <div className="information">
-      <Sidebar />
+    <>
       <Navbar />
-      <div className="information-wrapper">
-        {user && <UserInfo user={user} />}
-        <div className="overviews">
-          {isFetchingUserInfo && <SkeletonLoading type="info" />}
-          {!isFetchingUserInfo && user?.dateOfBirth && (
-            <div className="overview">
-              <CakeIcon />
-              {moment(user.dateOfBirth).format('DD/MM/YYYY')}
-            </div>
-          )}
-          {!isFetchingUserInfo && user?.city && (
-            <div className="overview">
-              <LocationOnIcon />
-              New York
-            </div>
-          )}
-          {!isFetchingUserInfo && user?.work && (
-            <div className="overview">
-              <WorkIcon />
-              CEO
-            </div>
-          )}
-          {!isFetchingUserInfo && user?.relationship && (
-            <div className="overview">
-              <PersonIcon />
-              Relationships
-            </div>
-          )}
-          {!isFetchingUserInfo && user?.school && (
-            <div className="overview">
-              <SchoolIcon />
-              School
-            </div>
-          )}
+      <Sidebar />
+      <div className="information">
+        <div className="information-wrapper">
+          {user && <UserInfo user={user} />}
+          <div className="overviews">
+            {isFetchingUserInfo && <SkeletonLoading type="info" />}
+            {!isFetchingUserInfo && user?.dateOfBirth && (
+              <div className="overview">
+                <CakeIcon />
+                {moment(user.dateOfBirth).format('DD/MM/YYYY')}
+              </div>
+            )}
+            {!isFetchingUserInfo && user?.city && (
+              <div className="overview">
+                <LocationOnIcon />
+                New York
+              </div>
+            )}
+            {!isFetchingUserInfo && user?.work && (
+              <div className="overview">
+                <WorkIcon />
+                CEO
+              </div>
+            )}
+            {!isFetchingUserInfo && user?.relationship && (
+              <div className="overview">
+                <PersonIcon />
+                Relationships
+              </div>
+            )}
+            {!isFetchingUserInfo && user?.school && (
+              <div className="overview">
+                <SchoolIcon />
+                School
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

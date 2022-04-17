@@ -10,7 +10,7 @@ import ModalUpdateUser from './modalUpdateUser/ModalUpdateUser';
 import Backdrop from 'components/Backdrop';
 
 interface UserInfoProps {
-  user: UserType;
+  user: UserType | null;
 }
 
 const UserInfo: FC<UserInfoProps> = ({ user }) => {
@@ -19,8 +19,8 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
     <>
       <div className="user-profile-wrapper">
         <div className="user-profile-info">
-          <Avatar src={user.avatar} alt={user.username} sx={{ width: 173, height: 173 }} />
-          <h3>{user.firstName + ' ' + user.lastName}</h3>
+          <Avatar src={user?.avatar} alt={user?.username} sx={{ width: 173, height: 173 }} />
+          <h3>{user?.firstName + ' ' + user?.lastName}</h3>
           <p>
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi sint doloribus totam
             quaerat. Molestias laboriosam possimus fugit at maiores, amet libero accusamus soluta ab
@@ -30,25 +30,25 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
             <NavLink
               className={({ isActive }) => 'nav-link' + (isActive ? ' activated' : '')}
               end
-              to={`/${user.username}`}
+              to={`/${user?.username}`}
             >
               <span>Posts</span>
             </NavLink>
             <NavLink
               className={({ isActive }) => 'nav-link' + (isActive ? ' activated' : '')}
-              to={`/${user.username}/info`}
+              to={`/${user?.username}/info`}
             >
               <span>Information</span>
             </NavLink>
             <NavLink
               className={({ isActive }) => 'nav-link' + (isActive ? ' activated' : '')}
-              to={`/${user.username}/friends`}
+              to={`/${user?.username}/friends`}
             >
               <span>Friends</span>
             </NavLink>
             <NavLink
               className={({ isActive }) => 'nav-link' + (isActive ? ' activated' : '')}
-              to={`/${user.username}/photos`}
+              to={`/${user?.username}/photos`}
             >
               <span>Photos</span>
             </NavLink>
