@@ -2,8 +2,8 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { call, fork, put, take } from 'redux-saga/effects';
 import { LoginFormData } from 'shared/types';
 import { userAction } from 'store/slice/userSlice';
-import * as api from '../../api/userApi';
 import History from 'utils/history';
+import * as api from '../../api/userApi';
 
 function* handleLogin(payload: LoginFormData) {
   try {
@@ -13,14 +13,14 @@ function* handleLogin(payload: LoginFormData) {
     yield put(userAction.setUser(user));
     History.push('/');
   } catch (error) {
-    console.log(error);
-    yield put(userAction.loginUserFailure(error.message));
+    yield put(userAction.loginUserFailure(error.response.data));
   }
 }
 
 function* handleLogout() {
   localStorage.removeItem('token');
   yield put(userAction.logoutUser());
+  History.push('/');
 }
 
 function* watchLoginFlow() {
@@ -32,8 +32,8 @@ function* watchLoginFlow() {
       yield fork(handleLogin, action1.payload);
     }
 
-    yield take(userAction.logoutUser.type);
-    yield fork(handleLogout);
+    yield take([userAction.logoutUser.type, userAction.loginUserFailure.type]);
+    yield call(handleLogout);
   }
 }
 

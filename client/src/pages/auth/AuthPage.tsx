@@ -3,12 +3,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import { CircularProgress } from '@mui/material';
 import { registerUser } from 'api/userApi';
 import Backdrop from 'components/Backdrop';
+import Notification from 'components/Notification';
 import React, { FC, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import yup from 'shared/yubGlobal';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectLogging, userAction } from 'store/slice/userSlice';
+import { selectLogging, selectLoginError, userAction } from 'store/slice/userSlice';
 import { LoginFormData, SignUpFormData } from '../../shared/types';
 import './authpage.scss';
 
@@ -152,6 +153,7 @@ const AuthPage = () => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const isLogging = useAppSelector(selectLogging);
+  const loginError = useAppSelector(selectLoginError);
   const {
     register,
     handleSubmit,
@@ -206,6 +208,7 @@ const AuthPage = () => {
       </div>
       <Backdrop isShow={isShowModal} setIsShow={setIsShowModal} color="#fff" opacity={0.7} />
       {isShowModal && <SignUpForm setIsShow={setIsShowModal} />}
+      {loginError && <Notification type="error" content={loginError} />}
     </>
   );
 };

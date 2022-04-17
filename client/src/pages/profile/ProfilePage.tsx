@@ -12,11 +12,13 @@ import { selectCurrentUser } from 'store/slice/userSlice';
 import './profilepage.scss';
 import { getPostsApi } from 'api/postApi';
 import { getProfileOtherApi } from 'api/userApi';
+import { selectPosts } from 'store/slice/postSlice';
 
 const ProfilePage = () => {
   const [user, setUser] = React.useState<null | UserType>(null);
   const [posts, setPosts] = React.useState<PostType[] | null>(null);
   const [isFetchingPosts, setIsFetchingPosts] = React.useState<boolean>(true);
+  const currentUserPosts = useAppSelector(selectPosts);
 
   const params = useParams();
   const currentUser = useAppSelector(selectCurrentUser);
@@ -34,20 +36,22 @@ const ProfilePage = () => {
   }, [params.username, currentUser]);
 
   useEffect(() => {
-    const getPostsOfUser = async () => {
-      if (user) {
-        document.title = `${user.firstName} ${user.lastName}`;
-        const posts: [PostType] = await getPostsApi(user?._id);
-        setPosts(posts);
-      }
+    document.title = `${user?.firstName} ${user?.lastName} | Zabook`;
+    const getPostsOfUser = async (id: string) => {
+      const posts: [PostType] = await getPostsApi(id);
+      setPosts(posts);
     };
-    getPostsOfUser();
+    if (params.username !== currentUser?.username) {
+      getPostsOfUser(user?._id as string);
+    } else {
+      setPosts(currentUserPosts);
+    }
     const timer = setTimeout(() => {
       setIsFetchingPosts(false);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [user]);
+  }, [user, currentUser, currentUserPosts, params.username]);
   return (
     <div className="profile">
       <Sidebar />

@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export async function createOne(Model, data, res) {
   const doc = await Model.create(data);
@@ -53,4 +54,12 @@ export async function findAll(Model, filter, page, popOptions) {
 
 export function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+
+export async function uploadFile(file, folder, type) {
+  const result = await cloudinary.uploader.upload(file, {
+    folder,
+    resource_type: type,
+  });
+  return result;
 }

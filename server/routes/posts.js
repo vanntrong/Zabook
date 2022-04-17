@@ -7,6 +7,9 @@ const router = express.Router();
 // create new post
 router.post("/", verifyToken, postHandler.createPostHandler);
 
+//get user post
+// router.get("/:userId/posts", verifyToken, postHandler.getUserPostsHandler);
+
 //get post by id
 router.get("/:postId", verifyToken, postHandler.getPostHandler);
 

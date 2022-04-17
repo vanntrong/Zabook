@@ -57,3 +57,8 @@ export interface formPostData {
   // assets?: [any];
   assets?: any;
 }
+
+export interface assetsType {
+  media_type?: string;
+  url: string;
+}
