@@ -35,7 +35,7 @@ export async function getPostsHandler(req, res) {
         sort: { createdAt: -1 },
       },
     });
-    if (!userPost) {
+    if (!userPost || userPost.length === 0) {
       return res.status(404).json("Posts not found");
     }
     res.status(200).json(userPost[0].posts);

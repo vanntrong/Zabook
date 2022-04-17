@@ -8,10 +8,24 @@ export async function createPostHandler(req, res) {
     if (req.body.userPost !== req.user.id) {
       return res.status(403).json("You are not allowed to create this post");
     }
-    // const newPost = new Post({ ...req.body });
-    // await newPost.save();
-    // res.status(201).json(newPost._doc);
-    await factoryController.createOne(Post, req.body, res);
+    if (req.body.assets) {
+      const results = await Promise.all(
+        req.body.assets.map(async (file) => {
+          const result = await factoryController.uploadFile(file.url, "post", file.media_type);
+          return {
+            media_type: result.resource_type,
+            url: result.secure_url,
+          };
+        })
+      );
+      console.log(results);
+      const { assets, ...other } = req.body;
+      const data = { ...other };
+      data.assets = results;
+      await factoryController.createOne(Post, data, res);
+    } else {
+      await factoryController.createOne(Post, req.body, res);
+    }
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }

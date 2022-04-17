@@ -1,13 +1,9 @@
 import React, { FC } from 'react';
+import { assetsType } from 'shared/types';
 import './postassets.scss';
 
 interface PostAssetsProps {
-  assets: [
-    {
-      media_type?: string;
-      url: string;
-    }
-  ];
+  assets: assetsType[];
 }
 
 const PostAssets: FC<PostAssetsProps> = ({ assets }) => {

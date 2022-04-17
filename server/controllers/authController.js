@@ -71,13 +71,13 @@ export async function loginHandler(req, res) {
     );
     //2. if user not exists, return error
     if (!existingUser) {
-      res.status(404).json("No user with this email");
+      res.status(404).json("Wrong username or password");
     }
     //3. if user exists, check password
     if (existingUser) {
       const isPasswordValid = comparePassword(data.password, existingUser.password);
       if (!isPasswordValid) {
-        res.status(401).json("Invalid password");
+        res.status(404).json("Wrong username or password");
       }
       if (isPasswordValid) {
         const { password, ...other } = existingUser._doc;

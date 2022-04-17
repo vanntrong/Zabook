@@ -8,6 +8,7 @@ import ProfilePage from 'pages/profile/ProfilePage';
 import React, { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { postAction } from 'store/slice/postSlice';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
 import './app.scss';
 
@@ -15,6 +16,7 @@ function App() {
   const user = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const [isFetchingUser, setIsFetchingUser] = useState<boolean>(true);
+
   useEffect(() => {
     const token = localStorage.getItem('token') || null;
     const getProfile = async () => {
@@ -31,6 +33,15 @@ function App() {
       clearTimeout(timer);
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    const getPostsCurrentUser = async () => {
+      if (user) {
+        dispatch(postAction.getCurrentUserPostsRequest(user._id));
+      }
+    };
+    getPostsCurrentUser();
+  }, [dispatch, user]);
   return (
     <>
       {isFetchingUser && <div className="loading">Loading...</div>}

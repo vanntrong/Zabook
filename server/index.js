@@ -9,6 +9,7 @@ import tokenRouter from "./routes/token.js";
 import usersRoute from "./routes/users.js";
 import searchRouter from "./routes/search.js";
 import morgan from "morgan";
+import cloudinary from "./utils/cloudinary.js";
 
 dotenv.config();
 const app = express();
@@ -38,3 +39,14 @@ mongoose.connect(process.env.DB_CONNECTION, (err) => {
 app.listen(PORT, () => {
   console.log("Server is running on port: ", PORT);
 });
+
+// cloudinary.uploader.upload_large(
+//   "",
+//   {
+//     resource_type: "image",
+//     folder: "post",
+//   },
+//   function (err, result) {
+//     console.log({ err, result });
+//   }
+// );
