@@ -1,12 +1,13 @@
-@import "../../shared/_variable";
+@import '../../shared/_variable';
 
 .photos {
   min-height: 100vh;
-  padding-right: 70px;
+  display: flex;
+  justify-content: center;
   .photos-wrapper {
-    margin-left: 390px;
     height: 100%;
     padding-top: 80px;
+    max-width: 1024px;
   }
   .photo-list {
     margin-top: 30px;
@@ -31,6 +32,7 @@
 
 @media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
   .photos {
+    padding-right: 20px;
     .photos-wrapper {
       margin-left: 20px;
       min-width: 320px;
@@ -40,6 +42,7 @@
 
 @media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
   .photos {
+    padding-right: 50px;
     .photos-wrapper {
       margin-left: 50px;
       min-width: 320px;
@@ -49,15 +52,16 @@
 
 @media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
   .photos {
+    padding-right: 70px;
     .photos-wrapper {
       margin-left: 70px;
-
     }
   }
 }
 
 @media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
   .photos {
+    padding-right: 100px;
     .photos-wrapper {
       margin-left: 100px;
     }

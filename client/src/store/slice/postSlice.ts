@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PostType } from 'shared/types';
+import { formPostData, PostType } from 'shared/types';
 import { RootState } from '../../store/store';
 
 interface postsState {
@@ -33,7 +33,7 @@ export const postSlice = createSlice({
     },
 
     //create post
-    createNewPostRequest: (state) => {
+    createNewPostRequest: (state, action: PayloadAction<formPostData>) => {
       state.pending = true;
     },
     createNewPostFailure: (state, action: PayloadAction<string>) => {
@@ -41,7 +41,7 @@ export const postSlice = createSlice({
       state.error = action.payload;
     },
     createNewPostSuccess: (state, action: PayloadAction<PostType>) => {
-      state.currentUserPosts.push(action.payload);
+      state.currentUserPosts.unshift(action.payload);
       state.pending = false;
       state.error = null;
     },

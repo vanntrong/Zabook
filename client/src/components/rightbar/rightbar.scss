@@ -1,7 +1,7 @@
-@import "../../shared/_variable";
+@import '../../shared/_variable';
 
 .rightBar {
-  background-color: white;
+  background-color: $background-color;
   width: 100%;
   max-width: calc(1403px - 867px - 100px);
   height: 100vh;
@@ -29,7 +29,7 @@
       border-radius: 50%;
       cursor: pointer;
       border: 3px solid $blue-color;
-      
+
       img {
         width: 100%;
         height: 100%;

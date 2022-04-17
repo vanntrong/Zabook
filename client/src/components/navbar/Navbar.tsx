@@ -1,11 +1,6 @@
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import ChatIcon from '@mui/icons-material/Chat';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import GroupIcon from '@mui/icons-material/Group';
-import HomeIcon from '@mui/icons-material/Home';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
-import PhotoIcon from '@mui/icons-material/Photo';
 import SearchIcon from '@mui/icons-material/Search';
 import { Avatar } from '@mui/material';
 import Backdrop from 'components/Backdrop';
@@ -44,35 +39,35 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
       </div>
       <div className="navbar-list">
         <NavLink className={({ isActive }) => 'navbar-item ' + (isActive && 'active')} to="/">
-          <HomeIcon fontSize="large" className="navbar-icon" />
+          <img src="/assets/images/home.png" alt="home" className="navbar-icon" />
           <div className="navbar-item__name">Home</div>
         </NavLink>
         <NavLink
           className={({ isActive }) => 'navbar-item ' + (isActive && 'active')}
           to={`/${currentUser?.username}/photos`}
         >
-          <PhotoIcon fontSize="large" className="navbar-icon" />
+          <img src="/assets/images/photo.png" alt="" className="navbar-icon" />
           <div className="navbar-item__name">Photos</div>
         </NavLink>
         <NavLink
           className={({ isActive }) => 'navbar-item ' + (isActive && 'active')}
           to={`/${currentUser?.username}/videos`}
         >
-          <OndemandVideoIcon fontSize="large" className="navbar-icon" />
+          <img src="/assets/images/video.png" alt="" className="navbar-icon" />
           <div className="navbar-item__name">Videos</div>
         </NavLink>
         <NavLink
           className={({ isActive }) => 'navbar-item ' + (isActive && 'active')}
           to={`/${currentUser?.username}/groups`}
         >
-          <GroupIcon fontSize="large" className="navbar-icon" />
+          <img src="/assets/images/group.png" alt="" className="navbar-icon" />
           <div className="navbar-item__name">Groups</div>
         </NavLink>
         <NavLink
           className={({ isActive }) => 'navbar-item ' + (isActive && 'active')}
           to={`/${currentUser?.username}/favorites`}
         >
-          <FavoriteIcon fontSize="large" className="navbar-icon" />
+          <img src="/assets/images/lover.png" alt="" className="navbar-icon" />
           <div className="navbar-item__name">Favorites</div>
         </NavLink>
       </div>
@@ -84,17 +79,20 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
         <div className="navbar-user__action">
           <Link to="/messages">
             <Avatar className="action-item">
-              <ChatIcon className="action-item__icon" />
+              {/* <ChatIcon className="action-item__icon" /> */}
+              <img src="/assets/images/message-small.png" alt="" className="action-item__icon" />
             </Avatar>
           </Link>
           <Avatar className="action-item">
-            <NotificationsIcon className="action-item__icon" />
+            {/* <NotificationsIcon className="action-item__icon" /> */}
+            <img src="/assets/images/notification.png" alt="" />
           </Avatar>
           <Avatar className="action-item">
-            <ArrowDropDownRoundedIcon
+            {/* <ArrowDropDownRoundedIcon
               sx={{ width: 50, height: 50 }}
               className="action-item__icon"
-            />
+            /> */}
+            <img src="/assets/images/arrow-down.png" alt="" className="action-item__icon" />
           </Avatar>
         </div>
       </div>

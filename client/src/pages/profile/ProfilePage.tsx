@@ -13,6 +13,7 @@ import './profilepage.scss';
 import { getPostsApi } from 'api/postApi';
 import { getProfileOtherApi } from 'api/userApi';
 import { selectPosts } from 'store/slice/postSlice';
+import RightBar from 'components/rightbar/Rightbar';
 
 const ProfilePage = () => {
   const [user, setUser] = React.useState<null | UserType>(null);
@@ -53,52 +54,55 @@ const ProfilePage = () => {
     return () => clearTimeout(timer);
   }, [user, currentUser, currentUserPosts, params.username]);
   return (
-    <div className="profile">
-      <Sidebar />
+    <>
       <Navbar />
-      <div className="profile-wrapper">
-        {user && <UserInfo user={user} />}
-        <div className="post-wrapper">
-          <div className="post-item">
-            <InputPost className="post-item__input" />
-            <div className="post-info">
-              <div className="info-item">
-                <h5>739k</h5>
-                <span>Likes</span>
-              </div>
-              <div className="info-item">
-                <h5>254k</h5>
-                <span>Follower</span>
-              </div>
-              <div className="info-item">
-                <h5>{user?.friends.length}</h5>
-                <span>Friends</span>
-              </div>
-              <div className="info-item">
-                <h5>{posts?.length}</h5>
-                <span>Posts</span>
+      <Sidebar />
+      <div className="profile">
+        <div className="profile-wrapper">
+          {user && <UserInfo user={user} />}
+          <div className="post-wrapper">
+            <div className="post-item">
+              <InputPost className="post-item__input" />
+              <div className="post-info">
+                <div className="info-item">
+                  <h5>739k</h5>
+                  <span>Likes</span>
+                </div>
+                <div className="info-item">
+                  <h5>254k</h5>
+                  <span>Follower</span>
+                </div>
+                <div className="info-item">
+                  <h5>{user?.friends.length}</h5>
+                  <span>Friends</span>
+                </div>
+                <div className="info-item">
+                  <h5>{posts?.length}</h5>
+                  <span>Posts</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="post-list">
-            <h3 className="post-list__title">Publications</h3>
-            <div className="post-list__wrapper">
-              {isFetchingPosts && <SkeletonLoading type="post" />}
-              {!isFetchingPosts &&
-                posts &&
-                posts.map(
-                  (post: PostType) => user && <Post key={post._id} post={post} user={user} />
+            <div className="post-list">
+              <h3 className="post-list__title">Publications</h3>
+              <div className="post-list__wrapper">
+                {isFetchingPosts && <SkeletonLoading type="post" />}
+                {!isFetchingPosts &&
+                  posts &&
+                  posts.map(
+                    (post: PostType) => user && <Post key={post._id} post={post} user={user} />
+                  )}
+                {!isFetchingPosts && posts?.length === 0 && (
+                  <h3 style={{ textAlign: 'center', marginTop: '20px' }}>
+                    This user has no posts yet
+                  </h3>
                 )}
-              {!isFetchingPosts && posts?.length === 0 && (
-                <h3 style={{ textAlign: 'center', marginTop: '20px' }}>
-                  This user has no posts yet
-                </h3>
-              )}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <RightBar />
+    </>
   );
 };
 
