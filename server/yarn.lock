@@ -629,6 +629,11 @@ ftp@^0.3.10:
     readable-stream "1.1.x"
     xregexp "2.0.0"
 
+fulltextsearch@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/fulltextsearch/-/fulltextsearch-0.0.6.tgz#6cf1979d8e33a8a9038c35b8dc08e813d719e730"
+  integrity sha512-nuJCRGMGQ5jOzo8rKzBIO/9fVUKmVecFSGGB2eBP0aj5+2Q2eUeskGGvXs7zu5eSU/dtTDprZ3kkR9eyH1qxsw==
+
 get-stream@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-4.1.0.tgz#c1b255575f3dc21d59bfc79cd3d2b46b1c3a54b5"

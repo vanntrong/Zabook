@@ -8,9 +8,11 @@
   z-index: 999;
   background-color: white;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  width: 500px;
+  width: 280px;
+  margin-top: 60px;
   max-height: 600px;
   overflow-y: auto;
+  border-radius: 8px;
   &::-webkit-scrollbar {
     width: 10px;
   }
@@ -48,6 +50,10 @@
       font-size: 20px;
       font-weight: 500;
       margin-bottom: 10px;
+    }
+    .modal-edit-avatar {
+      width: 80px;
+      height: 80px;
     }
 
     .modal-user-edit-top {
@@ -107,5 +113,28 @@
     &:hover {
       background-color: #2f80ed;
     }
+  }
+}
+
+@media screen and (min-width: $tablet-width) {
+  .modal-user {
+    width: calc(100% - 60px);
+  }
+}
+
+@media screen and(min-width:$desktop-width) {
+  .modal-user {
+    width: 500px;
+  }
+  .modal-user .modal-user-edit .modal-edit-avatar {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media screen and (min-width: $large-screen) {
+  .modal-user .modal-user-edit .modal-edit-avatar {
+    width: 150px;
+    height: 150px;
   }
 }

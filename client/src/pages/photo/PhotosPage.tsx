@@ -26,7 +26,7 @@ const PhotosPage = () => {
           <UserInfo user={currentUser} />
           <GalleryImage images={userPhotos} />
         </div>
-        <RightBar />
+        <RightBar className="photos-rightbar" />
       </div>
     </>
   );

@@ -49,8 +49,10 @@
       margin-bottom: 5px;
       width: fit-content;
       &.MuiAvatar-root {
-        width: 15px !important;
-        height: 15px !important;
+      }
+      .css-sxh3gq-MuiAvatar-root-MuiAvatarGroup-avatar {
+        width: 24px;
+        height: 24px;
       }
     }
 

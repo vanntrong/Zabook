@@ -3,6 +3,7 @@
 .friends {
   min-height: 100vh;
   display: flex;
+  justify-content: center;
   padding-top: 80px;
   .friends-wrapper {
     height: 100%;
@@ -56,12 +57,13 @@
   }
 }
 
-@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+@media screen and (min-width: $mobile-width) {
   .friends {
     padding-left: 20px;
+    padding-right: 20px;
     .friends-wrapper {
-      margin-left: 20px;
-      min-width: 320px;
+      // margin-left: 20px;
+      min-width: 280px;
     }
     .friend-list {
       grid-template-columns: 1fr;
@@ -74,11 +76,12 @@
   }
 }
 
-@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+@media screen and (min-width: $tablet-width) {
   .friends {
+    padding-left: 50px;
     padding-right: 50px;
     .friends-wrapper {
-      margin-left: 50px;
+      // margin-left: 50px;
       min-width: 320px;
     }
     .friend-list {
@@ -92,11 +95,11 @@
   }
 }
 
-@media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
+@media screen and (min-width: $desktop-width) {
   .friends {
     padding-right: 70px;
+    padding-left: 70px;
     .friends-wrapper {
-      margin-left: 70px;
       .friends-right {
         display: none;
       }
@@ -112,11 +115,11 @@
   }
 }
 
-@media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
+@media screen and (min-width: $large-desktop-width) {
   .friends {
-    padding-right: 100px;
+    // padding-right: 100px;
     .friends-wrapper {
-      margin-left: 100px;
+      // margin-left: 100px;
     }
     .friend-list {
       grid-template-columns: 1fr 1fr 1fr;
@@ -126,5 +129,23 @@
       min-width: 290px;
       max-width: 290px;
     }
+    .friends-rightbar {
+      display: none;
+    }
+  }
+}
+
+@media screen and (min-width: $max-desktop-width) {
+  .friends .friends-wrapper {
+    margin-left: 300px;
+  }
+}
+
+@media screen and (min-width: $large-screen) {
+  .friends .friends-wrapper {
+    margin: 0 auto;
+  }
+  .friends .friends-rightbar {
+    display: block;
   }
 }

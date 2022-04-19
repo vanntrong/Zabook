@@ -25,6 +25,7 @@ const Stories = () => {
       <Story />
       <Story />
       <Story />
+      <Story />
       <Link to="/stories">
         <Avatar className="story-seemore">
           <ArrowRightAltIcon />

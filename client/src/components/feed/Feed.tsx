@@ -1,3 +1,4 @@
+import InputPost from 'components/input/InputPost/InputPost';
 import Stories from 'components/stories/Stories';
 import React from 'react';
 import { useAppSelector } from 'store/hooks';
@@ -16,6 +17,7 @@ const Feed = () => {
       <div className="post-wrapper">
         {/* <SkeletonLoading type="post" /> */}
         <Stories />
+        <InputPost />
         {currentPostsUser.map((post) => (
           <Post key={post._id} post={post} user={currentUser} />
         ))}

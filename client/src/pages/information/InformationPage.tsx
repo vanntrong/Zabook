@@ -34,8 +34,8 @@ const InformationPage = () => {
   return (
     <>
       <Navbar />
+      <Sidebar />
       <div className="information">
-        <Sidebar />
         <div className="information-wrapper">
           {user && <UserInfo user={user} />}
           <div className="overviews">
@@ -72,7 +72,7 @@ const InformationPage = () => {
             )}
           </div>
         </div>
-        <RightBar />
+        <RightBar className="information-rightbar" />
       </div>
     </>
   );

@@ -98,11 +98,11 @@ const Sidebar: FC<sidebarProps> = ({ className }) => {
           </div>
           <div className="sidebar-menu-item">
             <NavLink
-              to={`/${currentUser!.username}/setting`}
+              to={`/${currentUser!.username}`}
               className={({ isActive }) => 'sidebar-menu__link ' + (isActive && 'active')}
             >
               <img src="/assets/images/settings.png" alt="" />
-              <h4>Setting</h4>
+              <h4>Profile</h4>
             </NavLink>
           </div>
         </div>

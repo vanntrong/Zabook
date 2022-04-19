@@ -5,7 +5,7 @@ import Sidebar from 'components/sidebar/Sidebar';
 import SkeletonLoading from 'components/SkeletonLoading';
 import UserInfo from 'components/userinfo/UserInfo';
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { PostType, UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
@@ -20,21 +20,26 @@ const ProfilePage = () => {
   const [posts, setPosts] = React.useState<PostType[] | null>(null);
   const [isFetchingPosts, setIsFetchingPosts] = React.useState<boolean>(true);
   const currentUserPosts = useAppSelector(selectPosts);
+  const navigate = useNavigate();
 
   const params = useParams();
   const currentUser = useAppSelector(selectCurrentUser);
 
   useEffect(() => {
     const getFriendProfile = async (username: string) => {
-      const data: UserType = await getProfileOtherApi(username);
-      setUser(data);
+      try {
+        const data: UserType = await getProfileOtherApi(username);
+        setUser(data);
+      } catch (error) {
+        navigate('/404');
+      }
     };
     if (params.username !== currentUser?.username) {
       getFriendProfile(params.username as string);
     } else {
       setUser(currentUser);
     }
-  }, [params.username, currentUser]);
+  }, [params.username, currentUser, navigate]);
 
   useEffect(() => {
     document.title = `${user?.firstName} ${user?.lastName} | Zabook`;
@@ -43,6 +48,9 @@ const ProfilePage = () => {
       setPosts(posts);
     };
     if (params.username !== currentUser?.username) {
+      if (!user) {
+        return;
+      }
       getPostsOfUser(user?._id as string);
     } else {
       setPosts(currentUserPosts);
@@ -59,11 +67,11 @@ const ProfilePage = () => {
       <Sidebar />
       <div className="profile">
         <div className="profile-wrapper">
-          {user && <UserInfo user={user} />}
+          {user && <UserInfo user={user} userNameParams={params!.username} />}
           <div className="post-wrapper">
-            {/* <div className="post-item">
+            <div className="post-item">
               <InputPost className="post-item__input" />
-            </div> */}
+            </div>
             <div className="post-list">
               <h3 className="post-list__title">Publications</h3>
               <div className="post-list__wrapper">

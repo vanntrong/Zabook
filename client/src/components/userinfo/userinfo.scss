@@ -1,7 +1,6 @@
 @import '../../shared/_variable';
 
 .user-profile-wrapper {
-  // display: flex;
   gap: 0 100px;
   align-items: center;
   border-bottom: 1px solid #e6e6e6;
@@ -27,6 +26,16 @@
       margin-bottom: 20px;
       text-align: center;
     }
+    .user-info-friend-group {
+      margin-top: 10px;
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+      .css-sxh3gq-MuiAvatar-root-MuiAvatarGroup-avatar {
+        width: 32px;
+        height: 32px;
+      }
+    }
   }
   .profile-action {
     display: flex;
@@ -41,14 +50,22 @@
       align-items: center;
       border-radius: 8px;
       font-weight: 500;
+      cursor: pointer;
     }
     .add-friend {
       background-color: #e6e6e6;
       color: $text-color;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.4);
+      }
     }
-    .send-message {
+    .send-message,
+    .update-info {
       background-color: $red-color;
       color: white;
+      &:hover {
+        background-color: rgba($color: $red-color, $alpha: 0.4);
+      }
     }
   }
   .user-info {
@@ -72,12 +89,13 @@
   }
 
   .user-profile-nav {
+    margin-top: 20px;
     display: flex;
     align-items: center;
-    gap: 0 50px;
+    gap: 0 10px;
 
     .nav-link {
-      font-size: 16px;
+      font-size: 14px;
       color: $text-color;
       text-decoration: none;
       padding: 0 5px 10px 5px;
@@ -125,6 +143,19 @@
   }
 }
 
+@media screen and (min-width: $mobile-width) {
+  .user-profile-wrapper .user-profile-info .user-info-friend-group {
+    margin-bottom: 10px;
+  }
+}
+
+@media screen and(min-width:$tablet-width) {
+  .user-profile-wrapper .user-profile-nav {
+    margin-top: 30px;
+    gap: 0 20px;
+  }
+}
+
 @media screen and(min-width:$large-desktop-width) {
   .user-profile-wrapper {
     .user-profile-info {
@@ -139,6 +170,10 @@
       p {
         text-align: left;
         font-size: 15px;
+      }
+      .user-info-friend-group {
+        margin-left: 0;
+        margin-right: 0;
       }
     }
 
@@ -155,6 +190,13 @@
     .profile-action-mobile,
     .profile-info-mobile {
       display: none;
+    }
+  }
+  .user-profile-wrapper .user-profile-nav {
+    margin-top: 30px;
+    gap: 0 20px;
+    .nav-link {
+      font-size: 16px;
     }
   }
 }
