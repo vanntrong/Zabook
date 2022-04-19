@@ -3,11 +3,11 @@
 .photos {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  padding-top: 80px;
   .photos-wrapper {
     height: 100%;
-    padding-top: 80px;
     max-width: 1024px;
+    margin: 0 auto;
   }
   .photo-list {
     margin-top: 30px;

@@ -1,7 +1,7 @@
-@import "../../shared/_variable";
+@import '../../shared/_variable';
 
 .feed {
-  margin-top: 25px;
+  margin: 25px auto 0;
   .post-wrapper {
     display: flex;
     flex-direction: column;

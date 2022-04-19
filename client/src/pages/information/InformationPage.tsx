@@ -15,6 +15,7 @@ import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import { UserType } from 'shared/types';
 import SkeletonLoading from 'components/SkeletonLoading';
+import RightBar from 'components/rightbar/Rightbar';
 
 const InformationPage = () => {
   const [user, setUser] = useState<UserType | null>(null);
@@ -33,8 +34,8 @@ const InformationPage = () => {
   return (
     <>
       <Navbar />
-      <Sidebar />
       <div className="information">
+        <Sidebar />
         <div className="information-wrapper">
           {user && <UserInfo user={user} />}
           <div className="overviews">
@@ -71,6 +72,7 @@ const InformationPage = () => {
             )}
           </div>
         </div>
+        <RightBar />
       </div>
     </>
   );

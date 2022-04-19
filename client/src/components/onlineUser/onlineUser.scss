@@ -1,0 +1,17 @@
+@import '../../shared/_variable';
+.online-user {
+  display: flex;
+  align-items: center;
+  gap: 0 10px;
+  width: 100%;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: #cccaca;
+  }
+  .online-user-name {
+    font-weight: 500;
+    font-size: 17px;
+  }
+}

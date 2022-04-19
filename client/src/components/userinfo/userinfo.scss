@@ -1,24 +1,73 @@
 @import '../../shared/_variable';
 
 .user-profile-wrapper {
-  display: flex;
+  // display: flex;
   gap: 0 100px;
   align-items: center;
   border-bottom: 1px solid #e6e6e6;
+  padding-bottom: 20px;
   .user-profile-info {
+    .user-info-avatar {
+      margin: 0 auto;
+      border: 2px solid red;
+    }
     h3 {
+      text-align: center;
       font-size: 30px;
       font-weight: 700;
       color: $text-color;
       margin: 20px 0;
     }
     p {
-      font-size: 17px;
+      font-size: 16px;
       color: $text-color;
       opacity: 0.6;
       max-width: 600px;
-      line-height: 1.5;
+      line-height: 1.3;
       margin-bottom: 20px;
+      text-align: center;
+    }
+  }
+  .profile-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0 10px;
+    button {
+      border: none;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    .add-friend {
+      background-color: #e6e6e6;
+      color: $text-color;
+    }
+    .send-message {
+      background-color: $red-color;
+      color: white;
+    }
+  }
+  .user-info {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 12px;
+    gap: 0 20px;
+    flex: 1;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+    .info-item {
+      color: $blue-color;
+      span {
+        font-size: 12px;
+      }
     }
   }
 
@@ -70,66 +119,104 @@
       -moz-box-shadow: -4px 3px 27px -5px rgba($color: $blue-color, $alpha: 0.75);
     }
   }
-}
-
-@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
-  .user-profile-wrapper {
-    gap: 0;
-
-    .user-profile-info {
-      p {
-        display: none;
-      }
-    }
-
-    .user-profile-nav {
-      gap: 0 5px;
-
-      .nav-link {
-        font-size: 12px;
-        padding: 0 3px 10px 3px;
-        position: relative;
-      }
-    }
+  .profile-action-desktop,
+  .profile-info-desktop {
+    display: none;
   }
 }
 
-@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+@media screen and(min-width:$large-desktop-width) {
   .user-profile-wrapper {
-    gap: 0;
-
     .user-profile-info {
+      display: flex;
+      align-items: center;
+      gap: 0 20px;
+      h3 {
+        text-align: left;
+        font-weight: 600;
+        font-size: 25px;
+      }
       p {
-        display: none;
+        text-align: left;
+        font-size: 15px;
       }
     }
 
-    .user-profile-nav {
-      gap: 0 10px;
-
-      .nav-link {
-        font-size: 14px;
-        padding: 0 3px 10px 3px;
-        position: relative;
-      }
+    .profile-action-desktop,
+    .profile-info-desktop {
+      display: flex;
     }
-  }
-}
-
-@media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
-  .user-profile-info {
-    p {
+    .profile-action-desktop {
+      justify-content: flex-start;
+    }
+    .profile-info-desktop {
+      max-width: 350px;
+    }
+    .profile-action-mobile,
+    .profile-info-mobile {
       display: none;
     }
   }
-
-  .user-profile-nav {
-    gap: 0 10px;
-
-    .nav-link {
-      font-size: 14px;
-      padding: 0 3px 10px 3px;
-      position: relative;
-    }
-  }
 }
+
+// @media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+//   .user-profile-wrapper {
+//     gap: 0;
+
+//     .user-profile-info {
+//       p {
+//         display: none;
+//       }
+//     }
+
+//     .user-profile-nav {
+//       gap: 0 5px;
+
+//       .nav-link {
+//         font-size: 12px;
+//         padding: 0 3px 10px 3px;
+//         position: relative;
+//       }
+//     }
+//   }
+// }
+
+// @media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+//   .user-profile-wrapper {
+//     gap: 0;
+
+//     .user-profile-info {
+//       p {
+//         display: none;
+//       }
+//     }
+
+//     .user-profile-nav {
+//       gap: 0 10px;
+
+//       .nav-link {
+//         font-size: 14px;
+//         padding: 0 3px 10px 3px;
+//         position: relative;
+//       }
+//     }
+//   }
+// }
+
+// @media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
+//   .user-profile-info {
+//     p {
+//       display: none;
+//     }
+//   }
+
+//   .user-profile-nav {
+//     gap: 0 10px;
+
+//     .nav-link {
+//       font-size: 14px;
+//       padding: 0 3px 10px 3px;
+//       position: relative;
+//     }
+//   }
+// }

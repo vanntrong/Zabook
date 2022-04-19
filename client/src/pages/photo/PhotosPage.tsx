@@ -1,5 +1,6 @@
 import GalleryImage from 'components/galleryImage/GalleryImage';
 import Navbar from 'components/navbar/Navbar';
+import RightBar from 'components/rightbar/Rightbar';
 import Sidebar from 'components/sidebar/Sidebar';
 // import SkeletonLoading from 'components/SkeletonLoading';
 import UserInfo from 'components/userinfo/UserInfo';
@@ -18,13 +19,14 @@ const PhotosPage = () => {
   console.log(userPhotos);
   return (
     <>
-      <Sidebar />
       <Navbar />
+      <Sidebar />
       <div className="photos">
         <div className="photos-wrapper">
           <UserInfo user={currentUser} />
           <GalleryImage images={userPhotos} />
         </div>
+        <RightBar />
       </div>
     </>
   );

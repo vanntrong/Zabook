@@ -1,37 +1,15 @@
-import React from 'react';
-import AddIcon from '@mui/icons-material/Add';
+import OnlineUser from 'components/onlineUser/OnlineUser';
+import React, { FC } from 'react';
 
 import './rightbar.scss';
 
-const RightBar = () => {
+interface RightbarProps {
+  className?: string;
+}
+
+const RightBar: FC<RightbarProps> = ({ className }) => {
   return (
-    <div className="rightBar">
-      <div className="rightBar-wrapper">
-        <h4 className="rightBar-title">Stories</h4>
-        <div className="story-list">
-          <div className="stories your-stories">
-            <AddIcon htmlColor="#ffffff" />
-          </div>
-          <div className="stories">
-            <img
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-              alt=""
-            />
-          </div>
-          <div className="stories">
-            <img
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-              alt=""
-            />
-          </div>
-          <div className="stories">
-            <img
-              src="https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-              alt=""
-            />
-          </div>
-        </div>
-      </div>
+    <div className={'rightBar ' + className}>
       <div className="rightBar-wrapper">
         <h4 className="rightBar-title">Upcoming events</h4>
         <div className="event-list">
@@ -48,6 +26,15 @@ const RightBar = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="online-user-list">
+        <OnlineUser />
+        <OnlineUser />
+        <OnlineUser />
+        <OnlineUser />
+        <OnlineUser />
+        <OnlineUser />
+        <OnlineUser />
       </div>
     </div>
   );

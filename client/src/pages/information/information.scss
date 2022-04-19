@@ -3,13 +3,13 @@
 .information {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
   position: relative;
   z-index: 100;
+  padding-top: 80px;
 
   .information-wrapper {
     height: 100%;
-    padding-top: 80px;
+    margin: 0 auto;
   }
 
   .overviews {
