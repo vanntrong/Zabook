@@ -1,6 +1,3 @@
-import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
-import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import Avatar from '@mui/material/Avatar';
 import Backdrop from 'components/Backdrop';
 import Notification from 'components/Notification';
@@ -23,17 +20,27 @@ const InputPost: FC<InputPostProps> = ({ className }) => {
   return (
     <>
       <div className={`form-post ${className ? className : ''}`}>
-        <div className="user-image">
-          <Avatar src={currentUser?.avatar} alt="" />
-        </div>
         <div className="form-post__group">
+          <div className="user-image">
+            <Avatar src={currentUser?.avatar} alt="" />
+          </div>
           <div className="form-post__input" onClick={() => setIsShowPostModal(true)}>
             {`What's on your mind, ${currentUser?.lastName}? `}
           </div>
-          <div className="form-input__image">
-            <ImageOutlinedIcon className="form-post__icon" />
-            <PersonOutlineOutlinedIcon className="form-post__icon" />
-            <EmojiEmotionsOutlinedIcon className="form-post__icon" />
+        </div>
+        <hr />
+        <div className="form-input__image">
+          <div className="form-input-activity">
+            <img src="/assets/images/photo.png" alt="" className="form-post__icon" />
+            <span>Photos/Videos</span>
+          </div>
+          <div className="form-input-activity">
+            <img src="/assets/images/tag.png" alt="" className="form-post__icon" />
+            <span>Tags</span>
+          </div>
+          <div className="form-input-activity">
+            <img src="/assets/images/feeling.png" alt="" className="form-post__icon" />
+            <span>Feeling/Activity</span>
           </div>
         </div>
       </div>

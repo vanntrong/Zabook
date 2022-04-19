@@ -10,6 +10,7 @@ import { UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import SkeletonLoading from 'components/SkeletonLoading';
+import RightBar from 'components/rightbar/Rightbar';
 
 interface FriendInfoProps {
   name: string;
@@ -50,9 +51,9 @@ const FriendsPage = () => {
   }, [params.username, currentUser]);
   return (
     <>
-      <Sidebar />
       <Navbar />
       <div className="friends">
+        <Sidebar />
         <div className="friends-wrapper">
           {user && <UserInfo user={user} />}
           <div className="friend-list">
@@ -65,6 +66,7 @@ const FriendsPage = () => {
             } */}
           </div>
         </div>
+        <RightBar />
       </div>
     </>
   );

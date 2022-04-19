@@ -1,0 +1,66 @@
+@import '../../shared/variable';
+
+.stories {
+  display: flex;
+  align-items: center;
+  gap: 0 10px;
+  position: relative;
+  .create-story {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 115px;
+    width: 70px;
+    border-radius: 12px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    .create-story__avatar {
+      width: 100%;
+      height: auto;
+      overflow: hidden;
+      border-radius: 12px 12px 0 0;
+      flex: 1;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .create-story-title {
+      flex: 1;
+      background-color: $white-color;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0 0 12px 12px;
+      span {
+        font-size: 12px;
+        text-align: center;
+      }
+      .create-story-icon {
+        width: 30px;
+        height: 30px;
+        background-color: $blue-color;
+        position: absolute;
+        border: 2px solid $white-color;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+  .story-seemore {
+    position: absolute;
+    right: 0;
+    width: 35px;
+    height: 35px;
+    transform: translateX(35%);
+  }
+}
+
+@media screen and (min-width: $tablet-width) {
+  .stories .create-story {
+    width: 115px;
+    height: 200px;
+  }
+}

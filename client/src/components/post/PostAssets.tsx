@@ -7,7 +7,6 @@ interface PostAssetsProps {
 }
 
 const PostAssets: FC<PostAssetsProps> = ({ assets }) => {
-  console.log(assets);
   if (assets?.length < 3) {
     return (
       <div className="wrapper-1">
@@ -15,10 +14,11 @@ const PostAssets: FC<PostAssetsProps> = ({ assets }) => {
           (asset, index) =>
             asset.url !== undefined && (
               <div key={index} className="wrapper-1__item">
-                <div
+                {/* <div
                   className="wrapper-1__item__image"
                   style={{ backgroundImage: `url("${asset.url}")` }}
-                ></div>
+                ></div> */}
+                <img src={asset.url} alt="" className="wrapper-1__item__image" />
               </div>
             )
         )}

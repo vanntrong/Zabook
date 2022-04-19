@@ -1,10 +1,8 @@
 import Feed from 'components/feed/Feed';
-import InputPost from 'components/input/InputPost/InputPost';
 import Navbar from 'components/navbar/Navbar';
 import RightBar from 'components/rightbar/Rightbar';
 import React, { useEffect } from 'react';
 import Sidebar from '../../components/sidebar/Sidebar';
-
 import './home.scss';
 
 const HomePage = () => {
@@ -13,18 +11,13 @@ const HomePage = () => {
   }, []);
   return (
     <>
-      <Sidebar className="sidebarHome" />
-      <Navbar className="navbarHome" />
       <div className="home">
-        <div className="home-feature">
-          <div className="home-section">
-            <div className="home-feed">
-              <InputPost />
-              <Feed />
-            </div>
-            <div className="home-right">
-              <RightBar />
-            </div>
+        <Sidebar className="sidebarHome" />
+        <RightBar />
+        <div className="home-section">
+          <Navbar className="navbarHome" />
+          <div className="home-feed">
+            <Feed />
           </div>
         </div>
       </div>

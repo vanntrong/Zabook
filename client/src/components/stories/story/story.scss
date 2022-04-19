@@ -1,0 +1,56 @@
+@import '../../../shared/variable';
+.story {
+  cursor: pointer;
+  height: 115px;
+  width: 70px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background-image: url('https://images.unsplash.com/photo-1650109440356-ea39843af6f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60');
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  isolation: isolate;
+  position: relative;
+  &:hover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba($color: #000000, $alpha: 0.2);
+    border-radius: inherit;
+  }
+
+  &.no-seen .story-user__avatar {
+    border: 2px solid red;
+  }
+
+  .story-user__avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .story-user__name {
+    font-size: 14px;
+    font-weight: 500;
+    color: $white-color;
+    margin-left: 5px;
+  }
+}
+
+@media screen and (min-width: $tablet-width) {
+  .story {
+    width: 115px;
+    height: 200px;
+  }
+}

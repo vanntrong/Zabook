@@ -5,10 +5,14 @@
   display: flex;
   justify-content: center;
   position: relative;
-  z-index: 100;
+  padding-top: 80px;
+  z-index: 10;
   .profile-wrapper {
     height: 100%;
-    padding-top: 80px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     .profile-info-wrapper {
       display: flex;
@@ -18,6 +22,7 @@
 
     .post-wrapper {
       margin-top: 40px;
+      max-width: 300px;
 
       .post-item {
         display: flex;
@@ -26,25 +31,6 @@
 
         .post-item__input {
           flex: 3;
-        }
-
-        .post-info {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          background-color: white;
-          padding: 10px 20px;
-          border-radius: 12px;
-          gap: 0 20px;
-          flex: 1;
-          box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-
-          .info-item {
-            color: $blue-color;
-            span {
-              font-size: 12px;
-            }
-          }
         }
       }
       .post-list {
@@ -65,12 +51,13 @@
   }
 }
 
-@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+@media screen and (min-width: $mobile-width) {
   .profile {
     padding-left: 20px;
+    padding-right: 20px;
     .profile-wrapper {
-      margin-left: 20px;
-      min-width: 320px;
+      // margin-left: 20px;
+      min-width: 280px;
 
       .profile-info-wrapper {
         gap: 0;
@@ -99,11 +86,11 @@
   }
 }
 
-@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+@media screen and (min-width: $tablet-width) {
   .profile {
     padding-right: 50px;
+    padding-left: 50px;
     .profile-wrapper {
-      margin-left: 50px;
       min-width: 320px;
 
       .profile-info-wrapper {
@@ -113,13 +100,16 @@
       .profile-right {
         display: none;
       }
+      .post-wrapper {
+        min-width: 380px;
+        .post-item {
+          flex-direction: column-reverse;
+          gap: 30px 0;
+          align-items: flex-start;
 
-      .post-wrapper .post-item {
-        flex-direction: column-reverse;
-        gap: 30px 0;
-        align-items: flex-start;
-        .post-info {
-          width: 100%;
+          .post-info {
+            width: 100%;
+          }
         }
       }
     }
@@ -129,23 +119,52 @@
   }
 }
 
-@media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
+@media screen and (min-width: $desktop-width) {
   .profile {
     padding-right: 70px;
+    padding-left: 70px;
     .profile-wrapper {
-      margin-left: 70px;
+      margin-left: auto;
+      margin-right: auto;
       .profile-right {
         display: none;
+      }
+      .post-wrapper {
+        min-width: 600px;
       }
     }
   }
 }
 
-@media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
+@media screen and (min-width: $large-desktop-width) {
   .profile {
-    padding-right: 100px;
     .profile-wrapper {
-      margin-left: 100px;
+      // margin-left: 100px;
+      min-width: 800px;
+      .post-wrapper {
+        min-width: 800px;
+      }
     }
+    .profile-rightbar {
+      display: none;
+    }
+    .post-profile {
+      min-width: 800px;
+    }
+  }
+}
+
+@media screen and (min-width: $max-desktop-width) {
+  .profile .profile-wrapper {
+    margin-left: 300px;
+  }
+}
+
+@media screen and (min-width: $large-screen) {
+  .profile .profile-wrapper {
+    margin: 0 auto;
+  }
+  .profile .profile-rightbar {
+    display: block;
   }
 }
