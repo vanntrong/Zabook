@@ -3,21 +3,24 @@ import CloseIcon from '@mui/icons-material/Close';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 import Avatar from '@mui/material/Avatar';
 import { createPostApi } from 'api/postApi';
+import Notification from 'components/Notification';
 import { Picker } from 'emoji-mart';
 import React, { FC, useState } from 'react';
 import { formPostData, UserType } from 'shared/types';
 import { useAppDispatch } from 'store/hooks';
 import { postAction } from 'store/slice/postSlice';
 
+import '../inputpost.scss';
+
 interface InputPostModalProps {
   currentUser: UserType | null;
-  onSubmit: React.Dispatch<React.SetStateAction<boolean>>;
   setIsShowPostModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const InputPostModal: FC<InputPostModalProps> = ({ currentUser, onSubmit, setIsShowPostModal }) => {
+const InputPostModal: FC<InputPostModalProps> = ({ currentUser, setIsShowPostModal }) => {
   const [isShowEmojiPicker, setIsShowEmojiPicker] = useState<boolean>(false);
   const [postContent, setPostContent] = useState<string>('');
+  const [isSubmit, setIsShubmit] = useState<boolean>(false);
   const [filesPreview, setFilesPreview] = useState<any[]>([]);
   const [assetsData, setAssetsData] = useState<any[]>([]);
   const dispatch = useAppDispatch();
@@ -28,7 +31,7 @@ const InputPostModal: FC<InputPostModalProps> = ({ currentUser, onSubmit, setIsS
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(true);
+    setIsShubmit(true);
     const data: formPostData = {
       userPost: currentUser!._id,
       content: postContent,
@@ -129,6 +132,7 @@ const InputPostModal: FC<InputPostModalProps> = ({ currentUser, onSubmit, setIsS
           Post
         </button>
       </div>
+      {isSubmit && <Notification type="success" content="Your post is being on process..." />}
     </form>
   );
 };

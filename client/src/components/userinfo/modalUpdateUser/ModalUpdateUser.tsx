@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import Avatar from '@mui/material/Avatar';
 import './modalUpdateUser.scss';
@@ -32,7 +32,11 @@ const genderOptions = [
   },
 ];
 
-const ModalUpdateUser = () => {
+interface ModalUpdateUserProps {
+  handleClose: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ModalUpdateUser: FC<ModalUpdateUserProps> = ({ handleClose }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const initFormValue = {
     // avatar: currentUser?.avatar,
@@ -61,9 +65,11 @@ const ModalUpdateUser = () => {
     <form className="modal-user" onSubmit={submitHandler}>
       <div className="modal-user-top">
         <h3>Edit profile</h3>
-        <Avatar>
-          <CloseIcon />
-        </Avatar>
+        <div onClick={() => handleClose(false)} style={{ cursor: 'pointer' }}>
+          <Avatar>
+            <CloseIcon />
+          </Avatar>
+        </div>
       </div>
       <hr />
       <div className="modal-user-edit">
@@ -72,7 +78,11 @@ const ModalUpdateUser = () => {
           <label htmlFor="avatar">Add</label>
           <input type="file" multiple={false} id="avatar" hidden />
         </div>
-        <Avatar src={currentUser?.avatar} sx={{ width: 140, height: 140 }} />
+        <Avatar
+          src={currentUser?.avatar}
+          sx={{ width: 140, height: 140 }}
+          className="modal-edit-avatar"
+        />
       </div>
       <div className="modal-user-edit">
         <div className="edit-bio">

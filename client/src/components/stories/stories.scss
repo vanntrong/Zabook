@@ -51,10 +51,13 @@
   }
   .story-seemore {
     position: absolute;
+    background-color: $white-color;
+    color: #333;
     right: 0;
+    top: 50%;
     width: 35px;
     height: 35px;
-    transform: translateX(35%);
+    transform: translate(10px, -50%);
   }
 }
 

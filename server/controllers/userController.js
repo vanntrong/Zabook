@@ -2,6 +2,8 @@ import Post from "../models/Post.js";
 import User from "../models/User.js";
 import * as errorController from "./errorController.js";
 import * as factoryController from "./factoryController.js";
+import fullTextSearch from "fulltextsearch";
+const fullTextSearchVi = fullTextSearch.vi;
 
 export async function updateUserHandler(req, res) {
   try {
@@ -90,7 +92,7 @@ export async function addAndRemoveFriendHandler(req, res) {
 
 export async function searchUserHandler(req, res) {
   try {
-    const regex = new RegExp(factoryController.escapeRegex(req.query.q), "gi");
+    const regex = new RegExp(fullTextSearchVi(factoryController.escapeRegex(req.query.q)), "gi");
     const result = await User.find({ fullName: regex }).limit(10).select("username avatar fullName _id");
     res.status(200).json(result);
   } catch (error) {

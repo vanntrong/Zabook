@@ -12,6 +12,7 @@ import { selectCurrentUser } from 'store/slice/userSlice';
 import MenuIcon from '@mui/icons-material/Menu';
 import Logo from './Logo';
 import './navbar.scss';
+import InputPostModal from './../input/InputPost/inputPostModal/InputPostModal';
 
 interface NavbarProps {
   className?: string;
@@ -20,6 +21,8 @@ interface NavbarProps {
 const Navbar: FC<NavbarProps> = ({ className }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isShowSearchBox, setIsShowSearchBox] = useState<boolean>(false);
+  const [isShowInputPostModal, setIsShowInputPostModal] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>('');
   return (
     <div className="navbar">
       <div className="navbar-left">
@@ -33,13 +36,27 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
         </div>
         <div className="navbar-search">
           <SearchIcon htmlColor="#ddd" />
-          <input type="text" placeholder="Search..." />
+          <input
+            type="text"
+            placeholder="Search..."
+            onClick={() => setIsShowSearchBox(true)}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          {isShowSearchBox && (
+            <SearchResultModal handleClose={setIsShowSearchBox} searchText={searchText} />
+          )}
         </div>
+        <Backdrop
+          isShow={isShowSearchBox}
+          setIsShow={setIsShowSearchBox}
+          color="#fff"
+          opacity={0}
+        />
       </div>
       <div className="navbar-right">
         <div className="navbar-right-list">
           <div className="navbar-right-item">
-            <div className="navbar-upload">
+            <div className="navbar-upload" onClick={() => setIsShowInputPostModal(true)}>
               <Avatar sx={{ backgroundColor: '#eee' }} className="navbar-upload-icon">
                 +
               </Avatar>
@@ -59,6 +76,10 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
           </div>
         </div>
       </div>
+      {isShowInputPostModal && (
+        <InputPostModal currentUser={currentUser} setIsShowPostModal={setIsShowInputPostModal} />
+      )}
+      <Backdrop isShow={isShowInputPostModal} setIsShow={setIsShowInputPostModal} color="#fff" />
     </div>
 
     // <div className={`navbar ${className ? className : ''}`}>

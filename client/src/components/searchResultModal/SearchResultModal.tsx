@@ -1,12 +1,9 @@
+import { searchUserApi } from 'api/userApi';
 import ResultUser from 'components/searchResultModal/resultuser/ResultUser';
-import React, { FC, useRef, useState } from 'react';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
-import './searchResultModal.scss';
-import { Avatar } from '@mui/material';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useAppSelector } from 'store/hooks';
 import { selectHistorySearch } from 'store/slice/userSlice';
-import { searchUserApi } from 'api/userApi';
+import './searchResultModal.scss';
 
 interface searchResult {
   avatar: string;
@@ -17,52 +14,34 @@ interface searchResult {
 }
 interface SearchResultModalProps {
   handleClose: React.Dispatch<React.SetStateAction<boolean>>;
+  searchText: string;
 }
 
-const SearchResultModal: FC<SearchResultModalProps> = ({ handleClose }) => {
+const SearchResultModal: FC<SearchResultModalProps> = ({ handleClose, searchText }) => {
   const historySearch = useAppSelector(selectHistorySearch);
-  const [searchText, setSearchText] = useState<string>('');
   const [searchResult, setSearchResult] = useState<searchResult[]>([]);
   const typingTimeout = useRef<any>(null);
 
-  const handleChangeSearchText = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchText(value);
-
+  useEffect(() => {
     if (typingTimeout.current) {
       clearTimeout(typingTimeout.current);
     }
     typingTimeout.current = setTimeout(async () => {
-      if (value.trim().length === 0) {
+      if (searchText.trim().length === 0) {
         setSearchResult([]);
       } else {
         const params = {
-          q: value,
+          q: searchText,
         };
         const res = await searchUserApi(params);
         setSearchResult(res);
       }
     }, 300);
-  };
+  }, [searchText]);
 
   return (
     <div className="search-result">
-      <div className="search-result__top">
-        <div onClick={() => handleClose(false)}>
-          <Avatar className="go-back">
-            <ArrowBackIcon fontSize="small" htmlColor="#666" />
-          </Avatar>
-        </div>
-        <div className="search-result__input">
-          <input
-            type="text"
-            placeholder="Search facebook"
-            autoFocus
-            defaultValue={searchText}
-            onChange={handleChangeSearchText}
-          />
-        </div>
-      </div>
+      <div className="search-result__top"></div>
       <div className="search-result__list"></div>
       <div className="search-history">
         {historySearch.length > 0 && !searchResult.length && <h3>Recent searches</h3>}

@@ -30,40 +30,55 @@
   }
 }
 
-@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+@media screen and (min-width: $mobile-width) {
   .photos {
+    padding-left: 20px;
     padding-right: 20px;
     .photos-wrapper {
-      margin-left: 20px;
-      min-width: 320px;
+      min-width: 280px;
     }
   }
 }
 
-@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+@media screen and (min-width: $tablet-width) {
   .photos {
+    padding-left: 50px;
     padding-right: 50px;
     .photos-wrapper {
-      margin-left: 50px;
       min-width: 320px;
     }
   }
 }
 
-@media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
+@media screen and (min-width: $desktop-width) {
   .photos {
+    padding-left: 70px;
     padding-right: 70px;
-    .photos-wrapper {
-      margin-left: 70px;
+  }
+}
+
+@media screen and (min-width: $large-desktop-width) {
+  .photos {
+    padding-left: 100px;
+    padding-right: 100px;
+    .photos-rightbar {
+      display: none;
     }
   }
 }
 
-@media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
-  .photos {
-    padding-right: 100px;
-    .photos-wrapper {
-      margin-left: 100px;
-    }
+@media screen and (min-width: $max-desktop-width) {
+  .photos .photos-wrapper {
+    margin-left: 300px;
+  }
+}
+
+@media screen and (min-width: $large-screen) {
+  .photos .photos-wrapper {
+    margin: 0 auto;
+    padding: 0 80px;
+  }
+  .photos .photos-rightbar {
+    display: block;
   }
 }

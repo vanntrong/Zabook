@@ -52,8 +52,8 @@ const FriendsPage = () => {
   return (
     <>
       <Navbar />
+      <Sidebar />
       <div className="friends">
-        <Sidebar />
         <div className="friends-wrapper">
           {user && <UserInfo user={user} />}
           <div className="friend-list">
@@ -66,7 +66,7 @@ const FriendsPage = () => {
             } */}
           </div>
         </div>
-        <RightBar />
+        <RightBar className="friends-rightbar" />
       </div>
     </>
   );

@@ -1,6 +1,5 @@
 import Avatar from '@mui/material/Avatar';
 import Backdrop from 'components/Backdrop';
-import Notification from 'components/Notification';
 import 'emoji-mart/css/emoji-mart.css';
 import React, { FC, useState } from 'react';
 import { useAppSelector } from 'store/hooks';
@@ -15,7 +14,6 @@ interface InputPostProps {
 const InputPost: FC<InputPostProps> = ({ className }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isShowPostModal, setIsShowPostModal] = useState<boolean>(false);
-  const [isSubmitForm, setIsSubmitForm] = useState<boolean>(false);
 
   return (
     <>
@@ -45,13 +43,9 @@ const InputPost: FC<InputPostProps> = ({ className }) => {
         </div>
       </div>
       {isShowPostModal && (
-        <InputPostModal
-          currentUser={currentUser}
-          onSubmit={setIsSubmitForm}
-          setIsShowPostModal={setIsShowPostModal}
-        />
+        <InputPostModal currentUser={currentUser} setIsShowPostModal={setIsShowPostModal} />
       )}
-      {isSubmitForm && <Notification type="success" content="Your post is being on process..." />}
+
       <Backdrop isShow={isShowPostModal} setIsShow={setIsShowPostModal} color="#fff" />
     </>
   );

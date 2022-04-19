@@ -3,13 +3,17 @@
 .information {
   min-height: 100vh;
   display: flex;
+  justify-content: center;
   position: relative;
-  z-index: 100;
+  z-index: 10;
   padding-top: 80px;
 
   .information-wrapper {
     height: 100%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    max-width: 960px;
   }
 
   .overviews {
@@ -36,35 +40,53 @@
   }
 }
 
-@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+@media screen and (min-width: $mobile-width) {
   .information {
     padding-left: 20px;
+    padding-right: 20px;
     .information-wrapper {
-      margin-left: 20px;
+      // margin-left: 20px;
     }
   }
 }
 
-@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+@media screen and (min-width: $tablet-width) {
   .information {
-    .information-wrapper {
-      margin-left: 50px;
+    padding-right: 50px;
+    padding-left: 50px;
+  }
+  .information .overviews .overview {
+    min-width: 250px;
+  }
+}
+
+@media screen and (min-width: $desktop-width) {
+  .information {
+    padding-right: 70px;
+    padding-left: 70px;
+  }
+}
+
+@media screen and (min-width: $large-desktop-width) {
+  .information {
+    .information-rightbar {
+      display: none;
     }
   }
 }
 
-@media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
-  .information {
-    .information-wrapper {
-      margin-left: 70px;
-    }
+@media screen and (min-width: $max-desktop-width) {
+  .information .information-wrapper {
+    margin-left: 300px;
   }
 }
 
-@media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
-  .information {
-    .information-wrapper {
-      margin-left: 100px;
-    }
+@media screen and (min-width: $large-screen) {
+  .information .information-wrapper {
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  .information .information-rightbar {
+    display: block;
   }
 }

@@ -61,7 +61,9 @@ function App() {
             path="/:username/photos"
             element={!user ? <Navigate to="/login" /> : <PhotosPage />}
           />
+          <Route path="/404" element={<p>Not found</p>} />
           <Route path="/login" element={!user ? <AuthPage /> : <Navigate to="/" />} />
+          <Route path="*" element={<Navigate to={'/404'} />} />
         </Routes>
       )}
     </>
