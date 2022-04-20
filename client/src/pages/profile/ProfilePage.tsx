@@ -1,19 +1,18 @@
+import { getPostsApi } from 'api/postApi';
+import { getProfileOtherApi } from 'api/userApi';
 import InputPost from 'components/input/InputPost/InputPost';
-import Navbar from 'components/navbar/Navbar';
+import withLayout from 'components/layout/Layout';
 import Post from 'components/post/Post';
-import Sidebar from 'components/sidebar/Sidebar';
+import RightBar from 'components/rightbar/Rightbar';
 import SkeletonLoading from 'components/SkeletonLoading';
 import UserInfo from 'components/userinfo/UserInfo';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PostType, UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectPosts } from 'store/slice/postSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import './profilepage.scss';
-import { getPostsApi } from 'api/postApi';
-import { getProfileOtherApi } from 'api/userApi';
-import { selectPosts } from 'store/slice/postSlice';
-import RightBar from 'components/rightbar/Rightbar';
 
 const ProfilePage = () => {
   const [user, setUser] = React.useState<null | UserType>(null);
@@ -63,11 +62,9 @@ const ProfilePage = () => {
   }, [user, currentUser, currentUserPosts, params.username]);
   return (
     <>
-      <Navbar />
-      <Sidebar />
       <div className="profile">
         <div className="profile-wrapper">
-          {user && <UserInfo user={user} userNameParams={params!.username} />}
+          {user && <UserInfo user={user} />}
           <div className="post-wrapper">
             <div className="post-item">
               <InputPost className="post-item__input" />
@@ -99,4 +96,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default withLayout(ProfilePage);

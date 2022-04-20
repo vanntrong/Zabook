@@ -1,21 +1,19 @@
-import Navbar from 'components/navbar/Navbar';
-import Sidebar from 'components/sidebar/Sidebar';
-import UserInfo from 'components/userinfo/UserInfo';
-import React, { useEffect, useState } from 'react';
 import CakeIcon from '@mui/icons-material/Cake';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import WorkIcon from '@mui/icons-material/Work';
 import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
+import WorkIcon from '@mui/icons-material/Work';
+import withLayout from 'components/layout/Layout';
+import RightBar from 'components/rightbar/Rightbar';
+import SkeletonLoading from 'components/SkeletonLoading';
+import UserInfo from 'components/userinfo/UserInfo';
 import moment from 'moment';
-
-import './information.scss';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
-import { UserType } from 'shared/types';
-import SkeletonLoading from 'components/SkeletonLoading';
-import RightBar from 'components/rightbar/Rightbar';
+import './information.scss';
 
 const InformationPage = () => {
   const [user, setUser] = useState<UserType | null>(null);
@@ -33,8 +31,6 @@ const InformationPage = () => {
   }, [params.username, currentUser]);
   return (
     <>
-      <Navbar />
-      <Sidebar />
       <div className="information">
         <div className="information-wrapper">
           {user && <UserInfo user={user} />}
@@ -49,25 +45,25 @@ const InformationPage = () => {
             {!isFetchingUserInfo && user?.city && (
               <div className="overview">
                 <LocationOnIcon />
-                New York
+                {user.city}
               </div>
             )}
             {!isFetchingUserInfo && user?.work && (
               <div className="overview">
                 <WorkIcon />
-                CEO
+                {user.work}
               </div>
             )}
             {!isFetchingUserInfo && user?.relationship && (
               <div className="overview">
                 <PersonIcon />
-                Relationships
+                {user.relationship}
               </div>
             )}
             {!isFetchingUserInfo && user?.school && (
               <div className="overview">
                 <SchoolIcon />
-                School
+                {user.school}
               </div>
             )}
           </div>
@@ -78,4 +74,4 @@ const InformationPage = () => {
   );
 };
 
-export default InformationPage;
+export default withLayout(InformationPage);

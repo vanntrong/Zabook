@@ -1,16 +1,14 @@
-import Navbar from 'components/navbar/Navbar';
-import Sidebar from 'components/sidebar/Sidebar';
-import UserInfo from 'components/userinfo/UserInfo';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import withLayout from 'components/layout/Layout';
+import RightBar from 'components/rightbar/Rightbar';
+import SkeletonLoading from 'components/SkeletonLoading';
+import UserInfo from 'components/userinfo/UserInfo';
 import React, { FC, useEffect, useState } from 'react';
-
-import './friendpage.scss';
 import { useParams } from 'react-router-dom';
 import { UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
-import SkeletonLoading from 'components/SkeletonLoading';
-import RightBar from 'components/rightbar/Rightbar';
+import './friendpage.scss';
 
 interface FriendInfoProps {
   name: string;
@@ -51,8 +49,6 @@ const FriendsPage = () => {
   }, [params.username, currentUser]);
   return (
     <>
-      <Navbar />
-      <Sidebar />
       <div className="friends">
         <div className="friends-wrapper">
           {user && <UserInfo user={user} />}
@@ -72,4 +68,4 @@ const FriendsPage = () => {
   );
 };
 
-export default FriendsPage;
+export default withLayout(FriendsPage);

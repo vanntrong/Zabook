@@ -35,6 +35,19 @@ export interface UserType {
   createdAt: Date;
 }
 
+export interface updateUserFormType {
+  avatar?: string | ArrayBuffer | null;
+  firstName?: string;
+  lastName?: string;
+  bio?: string;
+  dateOfBirth?: string;
+  city?: string;
+  relationship?: string;
+  gender?: string;
+  school?: string;
+  work?: string;
+}
+
 interface assets {
   media_type: string;
   url: string;

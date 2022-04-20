@@ -1,8 +1,7 @@
 import Feed from 'components/feed/Feed';
-import Navbar from 'components/navbar/Navbar';
+import withLayout from 'components/layout/Layout';
 import RightBar from 'components/rightbar/Rightbar';
 import React, { useEffect } from 'react';
-import Sidebar from '../../components/sidebar/Sidebar';
 import './home.scss';
 
 const HomePage = () => {
@@ -12,17 +11,15 @@ const HomePage = () => {
   return (
     <>
       <div className="home">
-        <Sidebar className="sidebarHome" />
-        <RightBar />
         <div className="home-section">
-          <Navbar className="navbarHome" />
           <div className="home-feed">
             <Feed />
           </div>
         </div>
+        <RightBar className="home-rightbar" />
       </div>
     </>
   );
 };
 
-export default HomePage;
+export default withLayout(HomePage);

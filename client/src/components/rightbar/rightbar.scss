@@ -1,7 +1,8 @@
 @import '../../shared/_variable';
 
 .rightBar {
-  background-color: $background-color;
+  // background-color: $background-color;
+  background-color: $white-color;
   width: 100%;
   max-width: calc(1403px - 867px - 100px);
   height: 100vh;

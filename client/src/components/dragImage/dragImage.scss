@@ -1,0 +1,54 @@
+@import '../../shared/_variable';
+
+.drag-area {
+  width: 100%;
+  height: 300px;
+  background-color: #cdcdcd;
+  border: 4px dashed $blue-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+
+  .img-count-more {
+    position: absolute;
+    z-index: 99;
+    font-size: 30px;
+  }
+
+  img {
+    z-index: 50;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+  }
+
+  &.active {
+    border: 4px dashed $red-color;
+  }
+
+  .drag-text,
+  span {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  button {
+    padding: 10px 25px;
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: $white-color;
+    color: $red-color;
+    &:hover {
+      background-color: $red-color;
+      color: white;
+    }
+  }
+}
