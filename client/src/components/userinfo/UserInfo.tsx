@@ -1,22 +1,16 @@
-import React, { FC, useState } from 'react';
 import { Avatar } from '@mui/material';
-import { NavLink } from 'react-router-dom';
-import MessageIcon from '@mui/icons-material/Message';
-import EditIcon from '@mui/icons-material/Edit';
 import AvatarGroup from '@mui/material/AvatarGroup';
-
-import './userinfo.scss';
+import React, { FC } from 'react';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import { UserType } from 'shared/types';
-import ModalUpdateUser from './modalUpdateUser/ModalUpdateUser';
-import Backdrop from 'components/Backdrop';
+import './userinfo.scss';
 
 interface UserInfoProps {
   user: UserType | null;
-  userNameParams?: string;
 }
 
-const UserInfo: FC<UserInfoProps> = ({ user, userNameParams }) => {
-  const [isShowModal, setIsShowModal] = useState<boolean>(false);
+const UserInfo: FC<UserInfoProps> = ({ user }) => {
+  const userNameParams = useParams().username;
   return (
     <>
       <div className="user-profile-wrapper">
@@ -29,11 +23,7 @@ const UserInfo: FC<UserInfoProps> = ({ user, userNameParams }) => {
           />
           <div>
             <h3>{user?.firstName + ' ' + user?.lastName}</h3>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Animi sint doloribus totam
-              quaerat. Molestias laboriosam possimus fugit at maiores, amet libero accusamus soluta
-              ab quo quisquam nam earum numquam inventore!
-            </p>
+            <p>{user?.bio}</p>
             <div className="profile-action profile-action-desktop">
               {userNameParams !== user?.username ? (
                 <>
@@ -41,8 +31,13 @@ const UserInfo: FC<UserInfoProps> = ({ user, userNameParams }) => {
                   <button className="send-message">Send Message</button>
                 </>
               ) : (
-                <button className="update-info" onClick={() => setIsShowModal(true)}>
-                  Update Info
+                <button className="update-info">
+                  <Link
+                    to={`/${user?.username}/setting`}
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    Update Info
+                  </Link>
                 </button>
               )}
             </div>
@@ -131,8 +126,13 @@ const UserInfo: FC<UserInfoProps> = ({ user, userNameParams }) => {
               <button className="send-message">Send Message</button>
             </>
           ) : (
-            <button className="update-info" onClick={() => setIsShowModal(true)}>
-              Update Info
+            <button className="update-info">
+              <Link
+                to={`/${user?.username}/setting`}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                Update Info
+              </Link>
             </button>
           )}
         </div>
@@ -181,14 +181,14 @@ const UserInfo: FC<UserInfoProps> = ({ user, userNameParams }) => {
           >
             <span>Photos</span>
           </NavLink>
+          <NavLink
+            className={({ isActive }) => 'nav-link' + (isActive ? ' activated' : '')}
+            to={`/${user?.username}/setting`}
+          >
+            <span>Setting</span>
+          </NavLink>
         </div>
       </div>
-      {isShowModal && (
-        <>
-          <ModalUpdateUser handleClose={setIsShowModal} />
-          <Backdrop isShow={isShowModal} setIsShow={setIsShowModal} color="#fff" />
-        </>
-      )}
     </>
   );
 };

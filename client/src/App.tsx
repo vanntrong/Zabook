@@ -5,6 +5,7 @@ import HomePage from 'pages/home/HomePage';
 import InformationPage from 'pages/information/InformationPage';
 import PhotosPage from 'pages/photo/PhotosPage';
 import ProfilePage from 'pages/profile/ProfilePage';
+import SettingPage from 'pages/setting/SettingPage';
 import React, { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
@@ -61,6 +62,7 @@ function App() {
             path="/:username/photos"
             element={!user ? <Navigate to="/login" /> : <PhotosPage />}
           />
+          <Route path="/:username/setting" element={<SettingPage />} />
           <Route path="/404" element={<p>Not found</p>} />
           <Route path="/login" element={!user ? <AuthPage /> : <Navigate to="/" />} />
           <Route path="*" element={<Navigate to={'/404'} />} />

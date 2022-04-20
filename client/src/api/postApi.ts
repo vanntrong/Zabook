@@ -6,3 +6,6 @@ export const getPostsApi = (id: string): Promise<[PostType]> =>
 
 export const createPostApi = (data: formPostData): Promise<PostType> =>
   axiosClient.post(`posts`, data);
+
+export const updatePostApi = (payload: any): Promise<PostType> =>
+  axiosClient.put(`posts/${payload.id}`, payload.data);

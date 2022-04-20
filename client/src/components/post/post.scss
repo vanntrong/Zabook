@@ -38,7 +38,42 @@
 
     .post-info__right {
       color: $text-color;
-      opacity: 0.5;
+      position: relative;
+      cursor: pointer;
+      .modal-edit-post {
+        opacity: 1;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: $white-color;
+        display: flex;
+        flex-direction: column;
+        gap: 15px 0;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: -1px 0px 5px -1px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: -1px 0px 5px -1px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: -1px 0px 5px -1px rgba(0, 0, 0, 0.75);
+        z-index: 9999;
+        width: 200px;
+        .edit-button {
+          display: flex;
+          align-items: center;
+          gap: 0 10px;
+          padding: 10px;
+          border-radius: 8px;
+          cursor: pointer;
+          &:hover {
+            background-color: #eee;
+          }
+        }
+        .button-delete-post {
+          color: $red-color;
+          &:hover {
+            background-color: rgba($color: $red-color, $alpha: 0.3);
+          }
+        }
+      }
     }
   }
 
@@ -138,6 +173,12 @@
 
 @media screen and (min-width: $max-desktop-width) {
   .post {
-    max-width: 800px;
+    max-width: 1000px;
+  }
+}
+
+@media screen and (min-width: 2000px) {
+  .post {
+    max-width: 1000px;
   }
 }

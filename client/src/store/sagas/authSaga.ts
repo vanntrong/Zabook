@@ -1,9 +1,15 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, fork, put, take } from 'redux-saga/effects';
-import { LoginFormData } from 'shared/types';
-import { userAction } from 'store/slice/userSlice';
+import * as Effects from 'redux-saga/effects';
+import { LoginFormData, UserType } from 'shared/types';
+import { updateUserPayload, userAction } from 'store/slice/userSlice';
 import History from 'utils/history';
 import * as api from '../../api/userApi';
+
+const call: any = Effects.call;
+const put: any = Effects.put;
+const fork: any = Effects.fork;
+const take: any = Effects.take;
+const takeLatest: any = Effects.takeLatest;
 
 function* handleLogin(payload: LoginFormData) {
   try {
@@ -19,8 +25,20 @@ function* handleLogin(payload: LoginFormData) {
 
 function* handleLogout() {
   localStorage.removeItem('token');
+  localStorage.removeItem('refresh_token');
   yield put(userAction.logoutUser());
   History.push('/');
+}
+
+function* handleUpdateUser(action: PayloadAction<updateUserPayload>) {
+  try {
+    console.log(action.payload);
+    const updatedUser: UserType = yield call(api.updateUserApi, action.payload);
+    yield put(userAction.setUser(updatedUser));
+    History.push('/');
+  } catch (error) {
+    yield put(userAction.updateUserFailure(error.response.data));
+  }
 }
 
 function* watchLoginFlow() {
@@ -39,4 +57,5 @@ function* watchLoginFlow() {
 
 export function* userSaga() {
   yield fork(watchLoginFlow);
+  yield takeLatest(userAction.updateUserRequest.type, handleUpdateUser);
 }

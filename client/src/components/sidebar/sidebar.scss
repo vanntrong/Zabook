@@ -3,7 +3,8 @@
 .sidebar {
   width: 90%;
   max-width: 300px;
-  background-color: $background-color;
+  // background-color: $background-color;
+  background-color: $white-color;
   min-height: 100vh;
   max-height: 100vh;
   position: fixed;
@@ -52,10 +53,13 @@
       align-items: center;
       text-decoration: none;
       gap: 0 15px;
+      color: $text-color;
       h4 {
         color: $text-color;
         font-size: 16px;
       }
+      &:hover,
+      &.active,
       &:hover h4,
       &.active h4 {
         color: $red-color;
@@ -89,7 +93,41 @@
   }
 }
 
+@keyframes slideOut {
+  0% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+}
+
 @media screen and (min-width: $desktop-width) {
+  .sidebar .sidebar-menu-list {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+  .sidebar .sidebar-logout {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
   .sidebar .sidebar-top-menu {
     display: none;
   }
@@ -151,10 +189,26 @@
   }
 }
 
+@media screen and (max-width: 1025px) {
+  .show {
+    display: block !important;
+    animation: slideIn 0.5s ease-in-out forwards;
+  }
+
+  .hide {
+    display: block !important;
+
+    animation: slideOut 0.5s forwards ease-in-out;
+  }
+}
+
 @media screen and (min-width: $max-desktop-width) {
   .sidebar {
     display: block;
     max-width: 300px;
+  }
+  div.sidebar-top-menu-desktop > div {
+    display: none;
   }
 }
 
@@ -164,75 +218,3 @@
     max-width: 450px;
   }
 }
-// .sidebar {
-//   padding: 0 0 30px 20px;
-//   background-color: $background-color;
-//   height: 100vh;
-//   position: fixed;
-//   z-index: 101;
-//   left: 0;
-//   flex-basis: 25%;
-//   width: 25%;
-//   max-width: 400px;
-//   hr {
-//     border: none;
-//     border-bottom: 1px solid #e5e5e5;
-//   }
-
-//   .sidebar-menu {
-//     h5 {
-//       font-weight: 700;
-//       font-size: 18px;
-//       margin-bottom: 29px;
-//     }
-
-//     .sidebar-menu__list {
-//     }
-
-//     .sidebar-menu__item {
-//       display: flex;
-//       align-items: center;
-//       gap: 0 15px;
-//       color: $text-color;
-//       cursor: pointer;
-//       font-size: 18px;
-//       font-weight: 500;
-//       margin-bottom: 25px;
-//       text-decoration: none;
-
-//       &:hover {
-//         font-weight: 700;
-//       }
-//       .menu-icon {
-//         color: $text-color;
-//       }
-//       &.active {
-//         font-weight: 700;
-//       }
-//     }
-//   }
-// }
-
-// @media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
-//   .sidebar {
-//     display: none;
-//   }
-// }
-
-// @media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
-//   .sidebar {
-//     display: none;
-//   }
-// }
-
-// @media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
-//   .sidebar {
-//     display: none;
-//   }
-// }
-
-// @media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
-//   .sidebar {
-//     display: none;
-//   }
-// }

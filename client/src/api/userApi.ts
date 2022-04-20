@@ -1,7 +1,7 @@
 import axiosClient from './index';
 import { axiosAuthClient } from './index';
 
-import { LoginFormData, SignUpFormData, UserType, PostType } from '../shared/types';
+import { LoginFormData, SignUpFormData, UserType, updateUserFormType } from '../shared/types';
 
 interface loginResponse {
   token: string;
@@ -27,8 +27,8 @@ export const getProfileApi = (): Promise<UserType> => axiosClient.get('auth');
 export const getProfileOtherApi = (username: string): Promise<UserType> =>
   axiosClient.get(`users/${username}/profile`);
 
-export const updateUserApi = (user: UserType, id: string): Promise<UserType> =>
-  axiosClient.put(`users/${id}`, user);
+export const updateUserApi = (payload: any): Promise<UserType> =>
+  axiosClient.put(`users/${payload.id}`, payload.userUpdated);
 
 export const deleteUserApi = (id: string): Promise<any> => axiosClient.delete(`users/${id}`);
 

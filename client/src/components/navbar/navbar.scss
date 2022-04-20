@@ -10,7 +10,7 @@
   width: 100%;
   position: fixed;
   right: 0;
-  z-index: 99;
+  z-index: 200;
   .navbar-left {
     display: flex;
     align-items: center;
@@ -21,6 +21,9 @@
       display: flex;
       align-items: center;
       gap: 0 20px;
+    }
+    .navbar-right-item {
+      color: $text-color;
     }
   }
   .navbar-upload {
@@ -45,12 +48,28 @@
   }
   .navbar-search {
     display: none;
+    padding-left: 10px;
   }
-}
-
-@media screen and (min-width: $tablet-width) {
-  .navbar {
-    // width: 100%;
+  .modal-user {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 230px;
+    transform: translateY(calc(100% + 10px));
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px 0;
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    .modal-user-item {
+      color: $text-color;
+      font-weight: 500;
+      &:hover {
+        color: $red-color;
+      }
+    }
   }
 }
 

@@ -69,6 +69,7 @@
   transform: translate(-50%, -50%);
   width: 500px;
   border-radius: 10px;
+  animation: fadeIn 0.5s ease-in-out;
   .form-post-title {
     padding: 10px;
     display: flex;
@@ -164,6 +165,17 @@
         color: #bdbdbd;
       }
     }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 

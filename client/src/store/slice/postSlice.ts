@@ -47,7 +47,7 @@ export const postSlice = createSlice({
     },
 
     //update post
-    updatePostRequest: (state) => {
+    updatePostRequest: (state, action: PayloadAction<{ data: formPostData; id: string }>) => {
       state.pending = true;
     },
     updatePostFailure: (state, action: PayloadAction<string>) => {

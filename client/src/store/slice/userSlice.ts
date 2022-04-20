@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store/store';
-import { LoginFormData, UserType } from '../../shared/types';
+import { LoginFormData, updateUserFormType, UserType } from '../../shared/types';
 
 export interface userState {
   currentUser: UserType | null;
   logging: boolean;
   error: null | string;
+}
+export interface updateUserPayload {
+  userUpdated: updateUserFormType;
+  id: string;
 }
 
 const initialState: userState = {
@@ -36,6 +40,15 @@ export const userSlice = createSlice({
     //logout
     logoutUser: (state) => {
       state.currentUser = null;
+      state.logging = false;
+    },
+
+    updateUserRequest: (state, action: PayloadAction<updateUserPayload>) => {
+      state.logging = true;
+    },
+    updateUserFailure: (state, action: PayloadAction<string>) => {
+      state.logging = false;
+      state.error = action.payload;
     },
   },
 });

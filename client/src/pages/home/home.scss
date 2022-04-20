@@ -17,19 +17,7 @@
       display: block;
       grid-gap: 0 50px;
     }
-
-    // .home-feed {
-    //   // flex: 6;
-    //   flex-basis: 47%;
-    //   margin: 0 auto;
-    //   padding: 0 80px;
-    // }
-
-    // .home-right {
-    //   flex: 3;
-    // }
   }
-  // }
 }
 
 @media screen and (min-width: $desktop-width) {
@@ -54,53 +42,32 @@
   .home .home-section {
     display: flex;
     justify-content: center;
-    // margin-left: 300px;
-    // width: calc(100% - 300px);
+    margin-left: 300px;
+    .home-feed {
+      width: 1000px;
+    }
+  }
+  .home-rightbar {
+    display: none;
+  }
+}
+
+@media screen and (min-width: $large-screen) {
+  .home .home-section {
+    margin: 0 auto;
     .home-feed {
       width: 800px;
     }
   }
+  .home .home-rightbar {
+    display: block;
+  }
 }
 
-// @media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
-//   .home {
-//     .home-feature {
-//       margin-left: 0;
-
-//       .home-right {
-//         display: none;
-//       }
-//     }
-//   }
-// }
-
-// @media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
-//   .home {
-//     .home-feature {
-//       margin-left: 0;
-
-//       .home-right {
-//         display: none;
-//       }
-//     }
-//   }
-// }
-
-// @media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
-//   .home {
-//     .home-feature {
-//       margin-left: 0;
-//       .home-right {
-//         display: none;
-//       }
-//     }
-//   }
-// }
-
-// @media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
-//   .home {
-//     .home-feature {
-//       margin-left: 0;
-//     }
-//   }
-// }
+@media screen and (min-width: 2000px) {
+  .home .home-section {
+    .home-feed {
+      width: 1000px;
+    }
+  }
+}

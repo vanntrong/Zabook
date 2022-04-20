@@ -1,7 +1,6 @@
 import GalleryImage from 'components/galleryImage/GalleryImage';
-import Navbar from 'components/navbar/Navbar';
+import withLayout from 'components/layout/Layout';
 import RightBar from 'components/rightbar/Rightbar';
-import Sidebar from 'components/sidebar/Sidebar';
 // import SkeletonLoading from 'components/SkeletonLoading';
 import UserInfo from 'components/userinfo/UserInfo';
 import React from 'react';
@@ -16,11 +15,8 @@ const PhotosPage = () => {
   const userPhotos = currentUserPosts
     .map((post) => post.assets!.map((asset) => asset.url))
     .flat(Infinity);
-  console.log(userPhotos);
   return (
     <>
-      <Navbar />
-      <Sidebar />
       <div className="photos">
         <div className="photos-wrapper">
           <UserInfo user={currentUser} />
@@ -32,4 +28,4 @@ const PhotosPage = () => {
   );
 };
 
-export default PhotosPage;
+export default withLayout(PhotosPage);

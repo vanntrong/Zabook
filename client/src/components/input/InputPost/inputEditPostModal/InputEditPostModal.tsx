@@ -6,23 +6,29 @@ import DragImage from 'components/dragImage/DragImage';
 import Notification from 'components/Notification';
 import { Picker } from 'emoji-mart';
 import React, { FC, useState } from 'react';
-import { formPostData, UserType } from 'shared/types';
+import { assetsType, formPostData, PostType, UserType } from 'shared/types';
 import { useAppDispatch } from 'store/hooks';
 import { postAction } from 'store/slice/postSlice';
 import '../inputpost.scss';
 
-interface InputPostModalProps {
+interface InputEditPostModalProps {
   currentUser: UserType | null;
   setIsShowPostModal: React.Dispatch<React.SetStateAction<boolean>>;
+  post: PostType;
 }
 
-const InputPostModal: FC<InputPostModalProps> = ({ currentUser, setIsShowPostModal }) => {
+const InputEditPostModal: FC<InputEditPostModalProps> = ({
+  currentUser,
+  setIsShowPostModal,
+  post,
+}) => {
+  const previewFiles = post.assets?.map((asset) => asset.url);
   const [isShowEmojiPicker, setIsShowEmojiPicker] = useState<boolean>(false);
-  const [postContent, setPostContent] = useState<string>('');
+  const [postContent, setPostContent] = useState<string>(post.content);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [filesPreview, setFilesPreview] = useState<any[]>([]);
-  const [assetsData, setAssetsData] = useState<any[]>([]);
-  const [isShowDragAndDrop, setIsShowDragAndDrop] = useState<boolean>(false);
+  const [filesPreview, setFilesPreview] = useState<any[]>(previewFiles ? previewFiles : []);
+  const [assetsData, setAssetsData] = useState<any[]>(post.assets ? post.assets : []);
+  const [isShowDragAndDrop, setIsShowDragAndDrop] = useState<boolean>(filesPreview.length > 0);
   const dispatch = useAppDispatch();
 
   const selectEmojiHandler = (emoji: any) => {
@@ -39,7 +45,7 @@ const InputPostModal: FC<InputPostModalProps> = ({ currentUser, setIsShowPostMod
     if (assetsData.length > 0) {
       data.assets = assetsData;
     }
-    dispatch(postAction.createNewPostRequest(data));
+    dispatch(postAction.updatePostRequest({ data, id: post._id }));
     setPostContent('');
     setIsShowPostModal(false);
   };
@@ -140,11 +146,11 @@ const InputPostModal: FC<InputPostModalProps> = ({ currentUser, setIsShowPostMod
           </div>
         </div>
         <button type="submit" disabled={postContent.length === 0} className="form-post-submit">
-          Post
+          Save
         </button>
       </div>
       {isSubmit && <Notification type="success" content="Your post is being on process..." />}
     </form>
   );
 };
-export default InputPostModal;
+export default InputEditPostModal;

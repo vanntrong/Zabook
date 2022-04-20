@@ -1,0 +1,114 @@
+@import '../../shared/_variable';
+.setting {
+  background-color: $background-color;
+  min-width: 100vw;
+  min-height: 100vh;
+  padding: 20px;
+  .setting-wrapper {
+    padding-top: 60px;
+    h2 {
+      margin-bottom: 20px;
+      font-weight: 600;
+      font-size: 20px;
+    }
+    .setting-user {
+      padding: 12px;
+      background-color: $white-color;
+      border-radius: 8px;
+      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      h3 {
+        font-size: 16px;
+        color: $text-color;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      label {
+        font-size: 14px;
+        color: $text-color;
+        margin-bottom: 4px;
+      }
+      .setting-user-edit-top label {
+        display: block;
+        width: 100%;
+        text-align: right;
+        color: $red-color;
+      }
+      .setting-user-edit {
+        margin-top: 10px;
+        textarea,
+        input {
+          width: 100%;
+          resize: none;
+          border: none;
+          border: 1px solid $gray-color;
+          padding: 10px;
+          font-size: 14px;
+          margin-top: 10px;
+          color: $text-color;
+          &:focus {
+            outline: none;
+            border-color: $red-color;
+          }
+        }
+        .edit-intro {
+          margin-bottom: 10px;
+          .input-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid $gray-color;
+            font-size: 14px;
+            color: $text-color;
+            &:focus {
+              outline: none;
+              border-color: $red-color !important;
+            }
+          }
+        }
+      }
+    }
+    .edit-button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      border-radius: 8px;
+      background-color: $red-color;
+      color: white;
+      cursor: pointer;
+      &:hover {
+        background-color: $blue-color;
+      }
+    }
+    .cancel-button {
+      background-color: $gray-color;
+      color: $red-color;
+      &:hover {
+        background-color: $red-color;
+        color: $white-color;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $large-desktop-width) {
+  .setting .setting-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: $max-desktop-width) {
+  .setting .setting-wrapper {
+    margin-left: auto;
+    margin-right: 200px;
+  }
+}
+@media screen and (min-width: $large-screen) {
+  .setting .setting-wrapper {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
