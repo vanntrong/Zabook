@@ -1,267 +1,85 @@
-@import '../../shared/_variable';
+@import '../../shared/variable.scss';
 
-.user-profile-wrapper {
-  gap: 0 100px;
-  align-items: center;
-  // border-bottom: 1px solid #e6e6e6;
-  padding-bottom: 20px;
-  .user-profile-info {
-    .user-info-avatar {
-      margin: 0 auto;
-      border: 2px solid red;
-    }
-    h3 {
-      text-align: center;
-      font-size: 30px;
-      font-weight: 700;
-      color: $text-color;
-      margin: 20px 0;
-    }
-    p {
-      font-size: 16px;
-      color: $text-color;
-      opacity: 0.6;
-      max-width: 600px;
-      line-height: 1.3;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .user-info-friend-group {
-      margin-top: 10px;
-      margin-left: auto;
-      margin-right: auto;
-      width: fit-content;
-      .css-sxh3gq-MuiAvatar-root-MuiAvatarGroup-avatar {
-        width: 32px;
-        height: 32px;
+.userInfo {
+  background-color: white;
+  border-radius: 15px;
+  height: fit-content;
+  width: 100%;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  hr {
+    border-bottom: 1px solid #f1f1f1;
+  }
+
+  .userInfo-wrapper {
+    padding: 10px;
+    .userInfo-background-image {
+      width: 100%;
+      height: 250px;
+      img {
+        border-radius: 15px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
     }
-  }
-  .profile-action {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0 10px;
-    button {
-      border: none;
-      padding: 10px 20px;
+    .userInfo-avatar-and-name {
       display: flex;
-      justify-content: center;
       align-items: center;
-      border-radius: 8px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    .add-friend {
-      background-color: #e6e6e6;
-      color: $text-color;
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.4);
+      margin-left: 20px;
+      // justify-content: center;
+      gap: 0 20px;
+      .userInfo-avatar {
+        width: 100px;
+        height: 100px;
+        margin-top: -20px;
+        border: 5px solid white;
       }
-    }
-    .send-message,
-    .update-info {
-      background-color: $red-color;
-      color: white;
-      &:hover {
-        background-color: rgba($color: $red-color, $alpha: 0.4);
-      }
-    }
-  }
-  .user-info {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: white;
-    padding: 10px 20px;
-    border-radius: 12px;
-    gap: 0 20px;
-    flex: 1;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-
-    .info-item {
-      color: $blue-color;
-      span {
-        font-size: 12px;
-      }
-    }
-  }
-
-  .user-profile-nav {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    gap: 0 10px;
-
-    .nav-link {
-      font-size: 14px;
-      color: $text-color;
-      text-decoration: none;
-      padding: 0 5px 10px 5px;
-      position: relative;
-      &:hover {
-        font-weight: 700;
-      }
-      &.activated {
-        font-weight: 700;
-        &::before {
-          content: '';
-          position: absolute;
-          width: 100%;
-          height: 2px;
-          background-color: $blue-color;
-          bottom: 0;
-          left: 0;
+      .userInfo-name {
+        h2 {
+          font-size: 20px;
+          font-weight: 700;
+          color: $black-color;
+          line-height: 1.1;
+          margin-bottom: 5px;
+        }
+        p {
+          font-size: 12px;
+          font-weight: 500;
+          color: $text-gray-500;
         }
       }
     }
   }
 
-  .user-profile-edit {
+  .userInfo-navigate {
+    padding: 10px 10px 0;
     display: flex;
     align-items: center;
-    gap: 0 40px;
+    flex-wrap: wrap;
+    gap: 0 12px;
 
-    .user-profile-icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background-color: $blue-color;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      box-shadow: -4px 3px 27px -5px rgba($color: $blue-color, $alpha: 0.75);
-      -webkit-box-shadow: -4px 3px 27px -5px rgba($color: $blue-color, $alpha: 0.75);
-      -moz-box-shadow: -4px 3px 27px -5px rgba($color: $blue-color, $alpha: 0.75);
-    }
-  }
-  .profile-action-desktop,
-  .profile-info-desktop {
-    display: none;
-  }
-}
-
-@media screen and (min-width: $mobile-width) {
-  .user-profile-wrapper .user-profile-info .user-info-friend-group {
-    margin-bottom: 10px;
-  }
-}
-
-@media screen and(min-width:$tablet-width) {
-  .user-profile-wrapper .user-profile-nav {
-    margin-top: 30px;
-    gap: 0 20px;
-  }
-}
-
-@media screen and(min-width:$large-desktop-width) {
-  .user-profile-wrapper {
-    .user-profile-info {
-      display: flex;
-      align-items: center;
-      gap: 0 20px;
-      .user-info-avatar {
-        margin: 0;
+    .userInfo-navigate-item {
+      margin-left: auto;
+      padding-bottom: 15px;
+      span {
+        font-size: 13px;
+        font-weight: 500;
+        color: $text-gray-500;
       }
-      h3 {
-        text-align: left;
-        font-weight: 600;
-        font-size: 25px;
+      &.active {
+        border-bottom: 2px solid $black-color;
+        span {
+          color: $black-color;
+          font-weight: 700;
+        }
       }
-      p {
-        text-align: left;
-        font-size: 15px;
-      }
-      .user-info-friend-group {
-        margin-left: 0;
-        margin-right: 0;
-      }
-    }
-
-    .profile-action-desktop,
-    .profile-info-desktop {
-      display: flex;
-    }
-    .profile-action-desktop {
-      justify-content: flex-start;
-    }
-    .profile-info-desktop {
-      max-width: 350px;
-    }
-    .profile-action-mobile,
-    .profile-info-mobile {
-      display: none;
-    }
-  }
-  .user-profile-wrapper .user-profile-nav {
-    margin-top: 30px;
-    gap: 0 20px;
-    .nav-link {
-      font-size: 16px;
     }
   }
 }
 
-// @media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
-//   .user-profile-wrapper {
-//     gap: 0;
-
-//     .user-profile-info {
-//       p {
-//         display: none;
-//       }
-//     }
-
-//     .user-profile-nav {
-//       gap: 0 5px;
-
-//       .nav-link {
-//         font-size: 12px;
-//         padding: 0 3px 10px 3px;
-//         position: relative;
-//       }
-//     }
-//   }
-// }
-
-// @media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
-//   .user-profile-wrapper {
-//     gap: 0;
-
-//     .user-profile-info {
-//       p {
-//         display: none;
-//       }
-//     }
-
-//     .user-profile-nav {
-//       gap: 0 10px;
-
-//       .nav-link {
-//         font-size: 14px;
-//         padding: 0 3px 10px 3px;
-//         position: relative;
-//       }
-//     }
-//   }
-// }
-
-// @media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
-//   .user-profile-info {
-//     p {
-//       display: none;
-//     }
-//   }
-
-//   .user-profile-nav {
-//     gap: 0 10px;
-
-//     .nav-link {
-//       font-size: 14px;
-//       padding: 0 3px 10px 3px;
-//       position: relative;
-//     }
-//   }
-// }
+@media screen and (min-width: $ipad-screen) {
+  .userInfo .userInfo-navigate .userInfo-navigate-item {
+    margin-left: 15px;
+  }
+}

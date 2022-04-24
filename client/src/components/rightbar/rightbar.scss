@@ -1,125 +1,71 @@
-@import '../../shared/_variable';
+@import '../../shared/variable.scss';
 
 .rightBar {
-  // background-color: $background-color;
-  background-color: $white-color;
-  width: 100%;
-  max-width: calc(1403px - 867px - 100px);
-  height: 100vh;
-  padding: 25px;
-  margin-top: 25px;
-  border-radius: 8px;
-  position: fixed;
-  right: 20px;
   display: none;
-  top: 60px;
+  width: 278px;
+  height: 100vh;
+  background-color: white;
+  position: fixed;
   z-index: 99;
+  top: calc(96px + 10px);
+  right: 15px;
+  padding-top: 15px;
+  border-radius: 8px;
+  padding-left: 30px;
+  padding-right: 15px;
+  transition: all 0.3s ease-in-out;
   overflow-y: auto;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  /* width */
   &::-webkit-scrollbar {
     width: 5px;
   }
 
   /* Track */
   &::-webkit-scrollbar-track {
-    border-radius: 8px;
     background: #f1f1f1;
   }
 
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background: #bdbdbd;
+    border-radius: 12px;
+    background: #a8a8a8;
   }
 
-  .rightBar-wrapper {
-    margin-bottom: 30px;
+  .rightBar-list {
+    margin-bottom: 25px;
     .rightBar-title {
-      font-size: 20px;
-      color: $text-color;
-      margin-bottom: 30px;
+      font-size: 12px;
+      color: $text-gray-500;
+      font-weight: 600;
+      margin-bottom: 10px;
     }
-
-    .story-list {
+    .rightBar-item {
       display: flex;
       align-items: center;
-      gap: 0 15px;
-    }
-
-    .stories {
-      width: 77px;
-      height: 77px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 3px solid $blue-color;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-      }
-    }
-
-    .your-stories {
-      background-color: $blue-color;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-
-  .event-item {
-    .event-img {
-      width: 100%;
-      height: 100%;
-      max-height: 200px;
-      img {
-        width: 100%;
-        height: 100%;
-        max-height: 200px;
-        object-fit: cover;
-      }
-    }
-    .event-info {
-      margin-top: 30px;
-      h5 {
-        font-size: 17px;
-        color: $text-color;
-        font-weight: 500;
-        margin-bottom: 5px;
-      }
-      span {
+      gap: 0 10px;
+      margin-bottom: 15px;
+      .rightBar-item-name {
         font-size: 13px;
-        color: $text-color;
-        opacity: 0.4;
+        font-weight: 600;
+        color: $text-gray-600;
       }
     }
   }
+}
 
-  .online-user-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px 0;
+@media screen and (min-width: 1605px) {
+  .rightBar {
+    display: block;
   }
 }
 
-@media screen and (min-width: $large-desktop-width) {
+@media screen and (min-width: $desktop-screen) {
   .rightBar {
-    display: block;
-    max-width: calc(100vw - 650px);
+    width: 280px;
   }
-}
-
-@media screen and (min-width: $max-desktop-width) {
-  .rightBar {
-    display: block;
-    max-width: 300px;
-  }
-}
-
-@media screen and (min-width: $large-screen) {
-  .rightBar {
-    display: block;
-    max-width: 450px;
+  .rightBar .rightBar-list .rightBar-item .rightBar-item-name {
+    font-size: 15px;
   }
 }

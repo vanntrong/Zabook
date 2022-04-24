@@ -1,17 +1,17 @@
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import { Avatar } from '@mui/material';
-import Backdrop from 'components/Backdrop';
+import Backdrop from 'components/backdrop/Backdrop';
 import SearchResultModal from 'components/searchResultModal/SearchResultModal';
 import React, { FC, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { AiOutlineClose, AiOutlineHome, AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
+import { BiMessage, BiMessageRoundedDots } from 'react-icons/bi';
+import { BsCameraVideo, BsLightningCharge, BsPerson } from 'react-icons/bs';
+import { FiSettings } from 'react-icons/fi';
+// import { AiOutlineClose } from "react-icons/ai";
+import { IoNotificationsOutline } from 'react-icons/io5';
+import { Link, NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
-import InputPostModal from './../input/InputPost/inputPostModal/InputPostModal';
-import Logo from './Logo';
 import './navbar.scss';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import SendIcon from '@mui/icons-material/Send';
 
 interface NavbarProps {
   className?: string;
@@ -20,95 +20,110 @@ interface NavbarProps {
 const Navbar: FC<NavbarProps> = ({ className }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isShowSearchBox, setIsShowSearchBox] = useState<boolean>(false);
-  const [isShowInputPostModal, setIsShowInputPostModal] = useState<boolean>(false);
-  const [isShowModalUser, setIsShowModalUser] = useState<boolean>(false);
+  // const [isShowInputPostModal, setIsShowInputPostModal] = useState<boolean>(false);
+  // const [isShowModalUser, setIsShowModalUser] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
-  const dispatch = useAppDispatch();
+  const [isMobileSideBarShow, setIsMobileSideBarShow] = useState<boolean>(false);
+  // const dispatch = useAppDispatch();
 
-  const logoutHandler = () => {
-    dispatch(userAction.logoutUser());
-  };
+  // const logoutHandler = () => {
+  //   dispatch(userAction.logoutUser());
+  // };
 
   const clickShowMenuMobileHandler = () => {
-    document.querySelector('.sidebar')?.classList.remove('hide');
-    document.querySelector('.sidebar')?.classList.add('show');
+    if (!isMobileSideBarShow) {
+      document.querySelector('.sidebar')?.classList.remove('hide');
+      document.querySelector('.sidebar')?.classList.add('show');
+    } else {
+      document.querySelector('.sidebar')?.classList.remove('show');
+      document.querySelector('.sidebar')?.classList.add('hide');
+    }
+    setIsMobileSideBarShow(!isMobileSideBarShow);
   };
+
   return (
     <div className="navbar">
-      <div className="navbar-left">
-        <div className="navbar-left-menu" onClick={clickShowMenuMobileHandler}>
-          <MenuIcon />
+      <Link to="/" className="logo">
+        <h2>Sociala.</h2>
+      </Link>
+      <div className="navbar-navigate">
+        <div className="navbar-navigate-item">
+          <BiMessageRoundedDots className="navbar-navigate-item-icon" />
         </div>
-        <div className="navbar-left-logo">
-          <Link to="/">
-            <Logo />
-          </Link>
+        <div className="navbar-navigate-item">
+          <BsCameraVideo className="navbar-navigate-item-icon" />
         </div>
-        <div className="navbar-search">
-          <SearchIcon htmlColor="#ddd" />
+        <div className="navbar-navigate-item">
+          <AiOutlineSearch className="navbar-navigate-item-icon" />
+        </div>
+        <div className="navbar-menu" onClick={clickShowMenuMobileHandler}>
+          {!isMobileSideBarShow && <AiOutlineMenu />}
+          {isMobileSideBarShow && <AiOutlineClose />}
+        </div>
+      </div>
+      <div className="navbar-center-desktop">
+        <div className="navbar-search-desktop">
+          <AiOutlineSearch className="navbar-search-desktop-icon" />
           <input
             type="text"
-            placeholder="Search..."
-            onClick={() => setIsShowSearchBox(true)}
+            value={searchText || ''}
+            placeholder="Start typing to search..."
             onChange={(e) => setSearchText(e.target.value)}
+            onFocus={() => setIsShowSearchBox(true)}
+            onBlur={() => {
+              // setIsShowSearchBox(false);
+              setSearchText('');
+            }}
           />
           {isShowSearchBox && (
             <SearchResultModal handleClose={setIsShowSearchBox} searchText={searchText} />
           )}
+          <Backdrop isShow={isShowSearchBox} setIsShow={setIsShowSearchBox} color="#fff" />
         </div>
-        <Backdrop
-          isShow={isShowSearchBox}
-          setIsShow={setIsShowSearchBox}
-          color="#fff"
-          opacity={0}
-        />
-      </div>
-      <div className="navbar-right">
-        <div className="navbar-right-list">
-          <div className="navbar-right-item">
-            <div className="navbar-upload" onClick={() => setIsShowInputPostModal(true)}>
-              <Avatar sx={{ backgroundColor: '#eee' }} className="navbar-upload-icon">
-                +
-              </Avatar>
-              <span>Upload</span>
-            </div>
-          </div>
-          <div className="navbar-right-item">
-            {/* <img src="/assets/images/notification.png" alt="" className="navbar-right-item__img" /> */}
-            <NotificationsIcon className="navbar-right-item__img" />
-          </div>
-          <div className="navbar-right-item">
-            <Link to="/messages" style={{ color: 'inherit' }}>
-              {/* <img src="/assets/images/message.png" alt="" className="navbar-right-item__img" /> */}
-              <SendIcon className="navbar-right-item__img" />
-            </Link>
-          </div>
-          <div
-            className="navbar-right-item"
-            style={{ cursor: 'pointer', position: 'relative' }}
-            onClick={() => setIsShowModalUser((prev) => !prev)}
+        <div className="navbar-navlink">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive ? 'navbar-navlink-item active' : 'navbar-navlink-item'
+            }
           >
-            <Avatar src={currentUser?.avatar} alt={currentUser?.username} />
-            {isShowModalUser && (
-              <div className="modal-user">
-                <Link
-                  to={`/${currentUser?.username}`}
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  <div className="modal-user-item">View profile</div>
-                </Link>
-                <div className="modal-user-item" onClick={() => logoutHandler()}>
-                  Logout
-                </div>
-              </div>
-            )}
-          </div>
+            <AiOutlineHome className="navbar-navlink-icon" />
+          </NavLink>
+
+          <NavLink
+            to="/stories"
+            className={({ isActive }) =>
+              isActive ? 'navbar-navlink-item active' : 'navbar-navlink-item'
+            }
+          >
+            <BsLightningCharge className="navbar-navlink-icon" />
+          </NavLink>
+          <NavLink
+            to={`/${currentUser?.username}`}
+            className={({ isActive }) =>
+              isActive ? 'navbar-navlink-item active' : 'navbar-navlink-item'
+            }
+          >
+            <BsPerson className="navbar-navlink-icon" />
+          </NavLink>
         </div>
       </div>
-      {isShowInputPostModal && (
-        <InputPostModal currentUser={currentUser} setIsShowPostModal={setIsShowInputPostModal} />
-      )}
-      <Backdrop isShow={isShowInputPostModal} setIsShow={setIsShowInputPostModal} color="#fff" />
+
+      <div className="navbar-navigate-desktop">
+        <div className="navbar-navigate-item">
+          <IoNotificationsOutline className="navbar-navigate-item-icon" />
+        </div>
+        <Link to="/messages" className="navbar-navigate-item">
+          <BiMessage className="navbar-navigate-item-icon" />
+        </Link>
+        <div className="navbar-navigate-item navbar-navigate-item-setting">
+          <FiSettings className="navbar-navigate-item-icon icon-rotate" />
+          <div className="setting-app-box"></div>
+        </div>
+        <Link to="/settings" className="navbar-user">
+          <Avatar src={currentUser?.avatar} className="navbar-user-avatar" />
+        </Link>
+      </div>
     </div>
   );
 };

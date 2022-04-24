@@ -1,4 +1,4 @@
-@import '../../shared/_variable';
+@import '../../shared/variable.scss';
 
 .wrapper-1 {
   width: 100%;
@@ -73,7 +73,7 @@
   }
 }
 
-@media screen and (max-width: $mobile-width) and (min-width: $min-mobile-width) {
+@media screen and (min-width: $mobile-screen) {
   .wrapper-1 {
     flex-direction: column;
   }
@@ -96,7 +96,7 @@
   }
 }
 
-@media screen and (max-width: $tablet-width) and (min-width: $min-tablet-width) {
+@media screen and (min-width: $tablet-screen) {
   .wrapper-1 .wrapper-1__item .wrapper-1__item__image {
     height: 300px;
   }
@@ -116,7 +116,7 @@
   }
 }
 
-@media screen and (max-width: $desktop-width) and (min-width: $min-desktop-width) {
+@media screen and (min-width: $ipad-screen) {
   .wrapper-3 {
     .wrapper-3__item2 {
       .wrapper-3__item {
@@ -128,7 +128,7 @@
   }
 }
 
-@media screen and (max-width: $large-desktop-width) and (min-width: $min-large-desktop-width) {
+@media screen and (min-width: $laptop-screen) {
   .wrapper-3 {
     .wrapper-3__item1 {
       img {

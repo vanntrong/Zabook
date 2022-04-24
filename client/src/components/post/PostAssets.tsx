@@ -14,10 +14,6 @@ const PostAssets: FC<PostAssetsProps> = ({ assets }) => {
           (asset, index) =>
             asset.url !== undefined && (
               <div key={index} className="wrapper-1__item">
-                {/* <div
-                  className="wrapper-1__item__image"
-                  style={{ backgroundImage: `url("${asset.url}")` }}
-                ></div> */}
                 <img src={asset.url} alt="" className="wrapper-1__item__image" />
               </div>
             )

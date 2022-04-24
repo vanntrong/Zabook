@@ -1,0 +1,38 @@
+@import '../../../shared/variable.scss';
+.createComment {
+  display: flex;
+  align-items: center;
+  gap: 0 10px;
+
+  .createComment-input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid $border-color;
+    border-radius: 30px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    button {
+      font-size: 20px;
+      color: $text-gray-900;
+      background-color: transparent;
+      cursor: pointer;
+    }
+    input {
+      width: 100%;
+      height: 100%;
+      font-size: 14px;
+      color: $text-gray-900;
+      letter-spacing: 0.5px;
+    }
+    .createComment-error {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      font-size: 12px;
+      color: red;
+    }
+  }
+}

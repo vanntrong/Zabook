@@ -1,4 +1,5 @@
 import Navbar from 'components/navbar/Navbar';
+import RightBar from 'components/rightbar/Rightbar';
 import Sidebar from 'components/sidebar/Sidebar';
 import React, { FC } from 'react';
 
@@ -7,6 +8,7 @@ const withLayout = (Element: FC) => {
     <>
       <Navbar />
       <Sidebar />
+      <RightBar />
       <Element />
     </>
   );

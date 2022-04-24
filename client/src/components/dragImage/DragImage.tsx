@@ -1,6 +1,5 @@
-import React, { FC } from 'react';
 import CloudIcon from '@mui/icons-material/Cloud';
-
+import React, { FC } from 'react';
 import './dragImage.scss';
 
 interface DragImageProps {
@@ -45,6 +44,8 @@ const DragImage: FC<DragImageProps> = ({ changFilesHandler, filesPreview }) => {
       changFilesHandler(files);
     }
   };
+
+  console.log(filesPreview);
 
   return (
     <div

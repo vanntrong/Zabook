@@ -13,7 +13,7 @@ function* getPostsSaga({ payload, type }: { payload: string; type: string }) {
     const posts: PostType[] = yield call(postApi.getPostsApi, payload);
     yield put(postAction.setUserPosts(posts));
   } catch (error) {
-    console.log(error.response);
+    console.log(error);
     yield put(postAction.getCurrentUserPostsFailure(error.response.data));
   }
 }
@@ -42,8 +42,28 @@ function* updatePostSaga({
   }
 }
 
+function* deletePostSaga({ payload, type }: { payload: string; type: string }) {
+  try {
+    yield call(postApi.deletePostApi, payload);
+    yield put(postAction.deletePostSuccess(payload));
+  } catch (error) {
+    yield put(postAction.deletePostFailure(error.response.data));
+  }
+}
+
+function* likePostSaga({ payload, type }: { payload: { data: string; id: string }; type: string }) {
+  try {
+    const post: PostType = yield call(postApi.likePostApi, payload);
+    yield put(postAction.updatePostSuccess(post));
+  } catch (error) {
+    yield put(postAction.likePostFailure(error.response.data));
+  }
+}
+
 export function* postSaga() {
   yield takeLatest(postAction.getCurrentUserPostsRequest.type, getPostsSaga);
   yield takeLatest(postAction.createNewPostRequest.type, createPostSaga);
   yield takeLatest(postAction.updatePostRequest.type, updatePostSaga);
+  yield takeLatest(postAction.likePostRequest.type, likePostSaga);
+  yield takeLatest(postAction.deletePostRequest.type, deletePostSaga);
 }

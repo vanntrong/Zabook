@@ -1,10 +1,11 @@
-@import '../../shared/_variable';
+@import '../../shared/variable.scss';
 
 .feed {
-  margin: 25px auto 0;
-  .post-wrapper {
+  width: 100%;
+  .post-list {
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
   }
 }

@@ -62,7 +62,7 @@ export const postSlice = createSlice({
     },
 
     //delete post
-    deletePostRequest: (state) => {
+    deletePostRequest: (state, action: PayloadAction<string>) => {
       state.pending = true;
     },
     deletePostFailure: (state, action: PayloadAction<string>) => {
@@ -70,8 +70,18 @@ export const postSlice = createSlice({
       state.error = action.payload;
     },
     deletePostSuccess: (state, action: PayloadAction<string>) => {
-      state.currentUserPosts.filter((post) => post._id !== action.payload);
+      state.currentUserPosts = state.currentUserPosts.filter((post) => post._id !== action.payload);
       state.pending = false;
+      state.error = null;
+    },
+
+    //likePost
+    likePostRequest: (state, action: PayloadAction<{ id: string; data: string }>) => {
+      state.pending = true;
+    },
+    likePostFailure: (state, action: PayloadAction<string>) => {
+      state.pending = false;
+      state.error = action.payload;
     },
   },
 });

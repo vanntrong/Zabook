@@ -1,6 +1,25 @@
+@import '../../shared/variable.scss';
 .comments {
+  border-top: 1px solid $bg-gray;
   display: flex;
   flex-direction: column;
   gap: 10px 0;
   padding-top: 20px;
+
+  .no-comment {
+    text-align: center;
+    color: $text-gray-700;
+    margin-top: 10px;
+  }
+
+  .view-more-comment {
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    color: $text-gray-700;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

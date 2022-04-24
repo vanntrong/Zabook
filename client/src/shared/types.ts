@@ -55,12 +55,22 @@ interface assets {
 
 export interface PostType {
   _id: string;
-  userPost: string;
+  userPost: {
+    _id: string;
+    fullName: string;
+    avatar: string;
+    username: string;
+  };
   assets?: [assets];
   content: string;
   likes?: [string];
   shares?: [string];
-  comments?: [string];
+  comments?: [
+    {
+      _id: string;
+      postId: string;
+    }
+  ];
   createdAt: Date;
 }
 
@@ -74,4 +84,17 @@ export interface formPostData {
 export interface assetsType {
   media_type?: string;
   url: string;
+}
+
+export interface commentType {
+  _id: string;
+  postId: string;
+  userComment: {
+    _id: string;
+    fullName: string;
+    avatar: string;
+    username: string;
+  };
+  content: string;
+  createdAt: Date;
 }

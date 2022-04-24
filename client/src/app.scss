@@ -1,8 +1,4 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-@import './shared/_variable';
+@import './shared/variable.scss';
 
 html,
 body,
@@ -128,16 +124,71 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
 * {
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  border: none;
+  outline: none;
+  text-decoration: none;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: $background-color;
+  background-color: $bg-gray-light;
 }
-#root {
-  overflow: hidden;
+
+.mainWrapper {
+  padding: 70px 10px 20px 10px;
+  min-height: 100vh;
+  width: 100%;
+}
+
+@media screen and (min-width: $ipad-screen) {
+  .mainWrapper {
+    padding-top: 80px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media screen and (min-width: $laptop-screen) {
+  .mainWrapper {
+    padding-left: 290px;
+  }
+}
+
+@media screen and (min-width: $desktop-screen) {
+  .mainWrapper {
+    padding-top: calc(90px + 30px);
+    padding-left: 280px;
+    width: calc(990px + 280px);
+    margin-left: auto;
+    margin-right: auto;
+    gap: 0 20px;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .mainWrapper {
+    margin-left: 15px;
+  }
+}
+
+@media screen and (min-width: 1844px) {
+  .mainWrapper {
+    padding-left: 0;
+    width: calc(990px + 330px);
+    max-width: 990px;
+    gap: 0 20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (min-width: $large-screen) {
+  .mainWrapper {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 960px;
+    padding-left: 0;
+  }
 }
