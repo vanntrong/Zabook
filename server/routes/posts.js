@@ -19,4 +19,16 @@ router.put("/:postId", verifyToken, postHandler.updatePostHandler);
 //delete post
 router.delete("/:postId", verifyToken, postHandler.deletePostHandler);
 
+//like post
+router.patch("/:postId/like", verifyToken, postHandler.likePostHandler);
+
+//create comment
+router.post("/:postId/comment", verifyToken, postHandler.createCommentHandler);
+
+//get comment
+router.get("/:postId/comments", verifyToken, postHandler.getCommentsHandler);
+
+//update comment
+router.put("/comment/:commentId", verifyToken, postHandler.updateCommentHandler);
+
 export default router;

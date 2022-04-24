@@ -10,6 +10,10 @@ export async function updateUserHandler(req, res) {
     if (req.params.userId !== req.user.id) {
       return res.status(403).json("You are not allowed to update this user");
     }
+    if (req.body.avatar) {
+      const result = await factoryController.uploadFile(req.body.avatar, "user", "image");
+      req.body.avatar = result.secure_url;
+    }
     factoryController.updateOne(User, req.params.userId, { $set: req.body }, res);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
@@ -29,18 +33,28 @@ export async function deleteUserHandler(req, res) {
 
 export async function getPostsHandler(req, res) {
   try {
-    const userPost = await factoryController.findAll(User, { _id: req.params.userId }, 0, {
-      path: "posts",
-      options: {
-        limit: 10,
-        skip: 10 * 0,
-        sort: { createdAt: -1 },
+    const userPost = await User.findById(req.params.userId).populate([
+      {
+        path: "posts",
+        populate: { path: "userPost", select: "fullName username avatar" },
       },
-    });
+      {
+        path: "posts",
+        populate: {
+          path: "comments",
+          select: "_id",
+        },
+        options: {
+          limit: 10,
+          skip: 10 * 0,
+          sort: { createdAt: -1 },
+        },
+      },
+    ]);
     if (!userPost || userPost.length === 0) {
       return res.status(404).json("Posts not found");
     }
-    res.status(200).json(userPost[0].posts);
+    res.status(200).json(userPost.posts);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }

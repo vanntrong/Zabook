@@ -1,70 +1,44 @@
-@import '../../shared/variable';
+@import '../../shared/variable.scss';
 
 .stories {
   display: flex;
   align-items: center;
-  gap: 0 10px;
-  position: relative;
-  overflow: hidden;
+  overflow-x: auto;
+  gap: 0 8px;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .create-story {
-    cursor: pointer;
+    flex-shrink: 0;
+    width: 125px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: $bg-dark;
     display: flex;
+    align-items: center;
     flex-direction: column;
-    height: 115px;
-    width: 70px;
-    border-radius: 12px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    .create-story__avatar {
-      width: 100%;
-      height: auto;
-      overflow: hidden;
-      border-radius: 12px 12px 0 0;
-      flex: 1;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-    .create-story-title {
-      flex: 1;
-      background-color: $white-color;
-      position: relative;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+    .create-story__button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
-      border-radius: 0 0 12px 12px;
-      span {
-        font-size: 12px;
-        text-align: center;
-      }
-      .create-story-icon {
-        width: 30px;
-        height: 30px;
-        background-color: $blue-color;
-        position: absolute;
-        border: 2px solid $white-color;
-        top: 0;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
+      background-color: white;
+      font-size: 23px;
+      font-weight: 600;
+      color: $blue-color-300;
+      margin-bottom: 8px;
     }
-  }
-  .story-seemore {
-    position: absolute;
-    background-color: $white-color;
-    color: #333;
-    right: 0;
-    top: 50%;
-    width: 35px;
-    height: 35px;
-    transform: translate(10px, -50%);
-  }
-}
-
-@media screen and (min-width: $tablet-width) {
-  .stories .create-story {
-    width: 115px;
-    height: 200px;
+    .create-story-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+    }
   }
 }

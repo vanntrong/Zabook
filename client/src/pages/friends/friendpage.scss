@@ -1,35 +1,69 @@
-@import '../../shared/_variable';
+@import '../../shared/variable.scss';
 
 .friends {
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding-top: 80px;
+  background-color: $bg-greylight;
   .friends-wrapper {
     height: 100%;
     margin: 0 auto;
+
+    .friends-page-header {
+      padding: 24px 15px;
+      background-color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0 20px;
+      border-radius: 8px;
+      h2 {
+        font-size: 22px;
+        color: $text-gray-900;
+        font-weight: 700;
+      }
+      .friends-page-filter {
+        max-width: 200px;
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        height: 45px;
+        border-radius: 8px;
+        font-weight: 500;
+        color: $text-gray-500;
+        background-color: $bg-greylight;
+        input {
+          width: 100%;
+          height: 100%;
+          background-color: inherit;
+          color: $text-gray-700;
+          &::placeholder {
+            color: $text-gray-500;
+          }
+        }
+      }
+    }
   }
   .friend-list {
-    margin-top: 30px;
+    margin-top: 15px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 20px 40px;
   }
   .friend-info {
+    max-width: 100%;
     display: flex;
+    padding-top: 15px;
+    padding-bottom: 15px;
     align-items: center;
+    flex-direction: column;
+    gap: 12px 0;
     background-color: #fff;
-    min-width: 450px;
-    max-width: 450px;
-    padding-right: 10px;
-    box-shadow: -1px 2px 5px 0px rgba(89, 80, 80, 0.64);
-    -webkit-box-shadow: -1px 2px 5px 0px rgba(89, 80, 80, 0.64);
-    -moz-box-shadow: -1px 2px 5px 0px rgba(89, 80, 80, 0.64);
+    border-radius: 8px;
 
     .friend-info-avatar {
-      max-width: 133px;
-      max-height: 133px;
-      margin-right: 20px;
+      width: 50px;
+      height: 50px;
       img {
         width: 100%;
         height: 100%;
@@ -37,107 +71,96 @@
       }
     }
 
-    .friend-info-name {
-      font-size: 16px;
-      font-weight: 600;
-      color: black;
-      margin-bottom: 5px;
-    }
+    .friend-info-name-and-status {
+      .friend-info-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: black;
+        margin-bottom: 5px;
+      }
 
-    .friend-info-status {
-      font-size: 12px;
-      color: $text-color;
-      opacity: 0.6;
+      .friend-info-status {
+        font-size: 12px;
+        color: $text-gray-600;
+        opacity: 0.6;
+        text-align: center;
+      }
     }
 
     .friend-info-action {
-      margin-left: auto;
       cursor: pointer;
+      button {
+        padding: 10px 20px;
+        border-radius: 30px;
+        color: white;
+        font-weight: 600;
+        letter-spacing: 1px;
+        cursor: pointer;
+        &.friend-info-action-delete {
+          background-color: $text-danger;
+        }
+      }
     }
   }
 }
 
-@media screen and (min-width: $mobile-width) {
+@media screen and (min-width: $mobile-screen) {
   .friends {
     padding-left: 20px;
     padding-right: 20px;
-    .friends-wrapper {
-      // margin-left: 20px;
-      min-width: 280px;
-    }
     .friend-list {
       grid-template-columns: 1fr;
-      grid-gap: 10px;
-    }
-    .friend-info {
-      min-width: 320px;
-      max-width: 320px;
+      grid-gap: 15px;
     }
   }
 }
 
-@media screen and (min-width: $tablet-width) {
+@media screen and (min-width: $tablet-screen) {
   .friends {
-    padding-left: 50px;
-    padding-right: 50px;
     .friends-wrapper {
-      // margin-left: 50px;
       min-width: 320px;
     }
     .friend-list {
       grid-template-columns: 1fr;
-      grid-gap: 10px;
+      grid-gap: 20px;
     }
     .friend-info {
       min-width: 320px;
-      max-width: 320px;
     }
   }
 }
 
-@media screen and (min-width: $desktop-width) {
+@media screen and (min-width: $ipad-screen) {
   .friends {
-    padding-right: 70px;
-    padding-left: 70px;
     .friends-wrapper {
       .friends-right {
         display: none;
       }
     }
     .friend-list {
-      grid-template-columns: 1fr 1fr;
-      grid-gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 15px;
     }
     .friend-info {
-      min-width: 320px;
-      max-width: 320px;
+      min-width: 0;
+      width: 100%;
     }
   }
 }
 
-@media screen and (min-width: $large-desktop-width) {
+@media screen and (min-width: $laptop-screen) {
   .friends {
-    // padding-right: 100px;
     .friends-wrapper {
-      // margin-left: 100px;
+      padding-top: 20px;
     }
     .friend-list {
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 15px;
     }
     .friend-info {
-      min-width: 290px;
-      max-width: 290px;
+      min-width: 0;
+      width: 100%;
     }
-    .friends-rightbar {
-      display: none;
-    }
-  }
-}
-
-@media screen and (min-width: $max-desktop-width) {
-  .friends .friends-wrapper {
-    margin-left: 300px;
   }
 }
 

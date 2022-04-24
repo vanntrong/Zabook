@@ -1,0 +1,125 @@
+@import '../../../shared/variable.scss';
+
+.createPost {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  .createPost-top {
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+    margin-bottom: 18px;
+    cursor: pointer;
+
+    .createPost-top-icon {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $blue-500;
+      background-color: $bg-greylight;
+    }
+
+    span {
+      font-size: 12px;
+      font-weight: 600;
+      color: $text-gray-500;
+    }
+  }
+  .createPost-text-container {
+    position: relative;
+    height: 100px;
+    display: flex;
+    border: 1px solid $border-color;
+    padding-top: 5px;
+    border-radius: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: transparent;
+    margin-bottom: 10px;
+    textarea {
+      width: 100%;
+      height: 100%;
+      margin-left: 10px;
+      background-color: transparent;
+      font-weight: 500;
+      color: $black-color;
+      font-size: 12px;
+      resize: none;
+      font-family: 'Poppins', sans-serif;
+      &::placeholder {
+        font-size: 12px;
+        color: $text-gray-500;
+        font-family: inherit;
+      }
+    }
+    .createPost-user-avatar {
+      width: 30px;
+      height: 30px;
+      // position: absolute;
+    }
+  }
+  .createPost-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .createPost-assets {
+      display: flex;
+      align-items: center;
+      gap: 0 15px;
+
+      .createPost-assets-item {
+        font-size: 22px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        span {
+          display: none;
+        }
+
+        &.createPost-assets-item-1 {
+          color: $text-danger;
+        }
+        &.createPost-assets-item-2 {
+          color: $success-color;
+        }
+        &.createPost-assets-item-3 {
+          color: $text-warning;
+        }
+      }
+    }
+    .createPost-setting {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 45px;
+      height: 45px;
+      color: $text-gray-900;
+      font-size: 16px;
+      background-color: $bg-greylight;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+}
+
+@media screen and (min-width: $tablet-screen) {
+  .createPost .createPost-bottom .createPost-assets {
+    gap: 0 25px;
+  }
+}
+
+@media screen and (min-width: $ipad-screen) {
+  .createPost .createPost-bottom .createPost-assets .createPost-assets-item span {
+    display: block;
+    color: $text-gray-700;
+    margin-left: 8px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}

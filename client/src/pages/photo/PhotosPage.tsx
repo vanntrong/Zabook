@@ -18,11 +18,12 @@ const PhotosPage = () => {
   return (
     <>
       <div className="photos">
-        <div className="photos-wrapper">
-          <UserInfo user={currentUser} />
-          <GalleryImage images={userPhotos} />
+        <div className="mainWrapper">
+          <div className="photos-wrapper">
+            <UserInfo user={currentUser} />
+            <GalleryImage images={userPhotos} />
+          </div>
         </div>
-        <RightBar className="photos-rightbar" />
       </div>
     </>
   );

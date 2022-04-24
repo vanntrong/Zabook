@@ -1,9 +1,8 @@
-@import '../../shared/_variable';
+@import '../../shared/variable.scss';
 
 .photos {
   min-height: 100vh;
   display: flex;
-  padding-top: 80px;
   .photos-wrapper {
     height: 100%;
     max-width: 1024px;
@@ -30,46 +29,38 @@
   }
 }
 
-@media screen and (min-width: $mobile-width) {
+@media screen and (min-width: $mobile-screen) {
   .photos {
-    padding-left: 20px;
-    padding-right: 20px;
     .photos-wrapper {
       min-width: 280px;
     }
   }
 }
 
-@media screen and (min-width: $tablet-width) {
+@media screen and (min-width: $tablet-screen) {
   .photos {
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
     .photos-wrapper {
       min-width: 320px;
     }
   }
 }
 
-@media screen and (min-width: $desktop-width) {
+@media screen and (min-width: $laptop-screen) {
   .photos {
     padding-left: 70px;
     padding-right: 70px;
   }
 }
 
-@media screen and (min-width: $large-desktop-width) {
+@media screen and (min-width: $desktop-screen) {
   .photos {
     padding-left: 100px;
     padding-right: 100px;
     .photos-rightbar {
       display: none;
     }
-  }
-}
-
-@media screen and (min-width: $max-desktop-width) {
-  .photos .photos-wrapper {
-    margin-left: 300px;
   }
 }
 

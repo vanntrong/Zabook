@@ -1,4 +1,4 @@
-@import '../../../shared/_variable';
+@import '../../../shared/variable.scss';
 
 .form-post {
   background-color: white;
@@ -27,7 +27,7 @@
       cursor: pointer;
       padding: 10px;
       border-radius: 20px;
-      background-color: $background-color;
+      // background-color: $background-color;
     }
     .form-post__icon {
       margin-left: 20px;
@@ -149,7 +149,7 @@
       margin-top: 20px;
       width: 100%;
       height: 40px;
-      background-color: $blue-color;
+      background-color: $blue-500;
       border: none;
       border-radius: 8px;
       color: white;
@@ -157,7 +157,7 @@
       font-size: 16px;
       cursor: pointer;
       &:hover {
-        background-color: #6792e2;
+        background-color: $blue-color-300;
       }
       &:disabled {
         cursor: not-allowed;
@@ -179,52 +179,52 @@
   }
 }
 
-@media screen and (min-width: $mobile-width) {
-  .form-post {
-    .user-image {
-      margin-right: 10px;
-    }
+// @media screen and (min-width: $mobile-width) {
+//   .form-post {
+//     .user-image {
+//       margin-right: 10px;
+//     }
 
-    .form-post__group {
-      .form-post__input {
-        font-weight: 500;
-        font-size: 12px;
-      }
+//     .form-post__group {
+//       .form-post__input {
+//         font-weight: 500;
+//         font-size: 12px;
+//       }
 
-      .form-post__icon {
-        display: none;
-      }
-    }
-  }
-}
+//       .form-post__icon {
+//         display: none;
+//       }
+//     }
+//   }
+// }
 
-@media screen and (min-width: $tablet-width) {
-  .form-post {
-    .user-image {
-      margin-right: 10px;
-    }
+// @media screen and (min-width: $tablet-width) {
+//   .form-post {
+//     .user-image {
+//       margin-right: 10px;
+//     }
 
-    .form-post__group {
-      .form-post__input {
-        font-weight: 500;
-        font-size: 12px;
-      }
+//     .form-post__group {
+//       .form-post__input {
+//         font-weight: 500;
+//         font-size: 12px;
+//       }
 
-      .form-post__icon {
-        margin-left: 10px;
-      }
-    }
-  }
-}
+//       .form-post__icon {
+//         margin-left: 10px;
+//       }
+//     }
+//   }
+// }
 
-@media screen and (min-width: $desktop-width) {
-  .form-post .form-input__image span {
-    display: block;
-  }
-}
+// @media screen and (min-width: $desktop-width) {
+//   .form-post .form-input__image span {
+//     display: block;
+//   }
+// }
 
-@media screen and (min-width: $large-desktop-width) {
-  .form-post {
-    padding: 10px 20px;
-  }
-}
+// @media screen and (min-width: $large-desktop-width) {
+//   .form-post {
+//     padding: 10px 20px;
+//   }
+// }

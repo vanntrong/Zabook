@@ -1,9 +1,8 @@
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { Avatar } from '@mui/material';
 import withLayout from 'components/layout/Layout';
-import RightBar from 'components/rightbar/Rightbar';
-import SkeletonLoading from 'components/SkeletonLoading';
-import UserInfo from 'components/userinfo/UserInfo';
+import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 import React, { FC, useEffect, useState } from 'react';
+import { AiOutlineSearch } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
 import { UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
@@ -11,23 +10,25 @@ import { selectCurrentUser } from 'store/slice/userSlice';
 import './friendpage.scss';
 
 interface FriendInfoProps {
-  name: string;
-  avatar: string;
+  name?: string;
+  avatar?: string;
   status?: string;
 }
 
 const FriendInfo: FC<FriendInfoProps> = ({ name, avatar, status }) => {
   return (
     <div className="friend-info">
-      <div className="friend-info-avatar">
-        <img src={avatar} alt={name} />
-      </div>
-      <div>
-        <div className="friend-info-name">{name}</div>
-        <div className="friend-info-status">{status}</div>
+      <Avatar
+        src="http://uitheme.net/sociala/images/user-7.png"
+        alt=""
+        className="friend-info-avatar"
+      />
+      <div className="friend-info-name-and-status">
+        <div className="friend-info-name">Victor Exrixon</div>
+        <div className="friend-info-status">@macale343</div>
       </div>
       <div className="friend-info-action">
-        <MoreHorizIcon />
+        <button className="friend-info-action-delete">DELETE</button>
       </div>
     </div>
   );
@@ -50,19 +51,29 @@ const FriendsPage = () => {
   return (
     <>
       <div className="friends">
-        <div className="friends-wrapper">
-          {user && <UserInfo user={user} />}
-          <div className="friend-list">
-            {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
-            {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
-            {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
-            {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
-            {/* {!isFetchingFriendsInfo && user && user?.friends.length > 0 && user?.friends.map((friend)) => (
+        <div className="mainWrapper">
+          <div className="friends-wrapper">
+            <div className="friends-page-header">
+              <h2>Friends</h2>
+              <div className="friends-page-filter">
+                <input type="text" placeholder="Search here..." />
+                <AiOutlineSearch />
+              </div>
+            </div>
+            <div className="friend-list">
+              {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+              {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+              {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+              {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
               <FriendInfo />
-            } */}
+              <FriendInfo />
+              <FriendInfo />
+              <FriendInfo />
+              <FriendInfo />
+              <FriendInfo />
+            </div>
           </div>
         </div>
-        <RightBar className="friends-rightbar" />
       </div>
     </>
   );

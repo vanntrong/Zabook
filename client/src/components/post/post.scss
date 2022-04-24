@@ -1,184 +1,213 @@
-@import '../../shared/_variable';
+@import '../../shared/variable.scss';
 
 .post {
-  padding: 10px;
-  background-color: white;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: 8px;
-  max-width: 650px;
+  padding: 15px !important;
+  border-radius: 15px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05) !important;
 
-  .post-info {
+  .post-top {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
 
-    .post-info__left {
+    .post-top-info {
       display: flex;
       align-items: center;
-      .post-user__image {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-        border: 1px solid red;
+      gap: 0 15px;
+
+      .post-top-user-avatar {
+        width: 45px;
+        height: 45px;
       }
-      .post-user__info {
-        .post-username {
-          font-size: 16px;
-          font-weight: 500;
-          color: $text-color;
-          cursor: pointer;
-        }
-        .post-time {
-          display: none;
-          font-size: 14px;
-          color: $text-color;
-          opacity: 0.44;
-        }
+
+      .post-top-user-name {
+        font-size: 12px;
+        font-weight: 700;
+        color: $text-gray-900;
+        margin-bottom: 5px;
+      }
+
+      .post-top-user-time {
+        font-size: 12px;
+        font-weight: 500;
+        color: $text-gray-500;
       }
     }
 
-    .post-info__right {
-      color: $text-color;
-      position: relative;
+    .post-top-setting {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background-color: $bg-greylight;
+      color: $text-gray-900;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
-      .modal-edit-post {
-        opacity: 1;
+      position: relative;
+
+      .post-setting-modal {
+        z-index: 10;
         position: absolute;
+        top: calc(100% + 10px);
         right: 0;
-        top: 100%;
-        background-color: $white-color;
         display: flex;
         flex-direction: column;
-        gap: 15px 0;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: -1px 0px 5px -1px rgba(0, 0, 0, 0.75);
-        -webkit-box-shadow: -1px 0px 5px -1px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: -1px 0px 5px -1px rgba(0, 0, 0, 0.75);
-        z-index: 9999;
-        width: 200px;
-        .edit-button {
+        width: 300px;
+        padding: 10px;
+        gap: 8px 0;
+        border-radius: 6px;
+        background-color: white;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        hr {
+          margin: 0;
+          border: none;
+          border-top: 1px solid $border-color;
+        }
+
+        .post-setting-modal-item {
+          font-size: 25px;
+          color: $text-gray-500;
           display: flex;
           align-items: center;
           gap: 0 10px;
           padding: 10px;
-          border-radius: 8px;
-          cursor: pointer;
+          border-radius: inherit;
           &:hover {
-            background-color: #eee;
+            background-color: $bg-gray;
           }
-        }
-        .button-delete-post {
-          color: $red-color;
-          &:hover {
-            background-color: rgba($color: $red-color, $alpha: 0.3);
+          span {
+            font-size: 14px;
+            font-weight: 600;
+            color: $text-gray-900;
           }
         }
       }
     }
   }
-
   .post-content {
-    // margin-top: 5px;
-
-    .post-user-group {
-      margin-bottom: 5px;
-      width: fit-content;
-      &.MuiAvatar-root {
-      }
-      .css-sxh3gq-MuiAvatar-root-MuiAvatarGroup-avatar {
-        width: 24px;
-        height: 24px;
+    padding-bottom: 7px;
+    .post-content-text {
+      width: 100%;
+      font-size: 12px;
+      color: $text-gray-700;
+      font-weight: 500;
+      line-height: 1.65;
+      margin-bottom: 10px;
+      span {
+        font-weight: 600;
+        color: $blue-500;
       }
     }
-
-    .like-count {
+    .post-content-assets {
       display: flex;
       align-items: center;
-      gap: 0 15px;
-    }
-
-    p {
-      color: $post-color;
-      font-size: 16px;
-      line-height: 1.5;
-      margin-bottom: 10px;
-    }
-
-    .post-image {
-      margin-bottom: 5px;
+      gap: 0 8px;
+      .post-content-assets-item {
+        width: 100%;
+        max-width: 33.333%;
+        img {
+          border-radius: 8px;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
     }
   }
 
   .post-action {
-    padding-top: 10px;
+    padding-top: 14px;
+    display: flex;
+    border-top: 1px solid $border-color;
+    justify-content: space-between;
+    align-items: center;
     padding-bottom: 10px;
-    border-top: 1px solid #e9e7e7;
-    border-bottom: 1px solid #e9e7e7;
 
-    .post-action__list {
+    .post-action-wrapper {
       display: flex;
       align-items: center;
-      padding: 0 20px;
+      flex-basis: 75%;
       justify-content: space-between;
-      gap: 0 30px;
-
-      .post-action__item {
-        display: flex;
-        align-items: center;
-        gap: 0 15px;
-        div {
-          display: flex;
-          align-items: center;
-          gap: 0 15px;
-          cursor: pointer;
-          padding: 3px;
-          border-radius: 6px;
-          // width: 150px;
-          color: black;
-          &:hover {
-            color: $red-color;
-          }
-          span {
-            font-weight: 600;
-          }
-        }
-      }
     }
-  }
-  .post-comments {
-    .post-add-comment {
+
+    .post-action-item {
       display: flex;
       align-items: center;
-      gap: 0 10px;
-      padding-top: 10px;
-      input {
-        border: 1px solid #e9e7e7;
-        background-color: $gray-color;
-        border-radius: 32px;
-        padding: 5px 10px;
-        width: 100%;
-        height: 40px;
-        font-size: 14px;
-        outline: none;
+      font-size: 18px;
+      cursor: pointer;
+
+      &:hover span {
+        color: $blue-500;
+      }
+
+      span {
+        font-weight: 500;
+        color: $text-gray-900;
+        font-size: 12px;
+        margin-left: 5px;
       }
     }
   }
 }
+.cancel-delete,
+.confirm-delete {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
 
-@media screen and (min-width: $large-desktop-width) {
-  .post {
-    max-width: 550px;
+.cancel-delete {
+  background-color: $bg-gray;
+  &:hover {
+    background-color: $blue-500;
   }
 }
 
-@media screen and (min-width: $max-desktop-width) {
-  .post {
-    max-width: 1000px;
+.confirm-delete {
+  background-color: $blue-500;
+  &:hover {
+    background-color: $blue-400;
   }
 }
 
-@media screen and (min-width: 2000px) {
+@media screen and (min-width: $tablet-screen) {
+  .post .post-top {
+    margin-bottom: 15px;
+  }
+
+  .post .post-action .post-action-wrapper {
+    flex-basis: 65%;
+  }
+  .post .post-content .post-content-text {
+    margin-bottom: 15px;
+    line-height: 1.8;
+  }
+}
+
+@media screen and (min-width: $ipad-screen) {
+  .post .post-action .post-action-wrapper {
+    flex-basis: 28%;
+  }
   .post {
-    max-width: 1000px;
+    padding: 20px;
+  }
+}
+
+@media screen and (min-width: $laptop-screen) {
+  .post .post-action .post-action-wrapper {
+    flex-basis: 35%;
+  }
+  .post .post-content .post-content-text,
+  .post .post-top .post-top-info .post-top-user-name {
+    font-size: 18px;
+  }
+  .post .post-action .post-action-item span {
+    font-size: 15px;
   }
 }

@@ -1,0 +1,139 @@
+@import '../../shared/variable.scss';
+
+.sign-up-page {
+  padding: 12px;
+  height: 100vh;
+
+  h2 {
+    font-size: $font-24;
+    color: $blue-500;
+    font-weight: 800;
+  }
+
+  h3 {
+    margin-top: 25px;
+    font-size: 30px;
+    font-weight: 600;
+    color: $black-color;
+    margin-bottom: 10px;
+  }
+  background-color: $bg-white;
+
+  .sign-up-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+  }
+  .sign-up-input-item {
+    width: 100%;
+    height: 50px;
+    padding: 15px 10px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    border: 2px solid $border-color;
+    color: $text-gray-500;
+    transition: all 0.3s ease-in-out;
+    &:focus-within {
+      border-color: $blue-500;
+    }
+    input {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background-color: transparent;
+      margin-left: 15px;
+      color: $text-gray-900;
+      &::placeholder {
+        color: $text-gray-500;
+        font-weight: 500;
+      }
+    }
+  }
+  label {
+    font-size: 13px;
+    color: $text-gray-700;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .input-gender-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+    .input-gender {
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-right: auto;
+      border: 3px solid $border-color;
+      border-radius: 8px;
+      input {
+        width: 12px;
+        height: 12px;
+        margin-left: 10px;
+      }
+    }
+  }
+  button {
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    background-color: $bg-dark;
+    color: white;
+    font-weight: 600;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  .to-login {
+    margin-top: 10px;
+    color: $text-gray-500;
+    font-size: $font-14;
+    a {
+      color: $blue-500;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+  }
+}
+
+.error-wrapper {
+  display: flex;
+  align-items: center;
+
+  .error-1 {
+    margin-left: auto;
+    margin-right: 20%;
+  }
+}
+
+@media screen and (min-width: $tablet-screen) {
+  .sign-up-main {
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (min-width: $laptop-screen) {
+  .sign-up-page {
+    display: flex;
+    align-items: center;
+    padding: 0;
+  }
+  .sign-up-header {
+    padding: 20px;
+    flex-basis: 50%;
+    height: 100%;
+    background-image: url('../../../public/assets/images/sign-bg.jpg') !important;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
+  .sign-up-page h3 {
+    font-size: 36px;
+    line-height: 1.4;
+  }
+}

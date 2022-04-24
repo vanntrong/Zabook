@@ -10,8 +10,8 @@ export async function createOne(Model, data, res) {
   return res.status(201).json(doc);
 }
 
-export async function updateOne(Model, id, update, res) {
-  const newDoc = await Model.findByIdAndUpdate(id, update, { new: true });
+export async function updateOne(Model, id, update, res, populate = null) {
+  const newDoc = await Model.findByIdAndUpdate(id, update, { new: true }).populate(populate);
 
   if (!newDoc) {
     return res.status(404).json("Document not found");
@@ -62,4 +62,16 @@ export async function uploadFile(file, folder, type) {
     resource_type: type,
   });
   return result;
+}
+
+export async function createPostThenReturnWithUserInfo(Model, data, res) {
+  const post = await Model.create(data)
+    .then((post) => {
+      // select user from new post
+      const postWithUserInfo = Model.findById(post.id).populate("userPost", "fullName username avatar");
+      return postWithUserInfo;
+    })
+    .catch((error) => errorController.serverErrorHandler(error, res));
+
+  res.status(201).json(post);
 }

@@ -1,10 +1,10 @@
-@import '../../shared/_variable';
+@import '../../shared/variable.scss';
 
 .drag-area {
   width: 100%;
   height: 300px;
   background-color: #cdcdcd;
-  border: 4px dashed $blue-color;
+  border: 4px dashed $blue-500;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,7 +27,7 @@
   }
 
   &.active {
-    border: 4px dashed $red-color;
+    // border: 4px dashed $red-color;
   }
 
   .drag-text,
@@ -44,10 +44,10 @@
     outline: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: $white-color;
-    color: $red-color;
+    // background-color: $white-color;
+    // color: $red-color;
     &:hover {
-      background-color: $red-color;
+      // background-color: $red-color;
       color: white;
     }
   }

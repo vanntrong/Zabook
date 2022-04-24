@@ -1,8 +1,8 @@
-@import '../../shared/_variable';
+@import '../../shared/variable.scss';
 .search-result {
   position: absolute;
-  top: 100%;
-  left: 20px;
+  top: calc(100% + 5px);
+  left: 0;
   right: 0;
   padding: 10px;
   max-width: 320px;
@@ -82,7 +82,7 @@
   }
 }
 
-@media screen and (min-width: $desktop-width) {
+@media screen and (min-width: $laptop-screen) {
   .search-result {
     max-width: 500px;
   }
