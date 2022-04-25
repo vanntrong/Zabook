@@ -31,4 +31,7 @@ router.get("/:postId/comments", verifyToken, postHandler.getCommentsHandler);
 //update comment
 router.put("/comment/:commentId", verifyToken, postHandler.updateCommentHandler);
 
+//delete comment
+router.delete("/comment/:commentId", verifyToken, postHandler.deleteCommentHandler);
+
 export default router;

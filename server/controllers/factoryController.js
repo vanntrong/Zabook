@@ -68,7 +68,16 @@ export async function createPostThenReturnWithUserInfo(Model, data, res) {
   const post = await Model.create(data)
     .then((post) => {
       // select user from new post
-      const postWithUserInfo = Model.findById(post.id).populate("userPost", "fullName username avatar");
+      const postWithUserInfo = Model.findById(post.id).populate([
+        {
+          path: "userPost",
+          select: "fullName username avatar",
+        },
+        {
+          path: "comments",
+          select: "_id",
+        },
+      ]);
       return postWithUserInfo;
     })
     .catch((error) => errorController.serverErrorHandler(error, res));
