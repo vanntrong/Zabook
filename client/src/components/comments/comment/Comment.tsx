@@ -1,4 +1,5 @@
 import { Avatar } from '@mui/material';
+import PopUp from 'components/popup/PopUp';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
@@ -6,17 +7,23 @@ import { FiEdit2 } from 'react-icons/fi';
 import { GrSend } from 'react-icons/gr';
 import { MdDeleteOutline } from 'react-icons/md';
 import { commentType } from 'shared/types';
+import { useAppSelector } from 'store/hooks';
+import { selectCurrentUser } from 'store/slice/userSlice';
+
 import './comment.scss';
 
 interface CommentProps {
   comment: commentType;
   onSubmit: (id: string, data: { content: string }) => void;
+  onDeleteComment: (id: string) => Promise<void>;
 }
 
-const Comment: FC<CommentProps> = ({ comment, onSubmit }) => {
+const Comment: FC<CommentProps> = ({ comment, onSubmit, onDeleteComment }) => {
+  const idCurrentUser = useAppSelector(selectCurrentUser)?._id;
   const [isShowCommentPopup, setIsShowCommentPopup] = useState<boolean>(false);
   const [isShowCommentEdit, setIsShowCommentEdit] = useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>(comment.content);
+  const [isOpenPopUp, setIsOpenPopUp] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +51,14 @@ const Comment: FC<CommentProps> = ({ comment, onSubmit }) => {
     handleCloseInputEdit();
   };
 
+  const handleDeleteComment = async () => {
+    onDeleteComment(comment._id);
+  };
+
+  const handleClosePopUp = () => {
+    setIsOpenPopUp(false);
+  };
+
   return (
     <div className="comment">
       <Avatar src={comment.userComment.avatar} />
@@ -56,22 +71,27 @@ const Comment: FC<CommentProps> = ({ comment, onSubmit }) => {
             </div>
             <p className="comment-text">{comment.content}</p>
           </div>
-          <button className="comment-button" onClick={() => setIsShowCommentPopup((prev) => !prev)}>
-            <BsThreeDots />
-            {isShowCommentPopup && (
-              <div className="comment-popup">
-                <div className="comment-popup-item" onClick={() => setIsShowCommentEdit(true)}>
-                  <FiEdit2 />
-                  <span>Edit Comment</span>
+          {idCurrentUser === comment.userComment._id && (
+            <button
+              className="comment-button"
+              onClick={() => setIsShowCommentPopup((prev) => !prev)}
+            >
+              <BsThreeDots />
+              {isShowCommentPopup && (
+                <div className="comment-popup">
+                  <div className="comment-popup-item" onClick={() => setIsShowCommentEdit(true)}>
+                    <FiEdit2 />
+                    <span>Edit Comment</span>
+                  </div>
+                  <hr />
+                  <div className="comment-popup-item" onClick={() => setIsOpenPopUp(true)}>
+                    <MdDeleteOutline />
+                    <span>Delete Comment</span>
+                  </div>
                 </div>
-                <hr />
-                <div className="comment-popup-item">
-                  <MdDeleteOutline />
-                  <span>Delete Comment</span>
-                </div>
-              </div>
-            )}
-          </button>
+              )}
+            </button>
+          )}
         </>
       )}
 
@@ -99,6 +119,12 @@ const Comment: FC<CommentProps> = ({ comment, onSubmit }) => {
           </form>
         </>
       )}
+      <PopUp
+        isOpen={isOpenPopUp}
+        onClose={handleClosePopUp}
+        onConfirm={handleDeleteComment}
+        type="comment"
+      />
     </div>
   );
 };

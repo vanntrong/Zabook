@@ -1,6 +1,5 @@
 import GalleryImage from 'components/galleryImage/GalleryImage';
 import withLayout from 'components/layout/Layout';
-import RightBar from 'components/rightbar/Rightbar';
 // import SkeletonLoading from 'components/SkeletonLoading';
 import UserInfo from 'components/userinfo/UserInfo';
 import React from 'react';

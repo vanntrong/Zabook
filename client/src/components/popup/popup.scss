@@ -1,0 +1,88 @@
+@import '../../shared/variable.scss';
+
+.pop-up {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background-color: white;
+  width: 500px;
+  padding-bottom: 10px;
+  border-radius: 6px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  .pop-up-top {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: $text-gray-900;
+    }
+
+    .pop-up-top-close {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: $bg-gray-light;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      &:hover {
+        background-color: $bg-gray;
+      }
+    }
+  }
+
+  hr {
+    margin: 0;
+    border: none;
+    border-top: 1px solid $border-color;
+  }
+
+  .pop-up-content {
+    padding: 10px;
+    font-size: 16px;
+    color: $text-gray-900;
+    letter-spacing: 0.5px;
+  }
+
+  .pop-up-button {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0 20px;
+
+    button {
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 6px;
+      padding: 8px 15px;
+      text-align: center;
+      cursor: pointer;
+
+      &.pop-up-button-cancel {
+        background-color: $bg-gray-light;
+        color: $text-gray-600;
+        &:hover {
+          background-color: $bg-gray;
+        }
+      }
+
+      &.pop-up-button-confirm {
+        color: white;
+        background-color: $blue-500;
+
+        &:hover {
+          background-color: rgba($color: $blue-500, $alpha: 0.8);
+        }
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@ import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading
 import Notification from 'components/notification/Notification';
 import { Picker } from 'emoji-mart';
 import React, { FC, useState } from 'react';
-import { assetsType, formPostData, PostType, UserType } from 'shared/types';
+import { formPostData, PostType } from 'shared/types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { postAction } from 'store/slice/postSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
