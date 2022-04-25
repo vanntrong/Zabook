@@ -1,7 +1,10 @@
 @import '../../shared//variable.scss';
 
+.homePage {
+  background-color: $bg-greylight;
+}
 .home-main {
-  background-color: $bg-gray-light;
+  background-color: inherit;
   min-height: 100vh;
   display: flex;
   gap: 0 10px;
@@ -17,7 +20,7 @@
 
     .home-main-right-list {
       background-color: white;
-      border-radius: 15px;
+      border-radius: 6px;
       box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
       hr {

@@ -1,5 +1,8 @@
 import { Avatar, Paper } from '@mui/material';
+import { likePostApi } from 'api/postApi';
+import { Comments } from 'components/comments/Comments';
 import InputEditPostModal from 'components/input/InputPost/inputEditPostModal/InputEditPostModal';
+import PopUp from 'components/popup/PopUp';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
 import { AiOutlineLike } from 'react-icons/ai';
@@ -12,14 +15,8 @@ import { PostType } from 'shared/types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { postAction } from 'store/slice/postSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import './post.scss';
 import PostAssets from './PostAssets';
-import { Comments } from 'components/comments/Comments';
 
 interface PostProps {
   // className?: string;
@@ -33,10 +30,15 @@ const Post: FC<PostProps> = ({ post }) => {
   const [isShowPostModal, setIsShowPostModal] = useState<boolean>(false);
   const [isShowDialog, setIsShowDialog] = useState<boolean>(false);
   const [isShowComments, setIsShowComments] = useState<boolean>(false);
+  const [commentCount, setCommentCount] = useState<number>(post.comments!.length);
+  const [likeCount, setLikeCount] = useState<number>(post.likes!.length);
   const dispatch = useAppDispatch();
-  const handleLikePost = () => {
+
+  const handleLikePost = async () => {
     setIsLiked((prevState) => !prevState);
-    dispatch(postAction.likePostRequest({ id: post._id, data: currentUser!._id }));
+    await likePostApi({ id: post._id, data: currentUser!._id });
+    setLikeCount((prevState) => prevState + (isLiked ? -1 : 1));
+    // dispatch(postAction.likePostRequest({ id: post._id, data: currentUser!._id }));
   };
 
   const handleClickOpenDialog = () => {
@@ -52,6 +54,16 @@ const Post: FC<PostProps> = ({ post }) => {
     handleCloseDialog();
   };
 
+  // this function handle comment count when comment is deleted from component Comments
+  const onDeleteComment = () => {
+    setCommentCount((prev) => prev - 1);
+  };
+
+  // this function handle comment count when comment is deleted from component Comments
+  const onAddComment = () => {
+    setCommentCount((prev) => prev + 1);
+  };
+
   return (
     <>
       <Paper className="post" elevation={0}>
@@ -63,22 +75,24 @@ const Post: FC<PostProps> = ({ post }) => {
               <p className="post-top-user-time">{moment(post?.createdAt).fromNow()}</p>
             </div>
           </div>
-          <div className="post-top-setting" onClick={() => setIsShowModalMenu(!isShowModalMenu)}>
-            <BsThreeDots />
-            {isShowModalMenu && (
-              <div className="post-setting-modal">
-                <div className="post-setting-modal-item" onClick={() => setIsShowPostModal(true)}>
-                  <FiEdit2 />
-                  <span>Edit Post</span>
+          {currentUser?._id === post?.userPost._id && (
+            <div className="post-top-setting" onClick={() => setIsShowModalMenu(!isShowModalMenu)}>
+              <BsThreeDots />
+              {isShowModalMenu && (
+                <div className="post-setting-modal">
+                  <div className="post-setting-modal-item" onClick={() => setIsShowPostModal(true)}>
+                    <FiEdit2 />
+                    <span>Edit Post</span>
+                  </div>
+                  <hr />
+                  <div className="post-setting-modal-item" onClick={handleClickOpenDialog}>
+                    <MdDeleteOutline />
+                    <span>Delete Post</span>
+                  </div>
                 </div>
-                <hr />
-                <div className="post-setting-modal-item" onClick={handleClickOpenDialog}>
-                  <MdDeleteOutline />
-                  <span>Delete Post</span>
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
         <div className="post-content">
           {post?.content.length > 150 ? (
@@ -98,13 +112,13 @@ const Post: FC<PostProps> = ({ post }) => {
             <div className="post-action-item" onClick={handleLikePost}>
               {isLiked ? <FcLike /> : <AiOutlineLike />}
               <span>
-                {post.likes?.length} {post.likes!.length > 1 ? 'Likes' : 'Like'}
+                {likeCount} {likeCount > 1 ? 'Likes' : 'Like'}
               </span>
             </div>
             <div className="post-action-item" onClick={() => setIsShowComments((prev) => !prev)}>
               <FaRegComment />
               <span>
-                {post.comments?.length} {post.comments!.length > 1 ? 'Comments' : 'Comments'}
+                {commentCount} {commentCount > 1 ? 'Comments' : 'Comments'}
               </span>
             </div>
           </div>
@@ -112,32 +126,23 @@ const Post: FC<PostProps> = ({ post }) => {
             <FiShare2 />
           </div>
         </div>
-        {isShowComments && <Comments postId={post._id} />}
+        {isShowComments && (
+          <Comments
+            postId={post._id}
+            onDeleteComment={onDeleteComment}
+            onAddComment={onAddComment}
+          />
+        )}
       </Paper>
       {isShowPostModal && (
         <InputEditPostModal setIsShowPostModal={setIsShowPostModal} post={post} />
       )}
-      <Dialog
-        open={isShowDialog}
+      <PopUp
+        isOpen={isShowDialog}
         onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{'Delete this post?'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Your post will be deleted, you will not be able to undo this action
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <button onClick={handleCloseDialog} className="cancel-delete">
-            Cancel
-          </button>
-          <button onClick={deletePostHandler} autoFocus className="confirm-delete">
-            Delete
-          </button>
-        </DialogActions>
-      </Dialog>
+        onConfirm={deletePostHandler}
+        type="post"
+      />
     </>
   );
 };

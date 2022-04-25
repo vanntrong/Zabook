@@ -16,6 +16,8 @@ import { selectPosts } from 'store/slice/postSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import moment from 'moment';
 import './profilepage.scss';
+import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
+import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 
 const ProfilePage = () => {
   const [user, setUser] = React.useState<null | UserType>(null);
@@ -70,7 +72,7 @@ const ProfilePage = () => {
   return (
     <>
       {!user ? (
-        <p>Loading</p>
+        <SimpleLoading />
       ) : (
         <div className="mainWrapper">
           <div className="profilePage">
@@ -156,7 +158,10 @@ const ProfilePage = () => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px 0', flex: '3' }}>
                 {params.username === currentUser?.username && <CreatePost />}
                 <div className="profile-post-list">
-                  {posts!.length > 0 && posts?.map((post) => <Post key={post._id} post={post} />)}
+                  {isFetchingPosts && <SkeletonLoading type="post" />}
+                  {!isFetchingPosts &&
+                    posts!.length > 0 &&
+                    posts?.map((post) => <Post key={post._id} post={post} />)}
                 </div>
               </div>
             </div>

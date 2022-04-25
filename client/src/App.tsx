@@ -14,6 +14,7 @@ const ProfilePage = lazy(() => import('pages/profile/ProfilePage'));
 const PhotosPage = lazy(() => import('pages/photo/PhotosPage'));
 const FriendsPage = lazy(() => import('pages/friends/FriendsPage'));
 const SettingPage = lazy(() => import('pages/setting/SettingPage'));
+const NotFoundPage = lazy(() => import('pages/404/NotFoundPage'));
 
 function App() {
   const user = useAppSelector(selectCurrentUser);
@@ -51,7 +52,6 @@ function App() {
       {!isFetchingUser && (
         <Suspense fallback={<SimpleLoading />}>
           <Routes>
-            <Route path="/404" element={<p>Not found</p>} />
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
             <Route path="/register" element={!user ? <SignupPage /> : <Navigate to="/" />} />
             <Route path="/" element={!user ? <Navigate to="/login" /> : <HomePage />} />
@@ -69,7 +69,7 @@ function App() {
             <Route path="/groups" element={!user ? <Navigate to="/login" /> : <p>groups</p>} />
             <Route path="/settings" element={!user ? <Navigate to="/login" /> : <SettingPage />} />
             <Route path="/messages" element={!user ? <Navigate to="/login" /> : <p>messages</p>} />
-            <Route path="/404" element={<p>404</p>} />
+            <Route path="/404" element={<NotFoundPage />} />
 
             <Route path="*" element={<Navigate to={'/404'} />} />
           </Routes>

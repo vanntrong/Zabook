@@ -9,6 +9,8 @@ export const updateCommentApi = async (
   data: { content: string }
 ): Promise<commentType> => axiosClient.put(`posts/comment/${id}`, data);
 
+export const deleteCommentApi = async (id: string) => axiosClient.delete(`posts/comment/${id}`);
+
 export const getCommentsApi = async (
   id: string,
   params: { limit: number }

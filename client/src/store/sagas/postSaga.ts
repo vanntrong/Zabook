@@ -51,19 +51,19 @@ function* deletePostSaga({ payload, type }: { payload: string; type: string }) {
   }
 }
 
-function* likePostSaga({ payload, type }: { payload: { data: string; id: string }; type: string }) {
-  try {
-    const post: PostType = yield call(postApi.likePostApi, payload);
-    yield put(postAction.updatePostSuccess(post));
-  } catch (error) {
-    yield put(postAction.likePostFailure(error.response.data));
-  }
-}
+// function* likePostSaga({ payload, type }: { payload: { data: string; id: string }; type: string }) {
+//   try {
+//     const post: PostType = yield call(postApi.likePostApi, payload);
+//     yield put(postAction.updatePostSuccess(post));
+//   } catch (error) {
+//     yield put(postAction.likePostFailure(error.response.data));
+//   }
+// }
 
 export function* postSaga() {
   yield takeLatest(postAction.getCurrentUserPostsRequest.type, getPostsSaga);
   yield takeLatest(postAction.createNewPostRequest.type, createPostSaga);
   yield takeLatest(postAction.updatePostRequest.type, updatePostSaga);
-  yield takeLatest(postAction.likePostRequest.type, likePostSaga);
+  // yield takeLatest(postAction.likePostRequest.type, likePostSaga);
   yield takeLatest(postAction.deletePostRequest.type, deletePostSaga);
 }

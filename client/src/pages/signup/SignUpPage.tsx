@@ -43,11 +43,13 @@ const SignupPage = () => {
 
   const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
     try {
+      SetPending(true);
       await registerUser(data);
       navigate('/login');
     } catch (error) {
       SetError(error.response.data);
     }
+    SetPending(false);
   };
   return (
     <>

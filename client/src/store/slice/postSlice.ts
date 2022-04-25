@@ -75,14 +75,14 @@ export const postSlice = createSlice({
       state.error = null;
     },
 
-    //likePost
-    likePostRequest: (state, action: PayloadAction<{ id: string; data: string }>) => {
-      state.pending = true;
-    },
-    likePostFailure: (state, action: PayloadAction<string>) => {
-      state.pending = false;
-      state.error = action.payload;
-    },
+    // //likePost
+    // likePostRequest: (state, action: PayloadAction<{ id: string; data: string }>) => {
+    //   state.pending = true;
+    // },
+    // likePostFailure: (state, action: PayloadAction<string>) => {
+    //   state.pending = false;
+    //   state.error = action.payload;
+    // },
   },
 });
 

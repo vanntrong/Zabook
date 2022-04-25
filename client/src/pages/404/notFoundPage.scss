@@ -1,0 +1,69 @@
+@import '../../shared/variable.scss';
+.notFoundPage {
+  .notFoundPage-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+    .notFoundPage-img {
+      width: 200px;
+      height: auto;
+      margin-left: auto;
+      margin-right: auto;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .notFoundPage-title {
+      font-size: 30px;
+      font-weight: 700;
+      color: $text-gray-900;
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 15px;
+    }
+    .notFoundPage-desc {
+      font-size: 14px;
+      color: $text-gray-500;
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 15px;
+    }
+    .notFoundPage-redirect {
+      button {
+        display: block;
+        margin: 0 auto;
+        padding: 15px 20px;
+        color: white;
+        font-weight: 700;
+        border-radius: 6px;
+        letter-spacing: 0.5px;
+        background-color: $blue-500;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $tablet-screen) {
+  .notFoundPage .notFoundPage-wrapper .notFoundPage-title {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+@media screen and (min-width: $ipad-screen) {
+  .notFoundPage-wrapper {
+    padding-left: 120px;
+    padding-right: 120px;
+  }
+  .notFoundPage .notFoundPage-wrapper .notFoundPage-title {
+    font-size: 36px;
+  }
+}
+
+@media screen and (min-width: $laptop-screen) {
+  .notFoundPage-wrapper {
+    padding-top: 100px;
+  }
+}
