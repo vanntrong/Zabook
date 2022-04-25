@@ -178,3 +178,19 @@ export async function getCommentsHandler(req, res) {
     errorController.serverErrorHandler(error, res);
   }
 }
+
+export async function deleteCommentHandler(req, res) {
+  try {
+    const existingComment = await Comment.findById(req.params.commentId);
+    if (!existingComment) {
+      return res.status(404).json("Comment not found");
+    }
+    if (existingComment.userComment.toString() !== req.user.id) {
+      return res.status(403).json("You are not allowed to delete this comment");
+    }
+    await existingComment.delete();
+    res.status(200).json("Comment deleted successfully");
+  } catch (error) {
+    errorController.serverErrorHandler(error, res);
+  }
+}

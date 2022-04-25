@@ -63,9 +63,9 @@ export interface PostType {
   };
   assets?: [assets];
   content: string;
-  likes?: [string];
-  shares?: [string];
-  comments?: [
+  likes: [string];
+  shares: [string];
+  comments: [
     {
       _id: string;
       postId: string;
