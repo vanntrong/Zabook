@@ -5,7 +5,7 @@ import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import './searchResultModal.scss';
 
-interface searchResult {
+export interface searchResult {
   avatar: string;
   fullName: string;
   id: string;
@@ -49,6 +49,7 @@ const SearchResultModal: FC<SearchResultModalProps> = ({ handleClose, searchText
       } else {
         const params = {
           q: searchText,
+          limit: 10,
         };
         const res = await searchUserApi(params);
         setSearchResult(res);
@@ -72,7 +73,12 @@ const SearchResultModal: FC<SearchResultModalProps> = ({ handleClose, searchText
             <p className="no-result">No recent searches</p>
           )}
           {searchResult.length > 0 &&
-            searchResult.map((user) => <ResultUser user={user} type="search" key={user._id} />)}
+            searchResult.map(
+              (user) =>
+                user._id !== currentUser!._id && (
+                  <ResultUser user={user} type="search" key={user._id} />
+                )
+            )}
         </div>
       </div>
     </div>

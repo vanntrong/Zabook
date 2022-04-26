@@ -74,6 +74,10 @@ export async function createPostThenReturnWithUserInfo(Model, data, res) {
           select: "fullName username avatar",
         },
         {
+          path: "tagsPeople",
+          select: "_id fullName username",
+        },
+        {
           path: "comments",
           select: "_id",
         },

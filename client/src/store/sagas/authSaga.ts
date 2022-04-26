@@ -43,7 +43,6 @@ function* handleUpdateUser(action: PayloadAction<updateUserPayload>) {
 function* handleAddHistory(action: PayloadAction<{ id: string; historyId: string }>) {
   try {
     const res: [string] = yield call(api.addHistoryApi, action.payload);
-    console.log(res);
     yield put(userAction.addHistorySuccess(res));
   } catch (error) {
     yield put(userAction.addHistoryFailure(error.response.data));

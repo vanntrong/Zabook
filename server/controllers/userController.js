@@ -40,6 +40,10 @@ export async function getPostsHandler(req, res) {
       },
       {
         path: "posts",
+        populate: { path: "tagsPeople", select: "_id fullName username" },
+      },
+      {
+        path: "posts",
         populate: {
           path: "comments",
           select: "_id",

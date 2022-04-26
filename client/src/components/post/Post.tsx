@@ -11,6 +11,7 @@ import { FaRegComment } from 'react-icons/fa';
 import { FcLike } from 'react-icons/fc';
 import { FiEdit2, FiShare2 } from 'react-icons/fi';
 import { MdDeleteOutline } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 import { PostType } from 'shared/types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { postAction } from 'store/slice/postSlice';
@@ -71,7 +72,33 @@ const Post: FC<PostProps> = ({ post }) => {
           <div className="post-top-info">
             <Avatar className="post-top-user-avatar" src={post?.userPost.avatar} alt="" />
             <div className="post-top-user-info">
-              <h3 className="post-top-user-name">{post?.userPost.fullName}</h3>
+              <h3 className="post-top-user-name">
+                {post?.userPost.fullName}
+                {post.tagsPeople.length > 0 && (
+                  <div className="userTags">
+                    {' '}
+                    is with{' '}
+                    <Link to={`/${post.tagsPeople[0].username}`}>
+                      {post.tagsPeople[0].fullName}
+                    </Link>{' '}
+                    {post.tagsPeople.length > 1 && (
+                      <>
+                        <span>and </span>
+                        <div className="userTags-other">
+                          <span>{post.tagsPeople.length - 1} others</span>
+                          <div className="userTags-other-list">
+                            {post.tagsPeople.slice(1).map((user) => (
+                              <Link to={`/${user.username}`} key={user._id}>
+                                {user.fullName}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+              </h3>
               <p className="post-top-user-time">{moment(post?.createdAt).fromNow()}</p>
             </div>
           </div>
