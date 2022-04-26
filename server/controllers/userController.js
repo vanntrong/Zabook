@@ -55,10 +55,33 @@ export async function getPostsHandler(req, res) {
         },
       },
     ]);
+    // const userTagsPost = await Post.find({tagsPeople:{$in:req.params.userId}})
+    const posts = await Post.find({
+      $or: [{ userPost: req.params.userId }, { tagsPeople: { $in: req.params.userId } }],
+    })
+      .populate([
+        {
+          path: "userPost",
+          select: "fullName username avatar",
+        },
+        {
+          path: "tagsPeople",
+          select: "_id fullName username",
+        },
+        {
+          path: "comments",
+          select: "_id",
+        },
+      ])
+      .limit(10)
+      .skip(10 * 0)
+      .sort({ createdAt: -1 });
+
     if (!userPost || userPost.length === 0) {
       return res.status(404).json("Posts not found");
     }
-    res.status(200).json(userPost.posts);
+    // res.status(200).json(userPost.posts);
+    res.status(200).json(posts);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }
