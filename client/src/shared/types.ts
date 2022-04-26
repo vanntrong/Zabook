@@ -63,6 +63,13 @@ export interface PostType {
   };
   assets?: [assets];
   content: string;
+  tagsPeople: [
+    {
+      _id: string;
+      fullName: string;
+      username: string;
+    }
+  ];
   likes: [string];
   shares: [string];
   comments: [
@@ -79,6 +86,7 @@ export interface formPostData {
   content: string;
   // assets?: [any];
   assets?: any;
+  tagsPeople: string[];
 }
 
 export interface assetsType {

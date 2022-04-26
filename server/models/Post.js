@@ -17,6 +17,7 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    tagsPeople: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
     shares: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
     createdAt: {

@@ -5,11 +5,120 @@ import Avatar from '@mui/material/Avatar';
 import DragImage from 'components/dragImage/DragImage';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
 import { Picker } from 'emoji-mart';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { formPostData, UserType } from 'shared/types';
 import { useAppDispatch } from 'store/hooks';
 import { postAction } from 'store/slice/postSlice';
+import { FaUserPlus } from 'react-icons/fa';
+import { IoArrowBackOutline } from 'react-icons/io5';
+import { AiOutlineSearch } from 'react-icons/ai';
 import '../inputpost.scss';
+import { searchResult } from 'components/searchResultModal/SearchResultModal';
+import { searchUserApi } from 'api/userApi';
+import ResultUser from 'components/searchResultModal/resultuser/ResultUser';
+import { AiOutlineClose } from 'react-icons/ai';
+import { Divider } from '@mui/material';
+
+interface SearchPeopleToTagProps {
+  currentUser: UserType | null;
+  onClose: () => void;
+  setTagsPeople: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({ onClose, currentUser, setTagsPeople }) => {
+  const [searchText, setSearchText] = useState('');
+  const [searchResult, setSearchResult] = useState<searchResult[]>([]);
+  const [tagsPeoplePreview, setTagsPeoplePreview] = useState<{ name: string; id: string }[]>([]);
+  const typingTimeout = useRef<any>(null);
+
+  useEffect(() => {
+    if (typingTimeout.current) {
+      clearTimeout(typingTimeout.current);
+    }
+    typingTimeout.current = setTimeout(async () => {
+      if (searchText.trim().length === 0) {
+        setSearchResult([]);
+      } else {
+        const params = {
+          q: searchText,
+          limit: 10,
+        };
+        const res = await searchUserApi(params);
+        setSearchResult(res);
+      }
+    }, 300);
+  }, [searchText]);
+
+  const handleClickResult = (user: any) => {
+    if (tagsPeoplePreview.includes(user._id)) {
+      return;
+    }
+    setTagsPeoplePreview([...tagsPeoplePreview, { id: user._id, name: user.fullName }]);
+    setTagsPeople((prev) => [...prev, user._id]);
+    setSearchResult([]);
+  };
+
+  const handleClickDelete = (id: string) => {
+    setTagsPeoplePreview((prev) => prev.filter((tag) => tag.id !== id));
+    setTagsPeople((prev) => prev.filter((tag) => tag !== id));
+  };
+  return (
+    <div className="inputPostSearchPeople">
+      <div className="inputPostSearchPeople-top">
+        <div onClick={onClose}>
+          <Avatar className="inputPostSearchPeople-top-close">
+            <IoArrowBackOutline />
+          </Avatar>
+        </div>
+        <h3>Tag people</h3>
+      </div>
+      <hr />
+      <div className="inputPostSearchPeople-center">
+        <div className="inputPostSearchPeople-input">
+          <AiOutlineSearch />
+          <input
+            type="text"
+            placeholder="Search for friends"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+        </div>
+        <button className="inputPostSearchPeople-button" onClick={onClose}>
+          Done
+        </button>
+      </div>
+      <div className="inputSearchPeopleResults">
+        {tagsPeoplePreview.length > 0 && (
+          <div className="tagPeople-list">
+            {tagsPeoplePreview.map((item, index) => (
+              <div className="tagPeople-item" key={index}>
+                <h4>{item.name}</h4>
+                <button onClick={() => handleClickDelete(item.id)}>
+                  <AiOutlineClose />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {searchResult.length === 0 && <p>No people found</p>}
+
+        {searchResult.length > 0 &&
+          searchResult.map(
+            (user) =>
+              user._id !== currentUser!._id && (
+                <div className="result" onClick={() => handleClickResult(user)} key={user._id}>
+                  <div className="result-info">
+                    <Avatar src={user.avatar} alt={user.fullName} />
+                    <div className="result-info__name">{user.fullName}</div>
+                  </div>
+                </div>
+              )
+          )}
+      </div>
+    </div>
+  );
+};
 
 interface InputPostModalProps {
   currentUser: UserType | null;
@@ -28,6 +137,8 @@ const InputPostModal: FC<InputPostModalProps> = ({
   const [filesPreview, setFilesPreview] = useState<any[]>([]);
   const [assetsData, setAssetsData] = useState<any[]>([]);
   const [isShowDragAndDrop, setIsShowDragAndDrop] = useState<boolean>(false);
+  const [isShowSearchTagPeople, setIsShowSearchTagPeople] = useState<boolean>(false);
+  const [tagsPeople, setTagsPeople] = useState<string[]>([]);
   const dispatch = useAppDispatch();
 
   const selectEmojiHandler = (emoji: any) => {
@@ -40,6 +151,7 @@ const InputPostModal: FC<InputPostModalProps> = ({
     const data: formPostData = {
       userPost: currentUser!._id,
       content: postContent,
+      tagsPeople,
     };
     if (assetsData.length > 0) {
       data.assets = assetsData;
@@ -79,6 +191,10 @@ const InputPostModal: FC<InputPostModalProps> = ({
         };
       }
     }
+  };
+
+  const handleCloseSearchTagPeople = () => {
+    setIsShowSearchTagPeople(false);
   };
   return (
     <>
@@ -150,6 +266,13 @@ const InputPostModal: FC<InputPostModalProps> = ({
                   onClick={() => showDragAndDrop()}
                 />
               </div>
+              <div style={{ cursor: 'pointer', fontSize: '35px' }}>
+                <FaUserPlus
+                  color="#05f"
+                  fontSize="inherit"
+                  onClick={() => setIsShowSearchTagPeople(true)}
+                />
+              </div>
             </div>
           </div>
           <button type="submit" disabled={postContent.length === 0} className="form-post-submit">
@@ -157,6 +280,14 @@ const InputPostModal: FC<InputPostModalProps> = ({
           </button>
         </div>
       </form>
+      {isShowSearchTagPeople && (
+        <SearchPeopleToTag
+          onClose={handleCloseSearchTagPeople}
+          currentUser={currentUser}
+          setTagsPeople={setTagsPeople}
+        />
+      )}
+
       {isSubmit && <ProgressLoading />}
     </>
   );

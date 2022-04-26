@@ -26,6 +26,49 @@
         font-weight: 700;
         color: $text-gray-900;
         margin-bottom: 5px;
+
+        .userTags {
+          font-weight: 400;
+          display: inline;
+        }
+
+        a {
+          display: inline;
+          font-weight: 700;
+          color: $text-gray-900;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        .userTags-other {
+          font-weight: 700;
+          color: $text-gray-900;
+          display: inline;
+          cursor: pointer;
+          position: relative;
+          &:hover {
+            text-decoration: underline;
+          }
+          &:hover .userTags-other-list {
+            display: flex;
+          }
+          .userTags-other-list {
+            position: absolute;
+            display: none;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            padding: 10px;
+            border-radius: 8px;
+            width: max-content;
+            font-weight: 700;
+            color: $text-gray-900;
+            flex-direction: column;
+            gap: 8px;
+            background-color: rgba($color: #000000, $alpha: 0.6);
+          }
+        }
       }
 
       .post-top-user-time {
@@ -205,7 +248,7 @@
   }
   .post .post-content .post-content-text,
   .post .post-top .post-top-info .post-top-user-name {
-    font-size: 18px;
+    font-size: 14px;
   }
   .post .post-action .post-action-item span {
     font-size: 15px;

@@ -144,6 +144,11 @@
         font-size: 16px;
         font-weight: 500;
       }
+      .form-post-assets-item {
+        display: flex;
+        align-items: center;
+        gap: 0 12px;
+      }
     }
     .form-post-submit {
       margin-top: 20px;
@@ -168,6 +173,127 @@
   }
 }
 
+.inputPostSearchPeople {
+  position: fixed;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding: 5px 10px;
+  border-radius: 12px;
+  width: 500px;
+  height: 800px;
+
+  .inputPostSearchPeople-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #d3d8e0;
+    h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: $text-gray-900;
+    }
+    .inputPostSearchPeople-top-close {
+      background-color: $bg-gray-light;
+      color: $text-gray-700;
+      cursor: pointer;
+      &:hover {
+        background-color: $bg-gray;
+      }
+    }
+  }
+  .inputPostSearchPeople-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 10px;
+
+    .inputPostSearchPeople-input {
+      flex: 1;
+      background-color: $bg-gray;
+      height: 40px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 0 5px;
+      padding: 10px;
+      color: $text-gray-700;
+      font-size: 20px;
+
+      input {
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        font-size: 14px;
+      }
+    }
+
+    .inputPostSearchPeople-button {
+      width: 80px;
+      height: 40px;
+      font-size: 16px;
+      color: $blue-color-300;
+      font-weight: 600;
+      background-color: transparent;
+      cursor: pointer;
+    }
+  }
+  .inputSearchPeopleResults {
+    padding-top: 15px;
+    p {
+      font-size: 16px;
+      font-weight: 600;
+      color: $text-gray-500;
+      text-align: center;
+    }
+    .tagPeople-list {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid $border-color;
+      padding: 10px;
+      flex-wrap: wrap;
+      height: 65px;
+      overflow-y: auto;
+      width: 100%;
+      background-color: white;
+
+      .tagPeople-item {
+        color: $blue-color-300;
+        background-color: #c4dffa;
+        font-weight: 600;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        gap: 0 5px;
+        border-radius: inherit;
+
+        button {
+          color: inherit;
+          font-weight: inherit;
+          background-color: transparent;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          &:hover {
+            background-color: $bg-gray;
+          }
+        }
+      }
+    }
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -178,53 +304,3 @@
     transform: translate(-50%, -50%) scale(1);
   }
 }
-
-// @media screen and (min-width: $mobile-width) {
-//   .form-post {
-//     .user-image {
-//       margin-right: 10px;
-//     }
-
-//     .form-post__group {
-//       .form-post__input {
-//         font-weight: 500;
-//         font-size: 12px;
-//       }
-
-//       .form-post__icon {
-//         display: none;
-//       }
-//     }
-//   }
-// }
-
-// @media screen and (min-width: $tablet-width) {
-//   .form-post {
-//     .user-image {
-//       margin-right: 10px;
-//     }
-
-//     .form-post__group {
-//       .form-post__input {
-//         font-weight: 500;
-//         font-size: 12px;
-//       }
-
-//       .form-post__icon {
-//         margin-left: 10px;
-//       }
-//     }
-//   }
-// }
-
-// @media screen and (min-width: $desktop-width) {
-//   .form-post .form-input__image span {
-//     display: block;
-//   }
-// }
-
-// @media screen and (min-width: $large-desktop-width) {
-//   .form-post {
-//     padding: 10px 20px;
-//   }
-// }
