@@ -6,7 +6,7 @@ interface PostAssetsProps {
   assets: assetsType[];
 }
 
-const PostAssets: FC<PostAssetsProps> = ({ assets }) => {
+const PostAssets: FC<PostAssetsProps> = React.memo(({ assets }) => {
   if (assets?.length < 3) {
     return (
       <div className="wrapper-1">
@@ -47,6 +47,6 @@ const PostAssets: FC<PostAssetsProps> = ({ assets }) => {
     );
   }
   return null;
-};
+});
 
 export default PostAssets;

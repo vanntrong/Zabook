@@ -34,3 +34,12 @@ export const deleteUserApi = (id: string): Promise<any> => axiosClient.delete(`u
 
 export const searchUserApi = (params: searchUserParams): Promise<any[]> =>
   axiosClient.get('search', { params });
+
+export const addHistoryApi = (payload: { id: string; historyId: string }): Promise<[string]> =>
+  axiosClient.put(`users/${payload.id}/searchHistory`, { searchId: payload.historyId });
+
+export const getHistoryInfoApi = (id: string): Promise<any> =>
+  axiosClient.get(`users/${id}/searchHistory`);
+
+export const deleteHistoryApi = (payload: { id: string; historyId: string }): Promise<[string]> =>
+  axiosClient.delete(`users/${payload.id}/searchHistory/${payload.historyId}`);

@@ -32,12 +32,31 @@ function* handleLogout() {
 
 function* handleUpdateUser(action: PayloadAction<updateUserPayload>) {
   try {
-    console.log(action.payload);
     const updatedUser: UserType = yield call(api.updateUserApi, action.payload);
     yield put(userAction.setUser(updatedUser));
     History.push('/');
   } catch (error) {
     yield put(userAction.updateUserFailure(error.response.data));
+  }
+}
+
+function* handleAddHistory(action: PayloadAction<{ id: string; historyId: string }>) {
+  try {
+    const res: [string] = yield call(api.addHistoryApi, action.payload);
+    console.log(res);
+    yield put(userAction.addHistorySuccess(res));
+  } catch (error) {
+    yield put(userAction.addHistoryFailure(error.response.data));
+  }
+}
+
+function* handleDeleteHistory(action: PayloadAction<{ id: string; historyId: string }>) {
+  try {
+    const res: [string] = yield call(api.deleteHistoryApi, action.payload);
+    console.log(res);
+    yield put(userAction.deleteHistorySuccess(res));
+  } catch (error) {
+    yield put(userAction.deleteHistoryFailure(error.response.data));
   }
 }
 
@@ -58,4 +77,6 @@ function* watchLoginFlow() {
 export function* userSaga() {
   yield fork(watchLoginFlow);
   yield takeLatest(userAction.updateUserRequest.type, handleUpdateUser);
+  yield takeLatest(userAction.addHistoryRequest.type, handleAddHistory);
+  yield takeLatest(userAction.deleteHistoryRequest.type, handleDeleteHistory);
 }
