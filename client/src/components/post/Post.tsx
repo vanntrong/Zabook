@@ -4,7 +4,7 @@ import { Comments } from 'components/comments/Comments';
 import InputEditPostModal from 'components/input/InputPost/inputEditPostModal/InputEditPostModal';
 import PopUp from 'components/popup/PopUp';
 import moment from 'moment';
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { AiOutlineLike } from 'react-icons/ai';
 import { BsThreeDots } from 'react-icons/bs';
 import { FaRegComment } from 'react-icons/fa';
@@ -55,14 +55,14 @@ const Post: FC<PostProps> = ({ post }) => {
   };
 
   // this function handle comment count when comment is deleted from component Comments
-  const onDeleteComment = () => {
+  const onDeleteComment = useCallback(() => {
     setCommentCount((prev) => prev - 1);
-  };
+  }, []);
 
   // this function handle comment count when comment is deleted from component Comments
-  const onAddComment = () => {
+  const onAddComment = useCallback(() => {
     setCommentCount((prev) => prev + 1);
-  };
+  }, []);
 
   return (
     <>

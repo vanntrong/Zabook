@@ -113,3 +113,50 @@ export async function searchUserHandler(req, res) {
     errorController.serverErrorHandler(error, res);
   }
 }
+
+export async function addHistorySearchHandler(req, res) {
+  try {
+    if (req.user.id !== req.params.userId) {
+      return res.status(403).json("You are not allowed to add history search");
+    }
+    const newUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      { $push: { historySearch: req.body.searchId, $position: 0 } },
+      { new: true }
+    );
+    res.status(200).json(newUser.historySearch);
+  } catch (error) {
+    errorController.serverErrorHandler(error, res);
+  }
+}
+
+export async function getHistoryInfo(req, res) {
+  try {
+    if (req.user.id !== req.params.userId) {
+      return res.status(403).json("You are not allowed to get history info");
+    }
+    const user = await User.findById(req.params.userId).populate({
+      path: "historySearch",
+      select: "fullName username avatar",
+    });
+    res.status(200).json(user.historySearch);
+  } catch (error) {
+    errorController.serverErrorHandler(error, res);
+  }
+}
+
+export async function deleteHistoryHandler(req, res) {
+  try {
+    if (req.user.id !== req.params.userId) {
+      return res.status(403).json("You are not allowed to delete history");
+    }
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      { $pull: { historySearch: req.params.historyId } },
+      { new: true }
+    );
+    res.status(200).json(user.historySearch);
+  } catch (error) {
+    errorController.serverErrorHandler(error, res);
+  }
+}

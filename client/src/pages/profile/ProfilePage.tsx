@@ -82,7 +82,7 @@ const ProfilePage = () => {
                 <div className="profile-about">
                   <h2>About</h2>
                   <div className="profile-bio">
-                    <p>{user && user!.bio!.length > 0 ? user!.bio : 'No bio yet'}</p>
+                    <p>{user && user.bio ? user.bio : 'No bio yet'}</p>
                   </div>
                   <hr />
                   <div className="profile-info-list">

@@ -18,6 +18,13 @@ router.get("/:username/profile", verifyToken, userController.getOtherUserProfile
 
 //add and remove friends
 router.put("/:userId/friends", verifyToken, userController.addAndRemoveFriendHandler);
-// router.get("/search/", verifyToken, userController.searchUserHandler);
 
+//add user to searchHistory
+router.put("/:userId/searchHistory", verifyToken, userController.addHistorySearchHandler);
+
+//get searchHistory info
+router.get("/:userId/searchHistory", verifyToken, userController.getHistoryInfo);
+
+//delete searchHistory
+router.delete("/:userId/searchHistory/:historyId", verifyToken, userController.deleteHistoryHandler);
 export default router;

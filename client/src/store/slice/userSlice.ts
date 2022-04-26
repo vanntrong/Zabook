@@ -50,6 +50,30 @@ export const userSlice = createSlice({
       state.logging = false;
       state.error = action.payload;
     },
+
+    addHistoryRequest(state, action: PayloadAction<{ id: string; historyId: string }>) {
+      state.logging = true;
+    },
+    addHistorySuccess(state, action: PayloadAction<[string]>) {
+      state.logging = false;
+      state.currentUser!.historySearch = action.payload;
+    },
+    addHistoryFailure(state, action: PayloadAction<string>) {
+      state.logging = false;
+      state.error = action.payload;
+    },
+
+    deleteHistoryRequest(state, action: PayloadAction<{ id: string; historyId: string }>) {
+      state.logging = true;
+    },
+    deleteHistorySuccess(state, action: PayloadAction<[string]>) {
+      state.logging = false;
+      state.currentUser!.historySearch = action.payload;
+    },
+    deleteHistoryFailure(state, action: PayloadAction<string>) {
+      state.logging = false;
+      state.error = action.payload;
+    },
   },
 });
 
