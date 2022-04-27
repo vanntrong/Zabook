@@ -33,29 +33,28 @@ export async function deleteUserHandler(req, res) {
 
 export async function getPostsHandler(req, res) {
   try {
-    const userPost = await User.findById(req.params.userId).populate([
-      {
-        path: "posts",
-        populate: { path: "userPost", select: "fullName username avatar" },
-      },
-      {
-        path: "posts",
-        populate: { path: "tagsPeople", select: "_id fullName username" },
-      },
-      {
-        path: "posts",
-        populate: {
-          path: "comments",
-          select: "_id",
-        },
-        options: {
-          limit: 10,
-          skip: 10 * 0,
-          sort: { createdAt: -1 },
-        },
-      },
-    ]);
-    // const userTagsPost = await Post.find({tagsPeople:{$in:req.params.userId}})
+    // const userPost = await User.findById(req.params.userId).populate([
+    //   {
+    //     path: "posts",
+    //     populate: { path: "userPost", select: "fullName username avatar" },
+    //   },
+    //   {
+    //     path: "posts",
+    //     populate: { path: "tagsPeople", select: "_id fullName username" },
+    //   },
+    //   {
+    //     path: "posts",
+    //     populate: {
+    //       path: "comments",
+    //       select: "_id",
+    //     },
+    //     options: {
+    //       limit: 10,
+    //       skip: 10 * 0,
+    //       sort: { createdAt: -1 },
+    //     },
+    //   },
+    // ]);
     const posts = await Post.find({
       $or: [{ userPost: req.params.userId }, { tagsPeople: { $in: req.params.userId } }],
     })
@@ -77,7 +76,7 @@ export async function getPostsHandler(req, res) {
       .skip(10 * 0)
       .sort({ createdAt: -1 });
 
-    if (!userPost || userPost.length === 0) {
+    if (!posts || posts.length === 0) {
       return res.status(404).json("Posts not found");
     }
     // res.status(200).json(userPost.posts);
@@ -100,32 +99,17 @@ export async function getOtherUserProfileHandler(req, res) {
   }
 }
 
-export async function addAndRemoveFriendHandler(req, res) {
+export async function getFriendListHandler(req, res) {
   try {
-    //find user
-    const currentUser = await User.findById(req.params.userId);
-    if (!currentUser) {
-      return res.status(404).json("User not found");
-    }
-    if (req.user.id !== currentUser._id.toString()) {
-      return res.status(403).json("You are not allowed to add or remove friend");
-    }
-    const friend = await User.findById(req.body.friendId);
-    if (!friend) {
-      return res.status(404).json("Friend not found");
-    }
-    //if friend is not in current user's friend list
-    if (!currentUser.friends.includes(friend._id.toString())) {
-      await currentUser.updateOne({ $push: { friends: friend._id } });
-      await friend.updateOne({ $push: { friends: currentUser._id } });
-      res.status(200).json("Friend added");
-    }
-    //if friend is in current user's friend list
-    if (currentUser.friends.includes(friend._id.toString())) {
-      await currentUser.updateOne({ $pull: { friends: friend._id } });
-      await friend.updateOne({ $pull: { friends: currentUser._id } });
-      res.status(200).json("Friend removed");
-    }
+    const friendList = await User.findById(req.params.userId)
+      .populate({
+        path: "friends",
+        select: "fullName username avatar email",
+      })
+      .limit(20)
+      .skip(20 * req.query.page)
+      .sort({ fullName: 1 });
+    res.status(200).json(friendList.friends);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }

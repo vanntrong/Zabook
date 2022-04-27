@@ -16,8 +16,8 @@ router.get("/:userId/posts", verifyToken, userController.getPostsHandler);
 //get profile friend
 router.get("/:username/profile", verifyToken, userController.getOtherUserProfileHandler);
 
-//add and remove friends
-router.put("/:userId/friends", verifyToken, userController.addAndRemoveFriendHandler);
+//get Friend List
+router.get("/:userId/friends", verifyToken, userController.getFriendListHandler);
 
 //add user to searchHistory
 router.put("/:userId/searchHistory", verifyToken, userController.addHistorySearchHandler);
