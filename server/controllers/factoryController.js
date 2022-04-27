@@ -34,7 +34,7 @@ export async function deleteOne(Model, id, res) {
   return res.status(204).json("Document deleted");
 }
 
-export async function findOne(Model, filter, popOptions) {
+export async function findOne(Model, filter, popOptions = null) {
   let query = Model.findOne(filter);
   if (popOptions) query = query.populate(popOptions);
   const doc = await query;

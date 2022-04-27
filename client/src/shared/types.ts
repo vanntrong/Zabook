@@ -106,3 +106,27 @@ export interface commentType {
   content: string;
   createdAt: Date;
 }
+
+export interface friendRequestType {
+  _id: string;
+  requester: {
+    _id: string;
+    avatar: string;
+    fullName: string;
+    id: string;
+  };
+  receiver: string;
+  status: number;
+  createdAt: Date;
+
+  id: string;
+}
+
+export interface friendType {
+  avatar: string;
+  email: string;
+  fullName: string;
+  id?: string;
+  username: string;
+  _id: string;
+}

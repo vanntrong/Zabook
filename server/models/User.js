@@ -48,7 +48,6 @@ const userSchema = mongoose.Schema(
     },
     bio: String,
     school: String,
-    // posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     historySearch: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     createdAt: {

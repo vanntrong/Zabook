@@ -1,16 +1,58 @@
 import { Avatar } from '@mui/material';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-// import { useParams } from 'react-router-dom';
 import { UserType } from 'shared/types';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+import { AiOutlineMessage } from 'react-icons/ai';
 import './userinfo.scss';
+import { useAppSelector } from 'store/hooks';
+import { selectCurrentUser } from 'store/slice/userSlice';
+import {
+  deleteFriendRequestApi,
+  getFriendRequestApi,
+  sendFriendRequestApi,
+} from 'api/friendRequestApi';
+import CircularProgress from '@mui/material/CircularProgress';
+import { BiUserCheck } from 'react-icons/bi';
+import { BiUserX } from 'react-icons/bi';
 
 interface UserInfoProps {
   user: UserType | null;
 }
 
 const UserInfo: FC<UserInfoProps> = ({ user }) => {
-  // const userNameParams = useParams().username;
+  const currentUser = useAppSelector(selectCurrentUser);
+  const [isSendFriendRequest, setIsSendFriendRequest] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+
+  useEffect(() => {
+    const getFriendRequest = async () => {
+      const res = await getFriendRequestApi({ requester: currentUser!._id, receiver: user!._id });
+      if (res.status === 'request not found') {
+        setIsSendFriendRequest(false);
+      } else {
+        setIsSendFriendRequest(true);
+      }
+    };
+    getFriendRequest();
+  }, [currentUser, user]);
+
+  const sendFriendRequestHandler = async () => {
+    setIsPending(true);
+    const res = await sendFriendRequestApi({ requester: currentUser!._id, receiver: user!._id });
+    if (res) {
+      setIsPending(false);
+      setIsSendFriendRequest(true);
+    } else {
+      setIsPending(false);
+    }
+  };
+
+  const cancelFriendRequestHandler = async () => {
+    await deleteFriendRequestApi({ requester: currentUser!._id, receiver: user!._id });
+    setIsSendFriendRequest(false);
+  };
+
   return (
     <>
       <div className="userInfo">
@@ -24,6 +66,31 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
               <h2>{user?.fullName}</h2>
               <p>{user?.email}</p>
             </div>
+            {currentUser!.username !== user?.username && (
+              <div className="userInfo-action">
+                {currentUser?.friends.includes(user!._id) ? (
+                  <button className="userInfo-addFriend">
+                    <BiUserCheck /> Friends
+                  </button>
+                ) : !isSendFriendRequest ? (
+                  <button className="userInfo-addFriend" onClick={sendFriendRequestHandler}>
+                    {isPending ? (
+                      <CircularProgress size={20} color="inherit" />
+                    ) : (
+                      <AiOutlineUserAdd />
+                    )}{' '}
+                    Add Friend
+                  </button>
+                ) : (
+                  <button className="userInfo-addFriend" onClick={cancelFriendRequestHandler}>
+                    <BiUserX /> Cancel Request
+                  </button>
+                )}
+                <button className="userInfo-sendMessage">
+                  <AiOutlineMessage /> Send Message
+                </button>
+              </div>
+            )}
           </div>
         </div>
         <hr />

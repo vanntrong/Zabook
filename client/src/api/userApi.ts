@@ -1,7 +1,14 @@
 import axiosClient from './index';
 import { axiosAuthClient } from './index';
 
-import { LoginFormData, SignUpFormData, UserType, updateUserFormType } from '../shared/types';
+import {
+  LoginFormData,
+  SignUpFormData,
+  UserType,
+  updateUserFormType,
+  friendType,
+} from '../shared/types';
+import { FriendInfoProps } from 'pages/friends/FriendsPage';
 
 interface loginResponse {
   token: string;
@@ -43,3 +50,6 @@ export const getHistoryInfoApi = (id: string): Promise<any> =>
 
 export const deleteHistoryApi = (payload: { id: string; historyId: string }): Promise<[string]> =>
   axiosClient.delete(`users/${payload.id}/searchHistory/${payload.historyId}`);
+
+export const getFriendListApi = (id: string, params: { page: number }): Promise<friendType[]> =>
+  axiosClient.get(`users/${id}/friends`, { params });

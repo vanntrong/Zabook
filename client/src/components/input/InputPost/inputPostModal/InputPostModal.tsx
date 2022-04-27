@@ -218,7 +218,7 @@ const InputPostModal: FC<InputPostModalProps> = ({
           <div className="form-post-content">
             <textarea
               rows={5}
-              placeholder="What's on your mind, Trong?"
+              placeholder={`What's on your mind, ${currentUser?.lastName}?`}
               autoFocus
               value={postContent}
               onChange={(e) => setPostContent(e.target.value)}

@@ -1,0 +1,51 @@
+import { Avatar } from '@mui/material';
+import { acceptFriendRequestApi } from 'api/friendRequestApi';
+import moment from 'moment';
+import React, { FC, useState } from 'react';
+import { friendRequestType } from 'shared/types';
+
+import './friendRequest.scss';
+
+interface FriendRequestProps {
+  friendRequest: friendRequestType;
+  setFriendsRequest: React.Dispatch<React.SetStateAction<friendRequestType[]>>;
+}
+
+const FriendRequest: FC<FriendRequestProps> = ({ friendRequest, setFriendsRequest }) => {
+  const [isAccept, setIsAccept] = useState(false);
+  const confirmFriendRequestHandler = async () => {
+    const res = await acceptFriendRequestApi(friendRequest._id);
+    if (res) {
+      setIsAccept(true);
+      setTimeout(() => {
+        setFriendsRequest((prevState) => prevState.filter((fr) => fr._id !== friendRequest._id));
+      }, 1000);
+    }
+  };
+  return (
+    <div className="friend-request">
+      <div className="friend-request-info">
+        <Avatar className="friend-request-avatar" src={friendRequest.requester.avatar} alt="" />
+        <div className="friend-request-name">
+          <h4>{friendRequest.requester.fullName}</h4>
+          <span>{moment(friendRequest.createdAt).format('DD/MM/YYYY')}</span>
+        </div>
+      </div>
+      {isAccept ? (
+        <p className="friend-request-accepted">Request Accepted</p>
+      ) : (
+        <div className="friend-request-action">
+          <button
+            className="friend-request-button friend-request-button-confirm"
+            onClick={confirmFriendRequestHandler}
+          >
+            Confirm
+          </button>
+          <button className="friend-request-button friend-request-button-delete">Delete</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default FriendRequest;
