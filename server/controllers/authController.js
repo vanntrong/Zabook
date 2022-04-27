@@ -47,7 +47,7 @@ export async function registerHandler(req, res) {
     );
     //2. if user exists, return error
     if (existingUser) {
-      return res.status(400).json("User already exists");
+      return errorController.errorHandler(res, "User already exists", 400);
     }
     //3. if user does not exist, create user
     if (!existingUser) {
@@ -71,13 +71,13 @@ export async function loginHandler(req, res) {
     );
     //2. if user not exists, return error
     if (!existingUser) {
-      res.status(404).json("Wrong username or password");
+      return errorController.errorHandler(res, "Wrong username or password", 404);
     }
     //3. if user exists, check password
     if (existingUser) {
       const isPasswordValid = comparePassword(data.password, existingUser.password);
       if (!isPasswordValid) {
-        res.status(404).json("Wrong username or password");
+        return errorController.errorHandler(res, "Wrong username or password", 404);
       }
       if (isPasswordValid) {
         const { password, ...other } = existingUser._doc;
@@ -96,18 +96,18 @@ export async function changePasswordHandler(req, res) {
     const data = req.body;
     //check userId in params not equal to userId in token
     if (req.params.userId !== req.user.id) {
-      return res.status(403).json("You are not allow to change this user's password");
+      return errorController.errorHandler(res, "You are not allow to change this user's password", 401);
     }
     //1. find user by params.userId
     const user = await factoryController.findOne(User, { _id: req.params.userId }, null);
     //2. if user not exists, return error
     if (!user) {
-      return res.status(404).json("No user with this id");
+      return errorController.errorHandler(res, "No user with this id", 404);
     }
     //3. if user exists, check password
     const isPasswordValid = comparePassword(data.oldPassword, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json("Invalid password");
+      return errorController.errorHandler(res, "Invalid password", 404);
     }
     if (isPasswordValid) {
       const hashedPassword = hashingPassword(data.newPassword);
@@ -124,7 +124,7 @@ export async function getUserHandler(req, res) {
   try {
     const user = await factoryController.findOne(User, { _id: req.user.id }, null);
     if (!user) {
-      return res.status(404).json("User not found");
+      return errorController.errorHandler(res, "User not found", 404);
     }
     const { password, ...other } = user._doc;
     res.status(200).json({ ...other });

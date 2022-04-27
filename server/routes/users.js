@@ -27,4 +27,7 @@ router.get("/:userId/searchHistory", verifyToken, userController.getHistoryInfo)
 
 //delete searchHistory
 router.delete("/:userId/searchHistory/:historyId", verifyToken, userController.deleteHistoryHandler);
+
+//delete friend
+router.delete("/:userId/friend/:friendId", verifyToken, userController.deleteFriendHandler);
 export default router;

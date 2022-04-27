@@ -2,22 +2,19 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import CloseIcon from '@mui/icons-material/Close';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 import Avatar from '@mui/material/Avatar';
+import { searchUserApi } from 'api/userApi';
 import DragImage from 'components/dragImage/DragImage';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
+import { searchResult } from 'components/searchResultModal/SearchResultModal';
 import { Picker } from 'emoji-mart';
 import React, { FC, useEffect, useRef, useState } from 'react';
+import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai';
+import { FaUserPlus } from 'react-icons/fa';
+import { IoArrowBackOutline } from 'react-icons/io5';
 import { formPostData, UserType } from 'shared/types';
 import { useAppDispatch } from 'store/hooks';
 import { postAction } from 'store/slice/postSlice';
-import { FaUserPlus } from 'react-icons/fa';
-import { IoArrowBackOutline } from 'react-icons/io5';
-import { AiOutlineSearch } from 'react-icons/ai';
 import '../inputpost.scss';
-import { searchResult } from 'components/searchResultModal/SearchResultModal';
-import { searchUserApi } from 'api/userApi';
-import ResultUser from 'components/searchResultModal/resultuser/ResultUser';
-import { AiOutlineClose } from 'react-icons/ai';
-import { Divider } from '@mui/material';
 
 interface SearchPeopleToTagProps {
   currentUser: UserType | null;

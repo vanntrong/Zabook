@@ -6,7 +6,7 @@ interface PopUpProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  type: 'comment' | 'post';
+  type: 'comment' | 'post' | 'friend';
 }
 
 const PopUp: FC<PopUpProps> = ({ isOpen, onClose, onConfirm, type }) => {
@@ -15,14 +15,15 @@ const PopUp: FC<PopUpProps> = ({ isOpen, onClose, onConfirm, type }) => {
       {isOpen ? (
         <div className="pop-up">
           <div className="pop-up-top">
-            <h2>Delete {type === 'comment' ? 'Comment' : 'Post'}?</h2>
+            <h2>Delete {type === 'comment' ? 'Comment' : type === 'post' ? 'Post' : 'Friend'}?</h2>
             <div className="pop-up-top-close" onClick={onClose}>
               <AiOutlineClose />
             </div>
           </div>
           <hr />
           <p className="pop-up-content">
-            Are you sure you want to delete this {type === 'comment' ? 'Comment' : 'Post'}?
+            Are you sure you want to delete this{' '}
+            {type === 'comment' ? 'Comment' : type === 'post' ? 'Post' : 'Friend'}?
           </p>
           <div className="pop-up-button">
             <button className="pop-up-button-cancel" onClick={onClose}>

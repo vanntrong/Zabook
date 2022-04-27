@@ -74,6 +74,18 @@ export const userSlice = createSlice({
       state.logging = false;
       state.error = action.payload;
     },
+
+    deleteFriendRequest(state, action: PayloadAction<{ id: string; friendId: string }>) {
+      state.logging = true;
+    },
+    deleteFriendSuccess(state, action: PayloadAction<[string]>) {
+      state.logging = false;
+      state.currentUser!.friends = action.payload;
+    },
+    deleteFriendFailure(state, action: PayloadAction<string>) {
+      state.logging = false;
+      state.error = action.payload;
+    },
   },
 });
 

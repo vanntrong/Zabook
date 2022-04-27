@@ -1,5 +1,5 @@
 import { Avatar } from '@mui/material';
-import { acceptFriendRequestApi } from 'api/friendRequestApi';
+import { acceptFriendRequestApi, declineFriendRequestApi } from 'api/friendRequestApi';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
 import { friendRequestType } from 'shared/types';
@@ -13,10 +13,22 @@ interface FriendRequestProps {
 
 const FriendRequest: FC<FriendRequestProps> = ({ friendRequest, setFriendsRequest }) => {
   const [isAccept, setIsAccept] = useState(false);
+  const [isRemove, setIsRemove] = useState(false);
+
   const confirmFriendRequestHandler = async () => {
     const res = await acceptFriendRequestApi(friendRequest._id);
     if (res) {
       setIsAccept(true);
+      setTimeout(() => {
+        setFriendsRequest((prevState) => prevState.filter((fr) => fr._id !== friendRequest._id));
+      }, 1000);
+    }
+  };
+
+  const declineFriendRequestHandler = async () => {
+    const res = await declineFriendRequestApi(friendRequest._id);
+    if (res) {
+      setIsRemove(true);
       setTimeout(() => {
         setFriendsRequest((prevState) => prevState.filter((fr) => fr._id !== friendRequest._id));
       }, 1000);
@@ -31,9 +43,10 @@ const FriendRequest: FC<FriendRequestProps> = ({ friendRequest, setFriendsReques
           <span>{moment(friendRequest.createdAt).format('DD/MM/YYYY')}</span>
         </div>
       </div>
-      {isAccept ? (
-        <p className="friend-request-accepted">Request Accepted</p>
-      ) : (
+      {isAccept && <p className="friend-request-accepted">Request Accepted</p>}
+      {isRemove && <p className="friend-request-accepted">Request Removed</p>}
+
+      {!isAccept && !isRemove && (
         <div className="friend-request-action">
           <button
             className="friend-request-button friend-request-button-confirm"
@@ -41,7 +54,12 @@ const FriendRequest: FC<FriendRequestProps> = ({ friendRequest, setFriendsReques
           >
             Confirm
           </button>
-          <button className="friend-request-button friend-request-button-delete">Delete</button>
+          <button
+            className="friend-request-button friend-request-button-delete"
+            onClick={declineFriendRequestHandler}
+          >
+            Delete
+          </button>
         </div>
       )}
     </div>

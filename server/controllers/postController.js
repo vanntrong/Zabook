@@ -7,7 +7,7 @@ import Comment from "../models/Comment.js";
 export async function createPostHandler(req, res) {
   try {
     if (req.body.userPost !== req.user.id) {
-      return res.status(403).json("You are not allowed to create this post");
+      return errorController.errorHandler(res, "You are not allowed to create this post", 403);
     }
     if (req.body.assets) {
       const results = await Promise.all(
@@ -39,7 +39,7 @@ export async function getPostHandler(req, res) {
       populate: { path: "userComment", select: "fullName username avatar" },
     });
     if (!post) {
-      res.status(404).json("No post with this id");
+      return errorController.errorHandler(res, "Post not found", 404);
     }
     res.status(200).json(post);
   } catch (error) {
@@ -50,7 +50,7 @@ export async function getPostHandler(req, res) {
 export async function updatePostHandler(req, res) {
   try {
     if (req.body.userPost !== req.user.id) {
-      return res.status(403).json("You are not allowed to update this post");
+      return errorController.errorHandler(res, "You are not allowed to update this post", 403);
     }
     await factoryController.updateOne(Post, req.params.postId, { $set: req.body }, res, {
       path: "userPost",
@@ -65,10 +65,10 @@ export async function deletePostHandler(req, res) {
   try {
     const existingPost = await Post.findById(req.params.postId);
     if (!existingPost) {
-      return res.status(404).json("Post not found");
+      return errorController.errorHandler(res, "Post not found", 404);
     }
     if (existingPost.userPost.toString() !== req.user.id) {
-      return res.status(403).json("You are not allowed to delete this post");
+      return errorController.errorHandler(res, "You are not allowed to delete this post", 403);
     }
     await Post.findByIdAndDelete(req.params.postId);
     res.status(200).json("Post deleted successfully");
@@ -81,10 +81,10 @@ export async function likePostHandler(req, res) {
   try {
     const existingPost = await Post.findById(req.params.postId);
     if (!existingPost) {
-      return res.status(404).json("Post not found");
+      return errorController.errorHandler(res, "Post not found", 404);
     }
     if (req.body.userId !== req.user.id) {
-      return res.status(403).json("You are not allowed to like this post");
+      return errorController.errorHandler(res, "You are not allowed to like this post", 403);
     }
     if (existingPost.likes.includes(req.body.userId)) {
       existingPost.likes = existingPost.likes.filter((like) => like.toString() !== req.body.userId);
@@ -122,10 +122,10 @@ export async function createCommentHandler(req, res) {
   try {
     const existingPost = await Post.findById(req.params.postId);
     if (!existingPost) {
-      return res.status(404).json("Post not found");
+      return errorController.errorHandler(res, "Post not found", 404);
     }
     if (req.body.userComment !== req.user.id) {
-      return res.status(403).json("You are not allowed to comment on this post");
+      return errorController.errorHandler(res, "You are not allowed to comment this post", 403);
     }
     const data = { ...req.body, postId: req.params.postId };
     await Comment.create(data).then(async (comment) => {
@@ -141,7 +141,6 @@ export async function createCommentHandler(req, res) {
 }
 
 export async function updateCommentHandler(req, res) {
-  console.log(req.body);
   try {
     const newComment = await Comment.findByIdAndUpdate(
       req.params.commentId,
@@ -152,7 +151,7 @@ export async function updateCommentHandler(req, res) {
       select: "fullName username avatar",
     });
     if (!newComment) {
-      return res.status(404).json("Comment not found");
+      return errorController.errorHandler(res, "Comment not found", 404);
     }
     res.status(200).json(newComment);
   } catch (error) {
@@ -171,7 +170,7 @@ export async function getCommentsHandler(req, res) {
       },
     });
     if (!postComment) {
-      return res.status(404).json("No comments found");
+      return errorController.errorHandler(res, "No comments found", 404);
     }
     res.status(200).json(postComment.comments);
   } catch (error) {
@@ -183,10 +182,10 @@ export async function deleteCommentHandler(req, res) {
   try {
     const existingComment = await Comment.findById(req.params.commentId);
     if (!existingComment) {
-      return res.status(404).json("Comment not found");
+      return errorController.errorHandler(res, "Comment not found", 404);
     }
     if (existingComment.userComment.toString() !== req.user.id) {
-      return res.status(403).json("You are not allowed to delete this comment");
+      return errorController.errorHandler(res, "You are not allowed to delete this comment", 403);
     }
     await existingComment.delete();
     res.status(200).json("Comment deleted successfully");

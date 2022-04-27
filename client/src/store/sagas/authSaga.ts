@@ -59,6 +59,15 @@ function* handleDeleteHistory(action: PayloadAction<{ id: string; historyId: str
   }
 }
 
+function* handleDeleteFriend(action: PayloadAction<{ id: string; friendId: string }>) {
+  try {
+    const newFriendList: [string] = yield call(api.deleteFriendApi, action.payload);
+    yield put(userAction.deleteFriendSuccess(newFriendList));
+  } catch (error) {
+    yield put(userAction.deleteFriendFailure(error.response.data));
+  }
+}
+
 function* watchLoginFlow() {
   while (true) {
     const isLoggedIn = Boolean(localStorage.getItem('token'));
@@ -78,4 +87,5 @@ export function* userSaga() {
   yield takeLatest(userAction.updateUserRequest.type, handleUpdateUser);
   yield takeLatest(userAction.addHistoryRequest.type, handleAddHistory);
   yield takeLatest(userAction.deleteHistoryRequest.type, handleDeleteHistory);
+  yield takeLatest(userAction.deleteFriendRequest.type, handleDeleteFriend);
 }

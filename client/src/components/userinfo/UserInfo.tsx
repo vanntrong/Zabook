@@ -1,20 +1,20 @@
 import { Avatar } from '@mui/material';
-import React, { FC, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { UserType } from 'shared/types';
-import { AiOutlineUserAdd } from 'react-icons/ai';
-import { AiOutlineMessage } from 'react-icons/ai';
-import './userinfo.scss';
-import { useAppSelector } from 'store/hooks';
-import { selectCurrentUser } from 'store/slice/userSlice';
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   deleteFriendRequestApi,
   getFriendRequestApi,
   sendFriendRequestApi,
 } from 'api/friendRequestApi';
-import CircularProgress from '@mui/material/CircularProgress';
-import { BiUserCheck } from 'react-icons/bi';
-import { BiUserX } from 'react-icons/bi';
+import Backdrop from 'components/backdrop/Backdrop';
+import PopUp from 'components/popup/PopUp';
+import React, { FC, useEffect, useState } from 'react';
+import { AiOutlineMessage, AiOutlineUserAdd } from 'react-icons/ai';
+import { FiUserCheck, FiUserX } from 'react-icons/fi';
+import { NavLink } from 'react-router-dom';
+import { UserType } from 'shared/types';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectCurrentUser, userAction } from 'store/slice/userSlice';
+import './userinfo.scss';
 
 interface UserInfoProps {
   user: UserType | null;
@@ -24,6 +24,9 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isSendFriendRequest, setIsSendFriendRequest] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [isShowFriendMenu, setIsShowFriendMenu] = useState(false);
+  const [isShowFriendPopup, setIsShowFriendPopup] = useState(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const getFriendRequest = async () => {
@@ -53,6 +56,16 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
     setIsSendFriendRequest(false);
   };
 
+  const deleteFriendHandler = () => {
+    dispatch(userAction.deleteFriendRequest({ id: currentUser!._id, friendId: user!._id }));
+    setIsShowFriendMenu(false);
+    handleClosePopup();
+  };
+
+  const handleClosePopup = () => {
+    setIsShowFriendPopup(false);
+  };
+
   return (
     <>
       <div className="userInfo">
@@ -69,8 +82,22 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
             {currentUser!.username !== user?.username && (
               <div className="userInfo-action">
                 {currentUser?.friends.includes(user!._id) ? (
-                  <button className="userInfo-addFriend">
-                    <BiUserCheck /> Friends
+                  <button
+                    className="userInfo-addFriend"
+                    style={{ position: 'relative' }}
+                    onClick={() => setIsShowFriendMenu(true)}
+                  >
+                    <FiUserCheck /> Friends
+                    {isShowFriendMenu && (
+                      <div className="userInfo-friend-modal">
+                        <div
+                          className="userInfo-friend-modal-item"
+                          onClick={() => setIsShowFriendPopup(true)}
+                        >
+                          <FiUserX /> Delete Friend
+                        </div>
+                      </div>
+                    )}
                   </button>
                 ) : !isSendFriendRequest ? (
                   <button className="userInfo-addFriend" onClick={sendFriendRequestHandler}>
@@ -83,7 +110,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
                   </button>
                 ) : (
                   <button className="userInfo-addFriend" onClick={cancelFriendRequestHandler}>
-                    <BiUserX /> Cancel Request
+                    <FiUserX /> Cancel Request
                   </button>
                 )}
                 <button className="userInfo-sendMessage">
@@ -137,6 +164,18 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
           </NavLink>
         </div>
       </div>
+      <PopUp
+        isOpen={isShowFriendPopup}
+        onClose={handleClosePopup}
+        onConfirm={deleteFriendHandler}
+        type="friend"
+      />
+      <Backdrop
+        isShow={isShowFriendPopup}
+        setIsShow={setIsShowFriendPopup}
+        color="#fff"
+        opacity={0.5}
+      />
     </>
   );
 };

@@ -51,7 +51,7 @@ export async function declineFriendRequestHandler(req, res) {
     if (!friendRequest) {
       return errorController.errorHandler(res, "Friend request not found", 404);
     }
-    if (friendRequest.receiver !== req.user.id) {
+    if (friendRequest.receiver.toString() !== req.user.id) {
       return errorController.errorHandler(res, "You can only decline friend request by yourself", 403);
     }
     if (friendRequest.status !== 0) {
