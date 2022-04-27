@@ -8,7 +8,7 @@ const fullTextSearchVi = fullTextSearch.vi;
 export async function updateUserHandler(req, res) {
   try {
     if (req.params.userId !== req.user.id) {
-      return res.status(403).json("You are not allowed to update this user");
+      return errorController.errorHandler(res, "You are not allowed to update this user", 403);
     }
     if (req.body.avatar) {
       const result = await factoryController.uploadFile(req.body.avatar, "user", "image");
@@ -23,7 +23,7 @@ export async function updateUserHandler(req, res) {
 export async function deleteUserHandler(req, res) {
   try {
     if (req.params.userId !== req.user.id) {
-      return res.status(403).json("You are not allowed to delete this user");
+      return errorController.errorHandler(res, "You are not allowed to delete this user", 403);
     }
     factoryController.deleteOne(User, req.params.userId, res);
   } catch (error) {
@@ -33,28 +33,6 @@ export async function deleteUserHandler(req, res) {
 
 export async function getPostsHandler(req, res) {
   try {
-    // const userPost = await User.findById(req.params.userId).populate([
-    //   {
-    //     path: "posts",
-    //     populate: { path: "userPost", select: "fullName username avatar" },
-    //   },
-    //   {
-    //     path: "posts",
-    //     populate: { path: "tagsPeople", select: "_id fullName username" },
-    //   },
-    //   {
-    //     path: "posts",
-    //     populate: {
-    //       path: "comments",
-    //       select: "_id",
-    //     },
-    //     options: {
-    //       limit: 10,
-    //       skip: 10 * 0,
-    //       sort: { createdAt: -1 },
-    //     },
-    //   },
-    // ]);
     const posts = await Post.find({
       $or: [{ userPost: req.params.userId }, { tagsPeople: { $in: req.params.userId } }],
     })
@@ -77,9 +55,8 @@ export async function getPostsHandler(req, res) {
       .sort({ createdAt: -1 });
 
     if (!posts || posts.length === 0) {
-      return res.status(404).json("Posts not found");
+      return errorController.errorHandler(res, "Posts not found", 404);
     }
-    // res.status(200).json(userPost.posts);
     res.status(200).json(posts);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
@@ -90,7 +67,7 @@ export async function getOtherUserProfileHandler(req, res) {
   try {
     const user = await factoryController.findOne(User, { username: req.params.username }, null);
     if (!user) {
-      return res.status(404).json("User not found");
+      return errorController.errorHandler(res, "User not found", 404);
     }
     const { password, ...other } = user._doc;
     res.status(200).json({ ...other });
@@ -128,7 +105,7 @@ export async function searchUserHandler(req, res) {
 export async function addHistorySearchHandler(req, res) {
   try {
     if (req.user.id !== req.params.userId) {
-      return res.status(403).json("You are not allowed to add history search");
+      return errorController.errorHandler(res, "You are not allowed to add this user to searchHistory", 403);
     }
     const newUser = await User.findByIdAndUpdate(
       req.params.userId,
@@ -144,7 +121,7 @@ export async function addHistorySearchHandler(req, res) {
 export async function getHistoryInfo(req, res) {
   try {
     if (req.user.id !== req.params.userId) {
-      return res.status(403).json("You are not allowed to get history info");
+      return errorController.errorHandler(res, "You are not allowed to get this user's history", 403);
     }
     const user = await User.findById(req.params.userId).populate({
       path: "historySearch",
@@ -159,7 +136,7 @@ export async function getHistoryInfo(req, res) {
 export async function deleteHistoryHandler(req, res) {
   try {
     if (req.user.id !== req.params.userId) {
-      return res.status(403).json("You are not allowed to delete history");
+      return errorController.errorHandler(res, "You are not allowed to delete this user's history", 403);
     }
     const user = await User.findByIdAndUpdate(
       req.params.userId,
@@ -167,6 +144,29 @@ export async function deleteHistoryHandler(req, res) {
       { new: true }
     );
     res.status(200).json(user.historySearch);
+  } catch (error) {
+    errorController.serverErrorHandler(error, res);
+  }
+}
+
+export async function deleteFriendHandler(req, res) {
+  try {
+    if (req.user.id !== req.params.userId) {
+      return errorController.errorHandler(res, "You are not allowed to delete this user's friend", 403);
+    }
+    const currentUser = await User.findById(req.params.userId);
+    const friend = await User.findById(req.params.friendId);
+    if (!currentUser || !friend) {
+      return errorController.errorHandler(res, "User not found", 404);
+    }
+    // const updatedUser = await currentUser.updateOne({ $pull: { friends: req.params.friendId } }, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      { $pull: { friends: req.params.friendId } },
+      { new: true }
+    );
+    await friend.updateOne({ $pull: { friends: req.params.userId } });
+    res.status(200).json(updatedUser.friends);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }

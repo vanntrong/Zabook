@@ -4,7 +4,7 @@ import withLayout from 'components/layout/Layout';
 import CreatePost from 'components/post/createPost/CreatePost';
 import Post from 'components/post/Post';
 import UserInfo from 'components/userinfo/UserInfo';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoLocation } from 'react-icons/go';
 import { GrCaretNext } from 'react-icons/gr';
 import { IoPersonOutline, IoSchoolOutline } from 'react-icons/io5';
@@ -20,9 +20,9 @@ import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
 import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 
 const ProfilePage = () => {
-  const [user, setUser] = React.useState<null | UserType>(null);
-  const [posts, setPosts] = React.useState<PostType[]>([]);
-  const [isFetchingPosts, setIsFetchingPosts] = React.useState<boolean>(true);
+  const [user, setUser] = useState<null | UserType>(null);
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [isFetchingPosts, setIsFetchingPosts] = useState<boolean>(true);
   const currentUserPosts = useAppSelector(selectPosts);
   const navigate = useNavigate();
 

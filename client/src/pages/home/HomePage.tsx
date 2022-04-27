@@ -15,7 +15,6 @@ const HomePage = () => {
   useEffect(() => {
     const getFriendsRequest = async () => {
       const res = await getAllFriendRequestApi({ page: 0 });
-      console.log(res);
       setFriendsRequest(res);
     };
     getFriendsRequest();

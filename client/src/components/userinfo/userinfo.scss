@@ -79,6 +79,28 @@
             }
           }
         }
+        .userInfo-friend-modal {
+          position: absolute;
+          left: 0;
+          top: calc(100% + 10px);
+          background-color: white;
+          color: $text-gray-900;
+          width: 290px;
+          z-index: 99;
+          padding: 10px;
+          border-radius: 8px;
+          box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+          .userInfo-friend-modal-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0 8px;
+            padding: 8px;
+            &:hover {
+              background-color: $bg-greylight;
+            }
+          }
+        }
       }
     }
   }
