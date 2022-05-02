@@ -130,3 +130,19 @@ export interface friendType {
   username: string;
   _id: string;
 }
+
+export interface storyType {
+  _id: string;
+  userPost: {
+    _id: string;
+    avatar: string;
+    username: string;
+    fullName: string;
+  };
+  asset: string;
+  count: number;
+  timing: number;
+  views: [string];
+  createdAt: string;
+  id: string;
+}

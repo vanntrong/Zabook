@@ -29,6 +29,11 @@ const ProfilePage = () => {
   const params = useParams();
   const currentUser = useAppSelector(selectCurrentUser);
 
+  const userPhotos = posts
+    .filter((post, index) => index < 6)
+    .map((post) => post.assets!.map((asset) => asset.url))
+    .flat(Infinity);
+
   useEffect(() => {
     const getFriendProfile = async (username: string) => {
       try {
@@ -48,7 +53,7 @@ const ProfilePage = () => {
   }, [params.username, currentUser, navigate]);
 
   useEffect(() => {
-    document.title = `${user?.firstName} ${user?.lastName} | Zabook`;
+    document.title = `${user?.firstName} ${user?.lastName} | Sociala.`;
     const getPostsOfUser = async (id: string) => {
       const posts: [PostType] = await getPostsApi(id);
       setPosts(posts);
@@ -130,24 +135,15 @@ const ProfilePage = () => {
                     </Link>
                   </div>
                   <div className="profile-preview-photos-list">
-                    <div className="profile-preview-photos-item">
-                      <img src="http://uitheme.net/sociala/images/e-2.jpg" alt="" />
-                    </div>
-                    <div className="profile-preview-photos-item">
-                      <img src="http://uitheme.net/sociala/images/e-3.jpg" alt="" />
-                    </div>
-                    <div className="profile-preview-photos-item">
-                      <img src="http://uitheme.net/sociala/images/e-4.jpg" alt="" />
-                    </div>
-                    <div className="profile-preview-photos-item">
-                      <img src="http://uitheme.net/sociala/images/e-5.jpg" alt="" />
-                    </div>
-                    <div className="profile-preview-photos-item">
-                      <img src="http://uitheme.net/sociala/images/e-2.jpg" alt="" />
-                    </div>
-                    <div className="profile-preview-photos-item">
-                      <img src="http://uitheme.net/sociala/images/e-1.jpg" alt="" />
-                    </div>
+                    {userPhotos.length > 0 ? (
+                      userPhotos.map((photo, index) => (
+                        <div className="profile-preview-photos-item" key={index}>
+                          <img src={photo as string} alt="" />
+                        </div>
+                      ))
+                    ) : (
+                      <p>No Photos</p>
+                    )}
                   </div>
                   <Link to={`/${user?.username}/photos`} className="profile-preview-photos-button">
                     <GrCaretNext />

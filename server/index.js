@@ -10,6 +10,7 @@ import searchRoute from "./routes/search.js";
 import tokenRoute from "./routes/token.js";
 import usersRoute from "./routes/users.js";
 import friendRoute from "./routes/friend.js";
+import storyRoute from "./routes/story.js";
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ app.use("/posts", postRoute);
 app.use("/token", tokenRoute);
 app.use("/search", searchRoute);
 app.use("/friend", friendRoute);
+app.use("/story", storyRoute);
 
 mongoose.connect(process.env.DB_CONNECTION, (err) => {
   if (err) console.log(err);
