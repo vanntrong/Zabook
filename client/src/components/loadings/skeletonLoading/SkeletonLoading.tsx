@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import './skeleton.scss';
 
 interface SkeletonLoadingProps {
-  type: 'post' | 'photo' | 'friend' | 'info';
+  type: 'post' | 'photo' | 'friend' | 'info' | 'story';
 }
 
 const SkeletonLoading: FC<SkeletonLoadingProps> = ({ type }) => {
@@ -59,6 +59,25 @@ const SkeletonLoading: FC<SkeletonLoadingProps> = ({ type }) => {
             <Skeleton variant="text" width={80} height={20} />
             <Skeleton variant="text" width={60} height={20} />
           </div>
+        </div>
+      );
+    case 'story':
+      return (
+        <div className="story-loading">
+          <Stack spacing={15}>
+            <div className="story-loading-wrapper">
+              <Skeleton variant="circular" width={80} height={70} />
+              <div style={{ width: '100%' }}>
+                <Skeleton variant="text" width="50%" height={20} />
+                <Skeleton variant="text" width="30%" height={20} />
+              </div>
+            </div>
+            {/* <div className="story-loading-action">
+              <Skeleton variant="text" width={80} height={20} />
+              <Skeleton variant="text" width={80} height={20} />
+              <Skeleton variant="text" width={80} height={20} />
+            </div> */}
+          </Stack>
         </div>
       );
     default:

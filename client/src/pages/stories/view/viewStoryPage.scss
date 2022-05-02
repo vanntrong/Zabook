@@ -1,0 +1,121 @@
+@import '../../../shared/variable.scss';
+
+.viewStoryPage {
+  height: 100vh;
+  background-color: $bg-gray-light;
+  display: flex;
+  padding-top: calc(90px + 5px);
+
+  .viewStoryPage-sidebar {
+    flex: 1;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 16px;
+    overflow-y: auto;
+    flex-shrink: 0;
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    .viewStoryPage-sidebar-top {
+      h1 {
+        font-size: 24px;
+        color: $text-gray-900;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .viewStoryPage-sidebar-create {
+        h3 {
+          font-size: 18px;
+          color: $text-gray-900;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .create-story {
+          .create-story-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0 10px;
+            .create-story__button {
+              width: 60px;
+              height: 60px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background-color: $bg-gray;
+              border-radius: 50%;
+              font-size: inherit;
+              color: $blue-500;
+            }
+            .create-story-title {
+              font-size: 16px;
+              color: $text-gray-900;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+
+    .viewStoryPage-sidebar-bottom {
+      h2 {
+        font-size: 18px;
+        color: $text-gray-900;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+      .viewStoryPage-slide-list {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+        .viewStoryPage-slide-item {
+          display: flex;
+          align-items: center;
+          gap: 0 10px;
+          cursor: pointer;
+          padding: 10px;
+          border-radius: 8px;
+          &.active {
+            background-color: $bg-gray;
+          }
+          &:hover {
+            background-color: $bg-gray;
+          }
+
+          .viewStoryPage-slide-item-avatar {
+            width: 60px;
+            height: 60px;
+            border: 3px solid $blue-500;
+          }
+
+          .viewStoryPage-slide-item-info {
+            h3 {
+              font-size: 16px;
+              color: $text-gray-900;
+              font-weight: 600;
+              margin-bottom: 5px;
+            }
+            p {
+              font-size: 14px;
+              color: $text-gray-600;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .viewStoryPage-main {
+    flex: 5;
+    background-color: $black-color;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

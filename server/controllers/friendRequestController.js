@@ -91,7 +91,10 @@ export async function getFriendRequestHandler(req, res) {
     const existingFriendRequest = await FriendRequest.findOne({
       requester: req.query.requester,
       receiver: req.query.receiver,
-    });
+    })
+      .limit(10)
+      .skip(10 * req.query.page || 0)
+      .sort({ createdAt: -1 });
     if (!existingFriendRequest) {
       return res.status(200).json({
         status: "request not found",

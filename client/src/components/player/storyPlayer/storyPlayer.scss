@@ -1,0 +1,132 @@
+@import '../../../shared/variable.scss';
+
+.story-player {
+  width: 290px;
+  height: 500px;
+  position: relative;
+  animation: story 0.5s ease-in-out;
+
+  .story-player-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $bg-gray;
+    border-radius: 50%;
+    margin-left: auto;
+    font-size: 23px;
+    color: $text-gray-500;
+    margin-bottom: 3px;
+    cursor: pointer;
+  }
+  .story-player-info {
+    width: 100%;
+    position: absolute;
+    top: 8px;
+    left: 0;
+    padding: 0 10px;
+    z-index: 10;
+    .story-player-timings {
+      width: 100%;
+      height: 5px;
+      display: flex;
+      align-items: center;
+      gap: 0 6px;
+      margin-bottom: 5px;
+
+      .story-player-timings-item {
+        height: 100%;
+        width: 100%;
+        border-radius: 8px;
+        background-color: #cac8c6;
+        position: relative;
+
+        &.active {
+          &::before {
+            content: '';
+            border-radius: inherit;
+            position: absolute;
+            inset: 0;
+            height: 100%;
+            background-color: white;
+            animation: story-player-timings var(--timing) ease-in-out forwards;
+          }
+        }
+      }
+    }
+    .story-player-user {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+
+      .story-player-user-name {
+        margin-left: 8px;
+        display: flex;
+        flex-direction: column;
+        p {
+          font-size: 16px;
+          color: white;
+          font-weight: 600;
+          margin-bottom: 5px;
+        }
+        span {
+          font-size: 13px;
+          font-weight: 500;
+          color: white;
+        }
+      }
+    }
+  }
+  .swiper {
+    height: 100%;
+    .story-player-wrapper {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+  }
+}
+
+@keyframes story {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes story-player-timings {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: $tablet-screen) {
+  .story-player {
+    width: 350px;
+    height: 600px;
+  }
+}
+
+@media screen and (min-width: $ipad-screen) {
+  .story-player {
+    width: 380px;
+    height: 650px;
+  }
+}
+
+@media screen and (min-width: $laptop-screen) {
+  .story-player {
+    width: 500px;
+    height: 100%;
+  }
+}

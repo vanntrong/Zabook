@@ -1,5 +1,6 @@
 import { getProfileApi } from 'api/userApi';
 import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
+import ViewStoryPage from 'pages/stories/view/ViewStoryPage';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
@@ -15,6 +16,7 @@ const PhotosPage = lazy(() => import('pages/photo/PhotosPage'));
 const FriendsPage = lazy(() => import('pages/friends/FriendsPage'));
 const SettingPage = lazy(() => import('pages/setting/SettingPage'));
 const NotFoundPage = lazy(() => import('pages/404/NotFoundPage'));
+const CreateStoryPage = lazy(() => import('pages/stories/create/CreateStoryPage'));
 
 function App() {
   const user = useAppSelector(selectCurrentUser);
@@ -55,17 +57,26 @@ function App() {
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
             <Route path="/register" element={!user ? <SignupPage /> : <Navigate to="/" />} />
             <Route path="/" element={!user ? <Navigate to="/login" /> : <HomePage />} />
-            <Route path="/:username" element={!user ? <Navigate to="/login" /> : <ProfilePage />} />
-            <Route
-              path="/:username/photos"
-              element={!user ? <Navigate to="/login" /> : <PhotosPage />}
-            />
-            <Route
-              path="/:username/friends"
-              element={!user ? <Navigate to="/login" /> : <FriendsPage />}
-            />
+
+            <Route path="/:username">
+              <Route index element={!user ? <Navigate to="/login" /> : <ProfilePage />} />
+              <Route path="photos" element={!user ? <Navigate to="/login" /> : <PhotosPage />} />
+              <Route path="friends" element={!user ? <Navigate to="/login" /> : <FriendsPage />} />
+            </Route>
+
             <Route path="/badges" element={!user ? <Navigate to="/login" /> : <p>Badges</p>} />
-            <Route path="/stories" element={!user ? <Navigate to="/login" /> : <p>stories</p>} />
+
+            <Route path="/stories">
+              <Route index element={!user ? <Navigate to="/login" /> : <p>stories</p>} />
+              <Route
+                path="create"
+                element={!user ? <Navigate to="/login" /> : <CreateStoryPage />}
+              />
+              <Route
+                path=":storyId"
+                element={!user ? <Navigate to="/login" /> : <ViewStoryPage />}
+              />
+            </Route>
             <Route path="/groups" element={!user ? <Navigate to="/login" /> : <p>groups</p>} />
             <Route path="/settings" element={!user ? <Navigate to="/login" /> : <SettingPage />} />
             <Route path="/messages" element={!user ? <Navigate to="/login" /> : <p>messages</p>} />

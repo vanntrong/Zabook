@@ -9,7 +9,7 @@ import './home.scss';
 const HomePage = () => {
   const [friendsRequest, setFriendsRequest] = useState<friendRequestType[]>([]);
   useEffect(() => {
-    document.title = 'Zabook';
+    document.title = 'Sociala.';
   }, []);
 
   useEffect(() => {

@@ -32,3 +32,37 @@
   -webkit-box-shadow: -1px 2px 5px 0px rgba(89, 80, 80, 0.64);
   -moz-box-shadow: -1px 2px 5px 0px rgba(89, 80, 80, 0.64);
 }
+
+.story-loading {
+  width: 290px;
+  height: 500px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .story-loading-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+  }
+}
+
+@media screen and (min-width: $tablet-screen) {
+  .story-loading {
+    width: 350px;
+    height: 600px;
+  }
+}
+@media screen and (min-width: $ipad-screen) {
+  .story-loading {
+    width: 380px;
+    height: 650px;
+  }
+}
+@media screen and (min-width: $laptop-screen) {
+  .story-loading {
+    width: 500px;
+    height: 100%;
+  }
+}
