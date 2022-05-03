@@ -7,7 +7,7 @@
   transform: translate(-50%, -50%);
   z-index: 9999;
   background-color: white;
-  width: 500px;
+  width: 280px;
   padding-bottom: 10px;
   border-radius: 6px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -84,5 +84,11 @@
         }
       }
     }
+  }
+}
+
+@media screen and (min-width: $ipad-screen) {
+  .pop-up {
+    width: 500px;
   }
 }

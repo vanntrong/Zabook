@@ -1,3 +1,4 @@
+import { getStoriesApi } from 'api/storyApi';
 import { getProfileApi } from 'api/userApi';
 import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
 import ViewStoryPage from 'pages/stories/view/ViewStoryPage';
@@ -5,6 +6,7 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { postAction } from 'store/slice/postSlice';
+import { storiesAction } from 'store/slice/storiesSlice';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
 import './app.scss';
 
@@ -48,6 +50,14 @@ function App() {
     };
     getPostsCurrentUser();
   }, [dispatch, user]);
+
+  useEffect(() => {
+    const getStories = async () => {
+      const res = await getStoriesApi({ page: 0 });
+      dispatch(storiesAction.setStories(res));
+    };
+    getStories();
+  }, [dispatch]);
   return (
     <>
       {isFetchingUser && <SimpleLoading />}

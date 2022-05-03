@@ -45,8 +45,6 @@ const DragImage: FC<DragImageProps> = ({ changFilesHandler, filesPreview }) => {
     }
   };
 
-  console.log(filesPreview);
-
   return (
     <div
       className="drag-area"

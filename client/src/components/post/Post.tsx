@@ -1,5 +1,6 @@
 import { Avatar, Paper } from '@mui/material';
 import { likePostApi } from 'api/postApi';
+import Backdrop from 'components/backdrop/Backdrop';
 import { Comments } from 'components/comments/Comments';
 import InputEditPostModal from 'components/input/InputPost/inputEditPostModal/InputEditPostModal';
 import PopUp from 'components/popup/PopUp';
@@ -170,6 +171,7 @@ const Post: FC<PostProps> = ({ post }) => {
         onConfirm={deletePostHandler}
         type="post"
       />
+      <Backdrop isShow={isShowDialog} setIsShow={setIsShowDialog} color="#fff" opacity={0.6} />
     </>
   );
 };

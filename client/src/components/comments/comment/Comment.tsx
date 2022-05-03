@@ -1,4 +1,5 @@
 import { Avatar } from '@mui/material';
+import Backdrop from 'components/backdrop/Backdrop';
 import PopUp from 'components/popup/PopUp';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
@@ -125,6 +126,7 @@ const Comment: FC<CommentProps> = ({ comment, onSubmit, onDeleteComment }) => {
         onConfirm={handleDeleteComment}
         type="comment"
       />
+      <Backdrop isShow={isOpenPopUp} setIsShow={setIsOpenPopUp} color="#fff" opacity={0.6} />
     </div>
   );
 };
