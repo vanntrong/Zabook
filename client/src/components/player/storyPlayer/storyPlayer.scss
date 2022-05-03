@@ -55,10 +55,38 @@
         }
       }
     }
+  }
+  .swiper {
+    height: 100%;
+    .story-player-wrapper {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .story-player-user {
       display: flex;
       align-items: center;
-      margin-top: 15px;
+      margin-top: 30px;
+      padding: 0 10px;
+      position: absolute;
+      z-index: 99;
+      width: 100%;
+
+      .story-player-user-avatar {
+        &.seen {
+          border: 4px solid $border-color;
+        }
+        &.not-seen {
+          border: 4px solid $blue-500;
+        }
+      }
 
       .story-player-user-name {
         margin-left: 8px;
@@ -76,18 +104,67 @@
           color: white;
         }
       }
+
+      .story-player-setting {
+        margin-left: auto;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        position: relative;
+
+        .story-player-menu {
+          position: absolute;
+          background-color: white;
+          right: -5px;
+          top: 35px;
+          padding: 8px;
+          min-width: 200px;
+          border-radius: 8px;
+          color: $text-gray-900;
+
+          &::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            width: 20px;
+            height: 20px;
+            top: -5px;
+            right: 5px;
+            transform: rotate(45deg);
+            background-color: inherit;
+          }
+          .story-player-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0 10px;
+            padding: 10px;
+            border-radius: inherit;
+            span {
+              font-size: 16px;
+            }
+            &:hover {
+              background-color: $bg-gray;
+            }
+          }
+        }
+      }
     }
-  }
-  .swiper {
-    height: 100%;
-    .story-player-wrapper {
-      width: 100%;
-      height: 100%;
-      border-radius: 8px;
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      position: relative;
+    .story-player-view-count {
+      position: absolute;
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      gap: 0 10px;
+      font-size: 24px;
+      color: white;
+      font-weight: 500;
+      left: 10px;
+      bottom: 20px;
+      p {
+        color: white;
+        font-weight: 500;
+        font-size: 16px;
+      }
     }
   }
 }

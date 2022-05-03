@@ -6,6 +6,7 @@
   height: 200px;
   flex-shrink: 0;
   overflow: hidden;
+
   .story-wrapper {
     width: 100%;
     height: 100%;
@@ -56,6 +57,12 @@
     font-size: 23px;
     font-weight: 600;
     margin-bottom: 8px;
+    &.seen {
+      border: 4px solid $border-color;
+    }
+    &.not-seen {
+      border: 4px solid $blue-500;
+    }
   }
 
   .story-user-name {

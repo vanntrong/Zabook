@@ -6,7 +6,7 @@ interface PopUpProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  type: 'comment' | 'post' | 'friend';
+  type: 'comment' | 'post' | 'friend' | 'story';
 }
 
 const PopUp: FC<PopUpProps> = ({ isOpen, onClose, onConfirm, type }) => {
@@ -15,15 +15,14 @@ const PopUp: FC<PopUpProps> = ({ isOpen, onClose, onConfirm, type }) => {
       {isOpen ? (
         <div className="pop-up">
           <div className="pop-up-top">
-            <h2>Delete {type === 'comment' ? 'Comment' : type === 'post' ? 'Post' : 'Friend'}?</h2>
+            <h2>Delete {type}?</h2>
             <div className="pop-up-top-close" onClick={onClose}>
               <AiOutlineClose />
             </div>
           </div>
           <hr />
           <p className="pop-up-content">
-            Are you sure you want to delete this{' '}
-            {type === 'comment' ? 'Comment' : type === 'post' ? 'Post' : 'Friend'}?
+            Are you sure you want to delete this {type}? This action cannot be undone.
           </p>
           <div className="pop-up-button">
             <button className="pop-up-button-cancel" onClick={onClose}>

@@ -6,12 +6,14 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { Link, useParams } from 'react-router-dom';
 import { useAppSelector } from 'store/hooks';
 import { selectStories } from 'store/slice/storiesSlice';
+import { selectCurrentUser } from 'store/slice/userSlice';
 import Navbar from './../../../components/navbar/Navbar';
 import './viewStoryPage.scss';
 
 const ViewStoryPage = () => {
   const params = useParams();
   const stories = useAppSelector(selectStories);
+  const currentUser = useAppSelector(selectCurrentUser);
   return (
     <>
       <Navbar />
@@ -43,7 +45,9 @@ const ViewStoryPage = () => {
                       }`}
                     >
                       <Avatar
-                        className="viewStoryPage-slide-item-avatar"
+                        className={`viewStoryPage-slide-item-avatar ${
+                          story.views.includes(currentUser!._id) ? 'seen' : 'not-seen'
+                        }`}
                         src={story.userPost.avatar}
                         alt={story.userPost.fullName}
                       />

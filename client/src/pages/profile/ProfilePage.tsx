@@ -29,8 +29,10 @@ const ProfilePage = () => {
   const params = useParams();
   const currentUser = useAppSelector(selectCurrentUser);
 
+  const maxLengthPhotoLost = 6;
+
   const userPhotos = posts
-    .filter((post, index) => index < 6)
+    .filter((post, index) => index < maxLengthPhotoLost)
     .map((post) => post.assets!.map((asset) => asset.url))
     .flat(Infinity);
 

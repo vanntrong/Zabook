@@ -11,6 +11,8 @@ router.get("/", verifyToken, storyController.getStoryHandler);
 
 router.get("/all", verifyToken, storyController.getAllStoriesHandler);
 
+router.patch("/:storyId", verifyToken, storyController.viewStoryHandler);
+
 router.delete("/:storyId", verifyToken, storyController.deleteStoryHandler);
 
 export default router;
