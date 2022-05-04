@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import { assetsType } from 'shared/types';
 import './postassets.scss';
+import { Player } from 'react-tuby';
+import 'react-tuby/css/main.css';
 
 interface PostAssetsProps {
   assets: assetsType[];
@@ -14,7 +16,10 @@ const PostAssets: FC<PostAssetsProps> = React.memo(({ assets }) => {
           (asset, index) =>
             asset.url !== undefined && (
               <div key={index} className="wrapper-1__item">
-                <img src={asset.url} alt="" className="wrapper-1__item__image" />
+                {asset.media_type === 'image' && (
+                  <img src={asset.url} alt="" className="wrapper-1__item__image" />
+                )}
+                {asset.media_type === 'video' && <Player src={asset.url} />}
               </div>
             )
         )}
@@ -25,14 +30,16 @@ const PostAssets: FC<PostAssetsProps> = React.memo(({ assets }) => {
     return (
       <div className="wrapper-3">
         <div className="wrapper-3__item1">
-          <img src={assets[0].url} alt="" />
+          {assets[0].media_type === 'image' && <img src={assets[0].url} alt="" />}
+          {assets[0].media_type === 'video' && <Player src={assets[0].url} />}
         </div>
         <div className="wrapper-3__item2">
           {assets?.map((asset, index) => (
             <>
               {index !== 0 && index <= 3 && (
                 <div className="wrapper-3__item" key={index}>
-                  <img src={asset.url} alt="" />
+                  {asset.media_type === 'image' && <img src={asset.url} alt="" />}
+                  {asset.media_type === 'video' && <Player src={asset.url} />}
                   {assets.length > 4 && index === 3 && (
                     <div className="bonus_count">
                       <span>+ {assets.length - 4}</span>

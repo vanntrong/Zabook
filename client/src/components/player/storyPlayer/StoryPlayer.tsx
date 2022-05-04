@@ -4,13 +4,15 @@ import Backdrop from 'components/backdrop/Backdrop';
 import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 import PopUp from 'components/popup/PopUp';
 import moment from 'moment';
-import React, { FC, useEffect, useState } from 'react';
+import React, { createRef, FC, useEffect, useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 import { MdDeleteOutline } from 'react-icons/md';
+import { Player } from 'react-tuby';
+import 'react-tuby/css/main.css';
 import { storyType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
-import { Autoplay, Keyboard, Navigation } from 'swiper';
+import { Keyboard, Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import 'swiper/css/keyboard';
@@ -29,6 +31,16 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
   const [isShowStoryMenu, setIsShowStoryMenu] = useState<boolean>(false);
   const [currentStoryId, setCurrentStoryId] = useState<string>('');
   const [currentStoryIndex, setCurrentStoryIndex] = useState<number>(0);
+  const [arrayVideoRef, setArrayVideoRef] = useState<any[]>([]);
+
+  useEffect(() => {
+    //set array of video ref to handle play and pause
+    setArrayVideoRef((elRefs) =>
+      Array(stories.length)
+        .fill(null)
+        .map((_, i) => elRefs[i] || createRef())
+    );
+  }, [stories]);
 
   useEffect(() => {
     const getStoriesApi = async () => {
@@ -45,12 +57,10 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
     try {
       const res = await viewStoryApi(storyId);
       return res;
-    } catch (error) {
-      console.log(error.response.data);
-    }
+    } catch (error) {}
   };
 
-  const handleSwiperChange = async (e: any) => {
+  const handleSwiperChange = (e: any) => {
     const timingElements = document.querySelectorAll('.story-player-timings-item');
     timingElements.forEach((item) => {
       item.classList.remove('active');
@@ -64,7 +74,6 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
   const deleteStoryHandler = async (id: string) => {
     try {
       const res = await deleteStoryApi(id);
-
       setStories((prevState) => prevState.filter((story) => story._id !== res._id));
     } catch (error) {
       console.log(error.response.data);
@@ -82,7 +91,10 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
 
   useEffect(() => {
     const handleViewStory = async () => {
-      if (!stories[currentStoryIndex].views.includes(currentUser!._id)) {
+      if (
+        stories[currentStoryIndex] &&
+        !stories[currentStoryIndex].views.includes(currentUser!._id)
+      ) {
         const newStory = await viewStoryHandler(stories[currentStoryIndex]._id);
         if (newStory) {
           setStories((prevState) =>
@@ -95,6 +107,17 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
     };
     handleViewStory();
   }, [currentStoryIndex, currentUser, stories]);
+
+  useEffect(() => {
+    //while slide change pause all video playing
+    arrayVideoRef.forEach((elRef) => {
+      if (elRef.current) {
+        elRef.current.pause();
+      }
+    });
+    //play current video slide
+    arrayVideoRef[currentStoryIndex]?.current?.play();
+  }, [arrayVideoRef, currentStoryIndex]);
 
   return (
     <>
@@ -116,18 +139,12 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
           <Swiper
             slidesPerView={1}
             onSlideChange={handleSwiperChange}
-            modules={[Navigation, Autoplay, Keyboard]}
+            modules={[Navigation, Keyboard]}
             navigation
-            autoplay={{
-              delay: 10000,
-              stopOnLastSlide: true,
-              // disableOnInteraction: false,
-              // pauseOnMouseEnter: true,
-            }}
             keyboard={true}
           >
             {stories.length > 0 &&
-              stories.map((story) => (
+              stories.map((story, index) => (
                 <SwiperSlide key={story._id}>
                   <div className="story-player-user">
                     <Avatar
@@ -164,12 +181,25 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
                       </>
                     )}
                   </div>
-                  <div
-                    className="story-player-wrapper"
-                    style={{
-                      backgroundImage: `url('${story.asset}')`,
-                    }}
-                  ></div>
+                  {story.asset.media_type === 'image' && (
+                    <div
+                      className="story-player-wrapper"
+                      style={{
+                        backgroundImage: `url('${story.asset.url}')`,
+                      }}
+                    ></div>
+                  )}
+
+                  {story.asset.media_type === 'video' && (
+                    <Player
+                      src={story.asset.url}
+                      dimensions={{ width: '100%', height: '100%' }}
+                      playerRef={arrayVideoRef[index]}
+                    >
+                      {(ref, props) => <video ref={ref} {...props} loop />}
+                    </Player>
+                  )}
+
                   {currentUser?._id === story.userPost?._id && (
                     <div className="story-player-view-count">
                       <p>{story.views.length} views</p>

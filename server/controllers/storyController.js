@@ -9,8 +9,13 @@ export async function createStoryHandler(req, res) {
       return errorController.errorHandler(res, "You are not authorized to create a story", 403);
     }
     if (req.body.asset) {
-      const result = await factoryController.uploadFile(req.body.asset, "story", "image");
-      req.body.asset = result.secure_url;
+      const result = await factoryController.uploadFile(req.body.asset.url, "story", req.body.asset.media_type);
+      console.log(result);
+      req.body.asset = {
+        url: result.secure_url,
+        media_type: result.resource_type,
+      };
+      req.body.timing = result.duration || 10;
     }
     const newStory = await Story.create(req.body);
     res.status(201).json(newStory);

@@ -26,6 +26,11 @@
     inset: 0;
   }
 
+  .tuby {
+    position: absolute;
+    z-index: 50;
+  }
+
   &.active {
     // border: 4px dashed $red-color;
   }

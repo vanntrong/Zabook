@@ -56,6 +56,8 @@ const ProfilePage = () => {
   useEffect(() => {
     document.title = `${user?.firstName} ${user?.lastName} | Sociala.`;
   }, [user?.firstName, user?.lastName]);
+
+  console.log(posts);
   return (
     <>
       {!user ? (

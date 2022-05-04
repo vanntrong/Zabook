@@ -1,28 +1,27 @@
 import { Avatar } from '@mui/material';
-import Navbar from 'components/navbar/Navbar';
-import React, { useEffect, useState } from 'react';
-import { GrClose } from 'react-icons/gr';
-import { Link, useNavigate } from 'react-router-dom';
-import './createStoryPage.scss';
-
-import { IoMdPhotos } from 'react-icons/io';
-import { IoTextSharp } from 'react-icons/io5';
-import { useAppSelector } from 'store/hooks';
-import { selectCurrentUser } from 'store/slice/userSlice';
 import { createStoryApi } from 'api/storyApi';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
-
+import Navbar from 'components/navbar/Navbar';
+import React, { useEffect, useState } from 'react';
+import { IoMdPhotos } from 'react-icons/io';
+import { IoTextSharp } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from 'store/hooks';
+import { selectCurrentUser } from 'store/slice/userSlice';
+import './createStoryPage.scss';
+import { Player } from 'react-tuby';
+import 'react-tuby/css/main.css';
 export interface formSubmitStoryType {
   userPost: string;
-  asset?: string;
+  asset?: { media_type: string; url: string };
   content?: string;
 }
 
 const CreateStoryPage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isShowPreview, setIsShowPreview] = useState<boolean>(false);
-  const [file, setFile] = useState<string | null>(null);
-  const [filePreview, setFilePreview] = useState<string | null>(null);
+  const [file, setFile] = useState<{ media_type: string; url: string } | null>(null);
+  const [filePreview, setFilePreview] = useState<{ media_type: string; url: string } | null>(null);
   const [content, setContent] = useState('');
   const [isPending, setIsPending] = useState(false);
   const navigate = useNavigate();
@@ -40,8 +39,10 @@ const CreateStoryPage = () => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      setFile(reader.result as string);
-      setFilePreview(reader.result as string);
+      const media_type = file.type.split('/')[0];
+      const url = reader.result as string;
+      setFile({ media_type, url });
+      setFilePreview({ media_type, url });
     };
     setIsShowPreview(true);
   };
@@ -81,7 +82,9 @@ const CreateStoryPage = () => {
           <hr />
           {isShowPreview && (
             <div className="createStoryPage-button">
-              <button className="createStoryPage-button-cancel">Discard</button>
+              <button className="createStoryPage-button-cancel" onClick={() => navigate(-1)}>
+                Discard
+              </button>
               <button className="createStoryPage-button-confirm" onClick={submitHandler}>
                 Share to story
               </button>
@@ -97,7 +100,7 @@ const CreateStoryPage = () => {
               >
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/*,video/*"
                   multiple={false}
                   id="image"
                   hidden
@@ -106,7 +109,7 @@ const CreateStoryPage = () => {
                 <div className="createStoryPage-choose-item-icon">
                   <IoMdPhotos />
                 </div>
-                <p className="createStoryPage-choose-item-text">Create a photo story</p>
+                <p className="createStoryPage-choose-item-text">Create a media story</p>
               </div>
               <div className="createStoryPage-choose-item createStoryPage-choose-item-text">
                 <div className="createStoryPage-choose-item-icon">
@@ -119,7 +122,14 @@ const CreateStoryPage = () => {
             <div className="createStoryPage-preview">
               <h3>Preview</h3>
               <div className="createStoryPage-preview-container">
-                {filePreview && <img src={filePreview} alt="" />}
+                {filePreview && filePreview.media_type === 'image' && (
+                  <img src={filePreview.url} alt="" />
+                )}
+                {filePreview && filePreview.media_type === 'video' && (
+                  <Player src={filePreview.url} dimensions={{ width: '100%', height: '100%' }}>
+                    {(ref, props) => <video ref={ref} {...props} autoPlay loop />}
+                  </Player>
+                )}
               </div>
             </div>
           )}

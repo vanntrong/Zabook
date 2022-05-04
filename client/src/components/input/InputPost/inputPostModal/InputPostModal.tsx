@@ -6,6 +6,7 @@ import { createPostApi } from 'api/postApi';
 import { searchUserApi } from 'api/userApi';
 import DragImage from 'components/dragImage/DragImage';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
+import Notification from 'components/notification/Notification';
 import { searchResult } from 'components/searchResultModal/SearchResultModal';
 import { Picker } from 'emoji-mart';
 import React, { FC, useEffect, useRef, useState } from 'react';
@@ -157,15 +158,14 @@ const InputPostModal: FC<InputPostModalProps> = ({
     if (assetsData.length > 0) {
       data.assets = assetsData;
     }
-    // dispatch(postAction.createNewPostRequest(data));
-    const res = await createPostApi(data);
-    setPosts((prev) => [res, ...prev]);
-    setPostContent('');
     const timer = setTimeout(() => {
       setIsSubmit(false);
       setIsShowPostModal(false);
       setIsShowNotification(true);
     }, 300);
+    const res = await createPostApi(data);
+    setPosts((prev) => [res, ...prev]);
+    setPostContent('');
     return () => {
       clearTimeout(timer);
     };
@@ -190,7 +190,7 @@ const InputPostModal: FC<InputPostModalProps> = ({
           const media_type = file.type.split('/')[0];
           const url = reader.result;
           setAssetsData((prev) => [...prev, { media_type, url }]);
-          setFilesPreview((prev) => [...prev, reader.result]);
+          setFilesPreview((prev) => [...prev, { media_type, url: reader.result }]);
         };
       }
     }
@@ -292,6 +292,7 @@ const InputPostModal: FC<InputPostModalProps> = ({
       )}
 
       {isSubmit && <ProgressLoading />}
+      {isSubmit && <Notification type="success" content="Your post is being uploaded" />}
     </>
   );
 };

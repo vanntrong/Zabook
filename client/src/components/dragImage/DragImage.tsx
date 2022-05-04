@@ -1,6 +1,8 @@
 import CloudIcon from '@mui/icons-material/Cloud';
 import React, { FC } from 'react';
 import './dragImage.scss';
+import { Player } from 'react-tuby';
+import 'react-tuby/css/main.css';
 
 interface DragImageProps {
   changFilesHandler: (files: any[]) => void;
@@ -52,7 +54,13 @@ const DragImage: FC<DragImageProps> = ({ changFilesHandler, filesPreview }) => {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      {filesPreview && filesPreview.length > 0 && <img src={filesPreview[0]} alt="" />}
+      {filesPreview &&
+        filesPreview.length > 0 &&
+        (filesPreview[0].media_type === 'image' ? (
+          <img src={filesPreview[0].url} alt="" />
+        ) : (
+          <Player src={filesPreview[0].url} dimensions={{ width: '100%', height: '100%' }} />
+        ))}
       {filesPreview && filesPreview.length > 1 && (
         <span className="img-count-more">+ {filesPreview.length - 1}</span>
       )}

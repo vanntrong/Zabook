@@ -7,7 +7,10 @@ const StorySchema = new mongoose.Schema(
       ref: "User",
       require: true,
     },
-    asset: String,
+    asset: {
+      url: String,
+      media_type: String,
+    },
     content: String,
     timing: {
       type: Number,

@@ -139,7 +139,10 @@ export interface storyType {
     username: string;
     fullName: string;
   };
-  asset: string;
+  asset: {
+    media_type: string;
+    url: string;
+  };
   count: number;
   timing: number;
   views: [string];
