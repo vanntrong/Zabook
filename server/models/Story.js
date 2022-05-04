@@ -18,6 +18,10 @@ const StorySchema = new mongoose.Schema(
       type: Number,
       default: Date.now(),
     },
+    expiredAt: {
+      type: Number,
+      default: Date.now() + 24 * 60 * 60 * 1000,
+    },
   },
   {
     toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals

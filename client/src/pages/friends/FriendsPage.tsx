@@ -10,6 +10,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { friendType, UserType } from 'shared/types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import './friendpage.scss';
 
 export interface FriendInfoProps {
@@ -67,6 +68,8 @@ const FriendsPage = () => {
   const [isFetchingFriendsInfo, setIsFetchingFriendsInfo] = useState<boolean>(false);
   const [friendList, setFriendList] = useState<friendType[]>([]);
   const dispatch = useAppDispatch();
+  const [page, setPage] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
 
   useEffect(() => {
     const getFriendProfile = async (username: string) => {
@@ -78,11 +81,10 @@ const FriendsPage = () => {
       }
     };
     // if currentUser different from params.username then we are in friend profile then get friend profile
-    // else get current user profile from store
     if (params.username !== currentUser?.username) {
       getFriendProfile(params.username as string);
     } else {
-      setUser(currentUser);
+      setUser(currentUser); // else get current user profile from store
     }
   }, [params.username, currentUser, navigate]);
 
@@ -90,16 +92,22 @@ const FriendsPage = () => {
     const getFriendsInfo = async () => {
       setIsFetchingFriendsInfo(true);
       if (user) {
-        const res = await getFriendListApi(user?._id, { page: 0 });
-        setFriendList(res);
-        setIsFetchingFriendsInfo(false);
-      } else {
-        setIsFetchingFriendsInfo(false);
-        return;
+        const res = await getFriendListApi(user?._id, { page });
+        // if res.data.length === 0 then we don't have more friends
+        if (res.length === 0) {
+          // set hasMore to false to stop infinite scroll
+          setHasMore(false);
+          // set isFetchingFriendsInfo to false to stop loading
+          setIsFetchingFriendsInfo(false);
+          return;
+        }
+        // set friendList to res
+        setFriendList((prev) => [...prev, ...res]);
       }
+      setIsFetchingFriendsInfo(false);
     };
     getFriendsInfo();
-  }, [user]);
+  }, [user, page]);
 
   const deleteFriendHandler = (friendId: string) => {
     dispatch(userAction.deleteFriendRequest({ id: currentUser!._id, friendId }));
@@ -117,21 +125,33 @@ const FriendsPage = () => {
                 <AiOutlineSearch />
               </div>
             </div>
-            <div className="friend-list">
-              {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
-              {friendList.length > 0 ? (
-                friendList.map((friend) => (
-                  <FriendInfo
-                    key={friend._id}
-                    friend={friend}
-                    user={user}
-                    onDelete={deleteFriendHandler}
-                  />
-                ))
-              ) : (
-                <p>No Friend</p>
-              )}
-            </div>
+            <InfiniteScroll
+              dataLength={friendList.length}
+              hasMore={hasMore}
+              next={() => setPage((prev) => prev + 1)}
+              loader={null}
+              endMessage={
+                <p style={{ textAlign: 'center', marginTop: '10px' }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+              style={{ overflow: 'hidden' }}
+            >
+              <div className="friend-list">
+                {isFetchingFriendsInfo && <SkeletonLoading type="friend" />}
+                {!isFetchingFriendsInfo &&
+                  friendList.length > 0 &&
+                  friendList.map((friend) => (
+                    <FriendInfo
+                      key={friend._id}
+                      friend={friend}
+                      user={user}
+                      onDelete={deleteFriendHandler}
+                    />
+                  ))}
+                {!isFetchingFriendsInfo && friendList.length === 0 && <p>No Friend</p>}
+              </div>
+            </InfiniteScroll>
           </div>
         </div>
       </div>

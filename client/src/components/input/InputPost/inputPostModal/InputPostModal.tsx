@@ -2,6 +2,7 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import CloseIcon from '@mui/icons-material/Close';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 import Avatar from '@mui/material/Avatar';
+import { createPostApi } from 'api/postApi';
 import { searchUserApi } from 'api/userApi';
 import DragImage from 'components/dragImage/DragImage';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
@@ -11,9 +12,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai';
 import { FaUserPlus } from 'react-icons/fa';
 import { IoArrowBackOutline } from 'react-icons/io5';
-import { formPostData, UserType } from 'shared/types';
-import { useAppDispatch } from 'store/hooks';
-import { postAction } from 'store/slice/postSlice';
+import { formPostData, PostType, UserType } from 'shared/types';
 import '../inputpost.scss';
 
 interface SearchPeopleToTagProps {
@@ -22,7 +21,11 @@ interface SearchPeopleToTagProps {
   setTagsPeople: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({ onClose, currentUser, setTagsPeople }) => {
+export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({
+  onClose,
+  currentUser,
+  setTagsPeople,
+}) => {
   const [searchText, setSearchText] = useState('');
   const [searchResult, setSearchResult] = useState<searchResult[]>([]);
   const [tagsPeoplePreview, setTagsPeoplePreview] = useState<{ name: string; id: string }[]>([]);
@@ -121,12 +124,14 @@ interface InputPostModalProps {
   currentUser: UserType | null;
   setIsShowPostModal: React.Dispatch<React.SetStateAction<boolean>>;
   setIsShowNotification: React.Dispatch<React.SetStateAction<boolean>>;
+  setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
 }
 
 const InputPostModal: FC<InputPostModalProps> = ({
   currentUser,
   setIsShowPostModal,
   setIsShowNotification,
+  setPosts,
 }) => {
   const [isShowEmojiPicker, setIsShowEmojiPicker] = useState<boolean>(false);
   const [postContent, setPostContent] = useState<string>('');
@@ -136,7 +141,6 @@ const InputPostModal: FC<InputPostModalProps> = ({
   const [isShowDragAndDrop, setIsShowDragAndDrop] = useState<boolean>(false);
   const [isShowSearchTagPeople, setIsShowSearchTagPeople] = useState<boolean>(false);
   const [tagsPeople, setTagsPeople] = useState<string[]>([]);
-  const dispatch = useAppDispatch();
 
   const selectEmojiHandler = (emoji: any) => {
     setPostContent(postContent + emoji.native);
@@ -153,7 +157,9 @@ const InputPostModal: FC<InputPostModalProps> = ({
     if (assetsData.length > 0) {
       data.assets = assetsData;
     }
-    dispatch(postAction.createNewPostRequest(data));
+    // dispatch(postAction.createNewPostRequest(data));
+    const res = await createPostApi(data);
+    setPosts((prev) => [res, ...prev]);
     setPostContent('');
     const timer = setTimeout(() => {
       setIsSubmit(false);

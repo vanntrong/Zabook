@@ -9,15 +9,18 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PostType, UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
-import { selectPosts } from 'store/slice/postSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import './photopage.scss';
+import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 
 const PhotosPage = () => {
   const [user, setUser] = useState<null | UserType>(null);
   const [posts, setPosts] = useState<PostType[]>([]);
+  const [page, setPage] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isFetchingPosts, setIsFetchingPosts] = useState<boolean>(true);
   const currentUser = useAppSelector(selectCurrentUser);
-  const currentUserPosts = useAppSelector(selectPosts);
   const navigate = useNavigate();
   const params = useParams();
   const userPhotos = posts.map((post) => post.assets!.map((asset) => asset.url)).flat(Infinity);
@@ -42,26 +45,31 @@ const PhotosPage = () => {
 
   useEffect(() => {
     document.title = `${user?.firstName} ${user?.lastName} | Zabook`;
+
     const getPostsOfUser = async (id: string) => {
-      const posts: [PostType] = await getPostsApi(id);
-      setPosts(posts);
+      const posts: PostType[] = await getPostsApi(id, { page });
+      // if posts.length === 0 then there is no more posts
+      if (posts.length === 0) {
+        setHasMore(false);
+        setIsFetchingPosts(false);
+        return;
+      }
+      setPosts((prevPosts) => [...prevPosts, ...posts]);
+      setIsFetchingPosts(false);
     };
     // if currentUser different from params.username then we are in friend profile then get friend posts
     // else get current user posts from store
-    if (params.username !== currentUser?.username) {
-      if (!user) {
-        return;
-      }
+
+    if (user) {
       getPostsOfUser(user?._id as string);
-    } else {
-      setPosts(currentUserPosts);
     }
+
     const timer = setTimeout(() => {
-      // setIsFetchingPosts(false);
+      setIsFetchingPosts(false);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [user, currentUser, currentUserPosts, params.username]);
+  }, [user, currentUser, params.username, page]);
   return (
     <>
       {!user ? (
@@ -69,10 +77,28 @@ const PhotosPage = () => {
       ) : (
         <div className="photos">
           <div className="mainWrapper">
-            <div className="photos-wrapper">
-              <UserInfo user={user} />
-              <GalleryImage images={userPhotos} />
-            </div>
+            <InfiniteScroll
+              dataLength={posts.length}
+              next={() => setPage((prev) => prev + 1)}
+              hasMore={hasMore}
+              loader={
+                <div style={{ marginTop: '10px' }}>
+                  <SkeletonLoading type="post" />{' '}
+                </div>
+              }
+              endMessage={
+                <p style={{ textAlign: 'center', marginTop: '10px' }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+              style={{ overflow: 'hidden' }}
+            >
+              <div className="photos-wrapper">
+                <UserInfo user={user} />
+                <GalleryImage images={userPhotos} />
+                {isFetchingPosts && <SkeletonLoading type="post" />}
+              </div>
+            </InfiniteScroll>
           </div>
         </div>
       )}

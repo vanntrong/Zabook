@@ -50,13 +50,10 @@ export async function getPostsHandler(req, res) {
           select: "_id",
         },
       ])
-      .limit(10)
-      .skip(10 * 0)
+      .limit(5)
+      .skip(5 * req.query.page)
       .sort({ createdAt: -1 });
 
-    if (!posts || posts.length === 0) {
-      return errorController.errorHandler(res, "Posts not found", 404);
-    }
     res.status(200).json(posts);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
@@ -78,14 +75,16 @@ export async function getOtherUserProfileHandler(req, res) {
 
 export async function getFriendListHandler(req, res) {
   try {
-    const friendList = await User.findById(req.params.userId)
-      .populate({
-        path: "friends",
-        select: "fullName username avatar email",
-      })
-      .limit(20)
-      .skip(20 * req.query.page)
-      .sort({ fullName: 1 });
+    const friendList = await User.findById(req.params.userId).populate({
+      path: "friends",
+      select: "fullName username avatar email",
+      options: {
+        limit: 20,
+        skip: 20 * req.query.page,
+        sort: { fullName: 1 },
+      },
+    });
+
     res.status(200).json(friendList.friends);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
@@ -167,6 +166,45 @@ export async function deleteFriendHandler(req, res) {
     );
     await friend.updateOne({ $pull: { friends: req.params.userId } });
     res.status(200).json(updatedUser.friends);
+  } catch (error) {
+    errorController.serverErrorHandler(error, res);
+  }
+}
+
+export async function getFriendPostHandler(req, res) {
+  try {
+    if (req.user.id !== req.params.userId) {
+      return errorController.errorHandler(res, "You are not allowed to get this user's friend post", 403);
+    }
+    const user = await User.findById(req.params.userId).populate({
+      path: "friends",
+      select: "_id",
+      populate: {
+        path: "posts",
+        populate: [
+          {
+            path: "comments",
+            select: "_id",
+          },
+          {
+            path: "userPost",
+            select: "fullName username avatar",
+          },
+          {
+            path: "tagsPeople",
+            select: "_id fullName username",
+          },
+        ],
+        options: {
+          limit: 10,
+          skip: 10 * req.query.page,
+          sort: { createdAt: -1 },
+        },
+      },
+    });
+    //format data
+    const posts = user.friends.map((friends) => friends.posts).flat(Infinity);
+    res.status(200).json(posts);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }

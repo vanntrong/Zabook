@@ -21,13 +21,10 @@ export async function createStoryHandler(req, res) {
 
 export async function getStoryHandler(req, res) {
   try {
-    const stories = await Story.find({ userPost: req.query.userPost })
-      .where("createdAt")
-      .lte(Date.now() + 24 * 60 * 60 * 1000)
-      .populate({
-        path: "userPost",
-        select: "username avatar fullName",
-      });
+    const stories = await Story.find({ userPost: req.query.userPost }).where("expiredAt").gte(Date.now()).populate({
+      path: "userPost",
+      select: "username avatar fullName",
+    });
     await res.status(200).json(stories);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
@@ -58,8 +55,8 @@ export async function getAllStoriesHandler(req, res) {
           $and: [
             { userPost: currentUser._id },
             {
-              createdAt: {
-                $lte: Date.now() + 24 * 60 * 60 * 1000,
+              expiredAt: {
+                $gte: Date.now(),
               },
             },
           ],
@@ -129,8 +126,8 @@ export async function getAllStoriesHandler(req, res) {
           $and: [
             { $or: [{ userPost: { $in: currentUser.friends } }] },
             {
-              createdAt: {
-                $lte: Date.now() + 24 * 60 * 60 * 1000,
+              expiredAt: {
+                $gte: Date.now(),
               },
             },
           ],

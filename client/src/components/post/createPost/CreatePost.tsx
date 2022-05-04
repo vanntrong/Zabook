@@ -1,5 +1,5 @@
 import { Avatar } from '@mui/material';
-import React from 'react';
+import React, { FC } from 'react';
 
 import { BsPencil } from 'react-icons/bs';
 import { BsCameraVideo } from 'react-icons/bs';
@@ -13,8 +13,13 @@ import { selectCurrentUser } from 'store/slice/userSlice';
 import InputPostModal from './../../input/InputPost/inputPostModal/InputPostModal';
 import Backdrop from '../../backdrop/Backdrop';
 import Notification from 'components/notification/Notification';
+import { PostType } from 'shared/types';
 
-const CreatePost = () => {
+interface CreatePostProps {
+  setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
+}
+
+const CreatePost: FC<CreatePostProps> = ({ setPosts }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isShowCreatePostModal, setIsShowCreatePostModal] = React.useState(false);
   const [isShowNotification, setIsShowNotification] = React.useState(false);
@@ -72,6 +77,7 @@ const CreatePost = () => {
           currentUser={currentUser}
           setIsShowPostModal={setIsShowCreatePostModal}
           setIsShowNotification={setIsShowNotification}
+          setPosts={setPosts}
         />
       )}
       <Backdrop isShow={isShowCreatePostModal} setIsShow={setIsShowCreatePostModal} />

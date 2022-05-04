@@ -52,10 +52,17 @@ export async function updatePostHandler(req, res) {
     if (req.body.userPost !== req.user.id) {
       return errorController.errorHandler(res, "You are not allowed to update this post", 403);
     }
-    await factoryController.updateOne(Post, req.params.postId, { $set: req.body }, res, {
-      path: "userPost",
-      select: "firstName lastName avatar",
-    });
+    await factoryController.updateOne(Post, req.params.postId, { $set: req.body }, res, [
+      {
+        path: "userPost",
+        select: "fullName avatar username",
+      },
+      {
+        path: "comments",
+        select: "content createdAt",
+        populate: { path: "userComment", select: "fullName username avatar" },
+      },
+    ]);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }

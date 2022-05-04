@@ -12,27 +12,28 @@ import { MdOutlineCake, MdWorkOutline } from 'react-icons/md';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { PostType, UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
-import { selectPosts } from 'store/slice/postSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import moment from 'moment';
 import './profilepage.scss';
 import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
 import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const ProfilePage = () => {
   const [user, setUser] = useState<null | UserType>(null);
   const [posts, setPosts] = useState<PostType[]>([]);
   const [isFetchingPosts, setIsFetchingPosts] = useState<boolean>(true);
-  const currentUserPosts = useAppSelector(selectPosts);
+  const [page, setPage] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const navigate = useNavigate();
 
   const params = useParams();
   const currentUser = useAppSelector(selectCurrentUser);
 
-  const maxLengthPhotoLost = 6;
+  const maxLengthPhotoPost = 5;
 
   const userPhotos = posts
-    .filter((post, index) => index < maxLengthPhotoLost)
+    .filter((post, index) => index < maxLengthPhotoPost)
     .map((post) => post.assets!.map((asset) => asset.url))
     .flat(Infinity);
 
@@ -57,25 +58,25 @@ const ProfilePage = () => {
   useEffect(() => {
     document.title = `${user?.firstName} ${user?.lastName} | Sociala.`;
     const getPostsOfUser = async (id: string) => {
-      const posts: [PostType] = await getPostsApi(id);
-      setPosts(posts);
-    };
-    // if currentUser different from params.username then we are in friend profile then get friend posts
-    // else get current user posts from store
-    if (params.username !== currentUser?.username) {
-      if (!user) {
+      const posts: PostType[] = await getPostsApi(id, { page });
+
+      if (posts.length === 0) {
+        setHasMore(false);
+        setIsFetchingPosts(false);
         return;
       }
-      getPostsOfUser(user?._id as string);
-    } else {
-      setPosts(currentUserPosts);
+      setPosts((prev) => [...prev, ...posts]);
+    };
+
+    if (user) {
+      getPostsOfUser(user._id);
     }
     const timer = setTimeout(() => {
       setIsFetchingPosts(false);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [user, currentUser, currentUserPosts, params.username]);
+  }, [user, currentUser, params.username, page]);
   return (
     <>
       {!user ? (
@@ -154,13 +155,30 @@ const ProfilePage = () => {
                 </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px 0', flex: '3' }}>
-                {params.username === currentUser?.username && <CreatePost />}
-                <div className="profile-post-list">
-                  {isFetchingPosts && <SkeletonLoading type="post" />}
-                  {!isFetchingPosts &&
-                    posts!.length > 0 &&
-                    posts?.map((post) => <Post key={post._id} post={post} />)}
-                </div>
+                {params.username === currentUser?.username && <CreatePost setPosts={setPosts} />}
+                <InfiniteScroll
+                  dataLength={posts.length}
+                  hasMore={hasMore}
+                  next={() => setPage((prev) => prev + 1)}
+                  loader={
+                    <div style={{ marginTop: '10px' }}>
+                      <SkeletonLoading type="post" />{' '}
+                    </div>
+                  }
+                  style={{ overflow: 'hidden' }}
+                >
+                  <div className="profile-post-list">
+                    {isFetchingPosts && <SkeletonLoading type="post" />}
+                    {!isFetchingPosts &&
+                      posts!.length > 0 &&
+                      posts?.map((post) => <Post key={post._id} post={post} setPosts={setPosts} />)}
+                    {!hasMore && (
+                      <p style={{ textAlign: 'center', marginTop: '10px' }}>
+                        Yay! You have seen it all
+                      </p>
+                    )}
+                  </div>
+                </InfiniteScroll>
               </div>
             </div>
           </div>
