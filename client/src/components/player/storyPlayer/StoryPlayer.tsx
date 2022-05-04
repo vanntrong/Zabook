@@ -28,6 +28,7 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const [isShowStoryMenu, setIsShowStoryMenu] = useState<boolean>(false);
   const [currentStoryId, setCurrentStoryId] = useState<string>('');
+  const [currentStoryIndex, setCurrentStoryIndex] = useState<number>(0);
 
   useEffect(() => {
     const getStoriesApi = async () => {
@@ -57,16 +58,7 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
     const index = e.activeIndex; //get index by swiper slider
     timingElements[index].classList.add('active');
     setCurrentStoryId(stories[index]._id);
-    if (stories[index].views.includes(currentUser!._id)) {
-      return;
-    } else {
-      const newStory = await viewStoryHandler(stories[index]._id);
-      if (newStory) {
-        setStories((prevState) =>
-          prevState.filter((story) => (story._id === newStory._id ? newStory : story))
-        );
-      }
-    }
+    setCurrentStoryIndex(index);
   };
 
   const deleteStoryHandler = async (id: string) => {
@@ -87,6 +79,22 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
     await deleteStoryHandler(currentStoryId);
     onClosePopup();
   };
+
+  useEffect(() => {
+    const handleViewStory = async () => {
+      if (!stories[currentStoryIndex].views.includes(currentUser!._id)) {
+        const newStory = await viewStoryHandler(stories[currentStoryIndex]._id);
+        if (newStory) {
+          setStories((prevState) =>
+            prevState.filter((story) => (story._id === newStory._id ? newStory : story))
+          );
+        }
+      } else {
+        return;
+      }
+    };
+    handleViewStory();
+  }, [currentStoryIndex, currentUser, stories]);
 
   return (
     <>

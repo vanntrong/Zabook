@@ -1,25 +1,23 @@
-import { getPostsApi } from 'api/postApi';
 import { getProfileOtherApi } from 'api/userApi';
 import GalleryImage from 'components/galleryImage/GalleryImage';
 import withLayout from 'components/layout/Layout';
 import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
+import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 // import SkeletonLoading from 'components/SkeletonLoading';
 import UserInfo from 'components/userinfo/UserInfo';
+import useFetchPosts from 'hooks/useFetchPosts';
 import React, { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate, useParams } from 'react-router-dom';
-import { PostType, UserType } from 'shared/types';
+import { UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import './photopage.scss';
-import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 
 const PhotosPage = () => {
   const [user, setUser] = useState<null | UserType>(null);
-  const [posts, setPosts] = useState<PostType[]>([]);
   const [page, setPage] = useState<number>(0);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-  const [isFetchingPosts, setIsFetchingPosts] = useState<boolean>(true);
+  const { posts, hasMore, isFetchingPosts } = useFetchPosts(page, user);
   const currentUser = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
   const params = useParams();
@@ -45,31 +43,7 @@ const PhotosPage = () => {
 
   useEffect(() => {
     document.title = `${user?.firstName} ${user?.lastName} | Zabook`;
-
-    const getPostsOfUser = async (id: string) => {
-      const posts: PostType[] = await getPostsApi(id, { page });
-      // if posts.length === 0 then there is no more posts
-      if (posts.length === 0) {
-        setHasMore(false);
-        setIsFetchingPosts(false);
-        return;
-      }
-      setPosts((prevPosts) => [...prevPosts, ...posts]);
-      setIsFetchingPosts(false);
-    };
-    // if currentUser different from params.username then we are in friend profile then get friend posts
-    // else get current user posts from store
-
-    if (user) {
-      getPostsOfUser(user?._id as string);
-    }
-
-    const timer = setTimeout(() => {
-      setIsFetchingPosts(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [user, currentUser, params.username, page]);
+  }, [user?.firstName, user?.lastName]);
   return (
     <>
       {!user ? (
