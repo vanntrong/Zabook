@@ -1,11 +1,11 @@
 import { getFriendsPostsApi } from 'api/postApi';
-import { getStoriesApi } from 'api/storyApi';
 import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 import CreatePost from 'components/post/createPost/CreatePost';
 import Stories from 'components/stories/Stories';
+import useFetchStories from 'hooks/useFetchStories';
 import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { PostType, storyType } from 'shared/types';
+import { PostType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import Post from './../post/Post';
@@ -19,15 +19,7 @@ const Feed = () => {
   const [page, setPage] = useState<number>(0);
   const [hasMore, setHasMore] = useState(true);
   const currentUser = useAppSelector(selectCurrentUser);
-  const [stories, setStories] = useState<storyType[]>([]);
-
-  useEffect(() => {
-    const getStories = async () => {
-      const res = await getStoriesApi({ page: 0 });
-      setStories((prev) => [...prev, ...res]);
-    };
-    getStories();
-  }, []);
+  const { stories } = useFetchStories(0);
 
   useEffect(() => {
     const getFriendsPosts = async () => {

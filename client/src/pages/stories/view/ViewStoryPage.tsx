@@ -1,13 +1,12 @@
 import { Avatar } from '@mui/material';
-import { getStoriesApi } from 'api/storyApi';
 import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 import StoryPlayer from 'components/player/storyPlayer/StoryPlayer';
+import useFetchStories from 'hooks/useFetchStories';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link, useParams } from 'react-router-dom';
-import { storyType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import Navbar from './../../../components/navbar/Navbar';
@@ -15,27 +14,10 @@ import './viewStoryPage.scss';
 
 const ViewStoryPage = () => {
   const params = useParams();
-  // const stories = useAppSelector(selectStories);
-  const [stories, setStories] = useState<storyType[]>([]);
-  const [isFetchingStory, setIsFetchingStory] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(true);
   const [page, setPage] = useState<number>(0);
   const currentUser = useAppSelector(selectCurrentUser);
+  const { stories, hasMore, isFetchingStories } = useFetchStories(page);
 
-  useEffect(() => {
-    const getStories = async () => {
-      setIsFetchingStory(true);
-      const res = await getStoriesApi({ page });
-      if (res.length === 0) {
-        setHasMore(false);
-        setIsFetchingStory(false);
-        return;
-      }
-      setStories((prev) => [...prev, ...res]);
-      setIsFetchingStory(false);
-    };
-    getStories();
-  }, [page]);
   return (
     <>
       <Navbar />
@@ -64,7 +46,7 @@ const ViewStoryPage = () => {
               loader={null}
             >
               <div className="viewStoryPage-slide-list">
-                {isFetchingStory && <SkeletonLoading type="info" />}
+                {isFetchingStories && <SkeletonLoading type="info" />}
                 {stories.length > 0 &&
                   stories.map((story) => (
                     <Link key={story._id} to={`/stories/${story._id}`}>
@@ -92,7 +74,7 @@ const ViewStoryPage = () => {
           </div>
         </div>
         <div className="viewStoryPage-main">
-          {!isFetchingStory && params.storyId && <StoryPlayer userPost={params!.storyId} />}
+          {!isFetchingStories && params.storyId && <StoryPlayer userPost={params!.storyId} />}
         </div>
       </div>
     </>

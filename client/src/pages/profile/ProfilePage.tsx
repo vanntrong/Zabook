@@ -1,30 +1,28 @@
-import { getPostsApi } from 'api/postApi';
 import { getProfileOtherApi } from 'api/userApi';
 import withLayout from 'components/layout/Layout';
+import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
+import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 import CreatePost from 'components/post/createPost/CreatePost';
 import Post from 'components/post/Post';
 import UserInfo from 'components/userinfo/UserInfo';
+import useFetchPosts from 'hooks/useFetchPosts';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { GoLocation } from 'react-icons/go';
 import { GrCaretNext } from 'react-icons/gr';
 import { IoPersonOutline, IoSchoolOutline } from 'react-icons/io5';
 import { MdOutlineCake, MdWorkOutline } from 'react-icons/md';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { PostType, UserType } from 'shared/types';
+import { UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
-import moment from 'moment';
 import './profilepage.scss';
-import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
-import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 const ProfilePage = () => {
   const [user, setUser] = useState<null | UserType>(null);
-  const [posts, setPosts] = useState<PostType[]>([]);
-  const [isFetchingPosts, setIsFetchingPosts] = useState<boolean>(true);
   const [page, setPage] = useState<number>(0);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const { posts, setPosts, hasMore, isFetchingPosts } = useFetchPosts(page, user);
   const navigate = useNavigate();
 
   const params = useParams();
@@ -57,26 +55,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     document.title = `${user?.firstName} ${user?.lastName} | Sociala.`;
-    const getPostsOfUser = async (id: string) => {
-      const posts: PostType[] = await getPostsApi(id, { page });
-
-      if (posts.length === 0) {
-        setHasMore(false);
-        setIsFetchingPosts(false);
-        return;
-      }
-      setPosts((prev) => [...prev, ...posts]);
-    };
-
-    if (user) {
-      getPostsOfUser(user._id);
-    }
-    const timer = setTimeout(() => {
-      setIsFetchingPosts(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [user, currentUser, params.username, page]);
+  }, [user?.firstName, user?.lastName]);
   return (
     <>
       {!user ? (

@@ -1,34 +1,16 @@
 import { Avatar } from '@mui/material';
-import { getStoriesApi } from 'api/storyApi';
 import withLayout from 'components/layout/Layout';
 import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { storyType } from 'shared/types';
+import useFetchStories from 'hooks/useFetchStories';
+import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+import { Link } from 'react-router-dom';
 import './storiesPage.scss';
 
 const StoriesPage = () => {
-  const [stories, setStories] = useState<storyType[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [isFetchingStories, setIsFetchingStories] = useState(false);
   const [page, setPage] = useState(0);
+  const { stories, hasMore, isFetchingStories } = useFetchStories(page);
 
-  useEffect(() => {
-    const getStories = async () => {
-      setIsFetchingStories(true);
-      const res = await getStoriesApi({ page });
-      if (res.length === 0) {
-        setHasMore(false);
-        setIsFetchingStories(false);
-        return;
-      }
-      setStories((prev) => [...prev, ...res]);
-      setIsFetchingStories(false);
-    };
-    getStories();
-  }, [page]);
   return (
     <div className="storiesPage">
       <div className="mainWrapper">
