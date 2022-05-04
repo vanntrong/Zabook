@@ -2,33 +2,42 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import CloseIcon from '@mui/icons-material/Close';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 import Avatar from '@mui/material/Avatar';
+import { updatePostApi } from 'api/postApi';
 import DragImage from 'components/dragImage/DragImage';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
 import Notification from 'components/notification/Notification';
 import { Picker } from 'emoji-mart';
 import React, { FC, useState } from 'react';
+import { FaUserPlus } from 'react-icons/fa';
 import { formPostData, PostType } from 'shared/types';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { postAction } from 'store/slice/postSlice';
+import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import '../inputpost.scss';
+import { SearchPeopleToTag } from '../inputPostModal/InputPostModal';
 
 interface InputEditPostModalProps {
   // currentUser: UserType | null;
   setIsShowPostModal: React.Dispatch<React.SetStateAction<boolean>>;
   post: PostType;
+  setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
 }
 
-const InputEditPostModal: FC<InputEditPostModalProps> = ({ setIsShowPostModal, post }) => {
+const InputEditPostModal: FC<InputEditPostModalProps> = ({
+  setIsShowPostModal,
+  post,
+  setPosts,
+}) => {
   const previewFiles = post.assets?.map((asset) => asset.url);
+  const tagsPeopleArrayId = post.tagsPeople?.map((tag) => tag._id);
   const [isShowEmojiPicker, setIsShowEmojiPicker] = useState<boolean>(false);
   const [postContent, setPostContent] = useState<string>(post.content);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  const [tagsPeople, setTagsPeople] = useState<string[]>(tagsPeopleArrayId);
   const [filesPreview, setFilesPreview] = useState<any[]>(previewFiles ? previewFiles : []);
   const [assetsData, setAssetsData] = useState<any[]>(post.assets ? post.assets : []);
   const [isShowDragAndDrop, setIsShowDragAndDrop] = useState<boolean>(filesPreview.length > 0);
+  const [isShowSearchTagPeople, setIsShowSearchTagPeople] = useState<boolean>(false);
   const currentUser = useAppSelector(selectCurrentUser);
-  const dispatch = useAppDispatch();
 
   const selectEmojiHandler = (emoji: any) => {
     setPostContent(postContent + emoji.native);
@@ -40,11 +49,15 @@ const InputEditPostModal: FC<InputEditPostModalProps> = ({ setIsShowPostModal, p
     const data: formPostData = {
       userPost: currentUser!._id,
       content: postContent,
+      tagsPeople,
     };
     if (assetsData.length > 0) {
       data.assets = assetsData;
     }
-    dispatch(postAction.updatePostRequest({ data, id: post._id }));
+    // dispatch(postAction.updatePostRequest({ data, id: post._id }));
+    const res = await updatePostApi({ data, id: post._id });
+    console.log(res);
+    setPosts((prev) => prev.map((item) => (item._id === post._id ? res : item)));
     setPostContent('');
     const timer = setTimeout(() => {
       setIsSubmit(false);
@@ -77,6 +90,11 @@ const InputEditPostModal: FC<InputEditPostModalProps> = ({ setIsShowPostModal, p
       }
     }
   };
+
+  const handleCloseSearchTagPeople = () => {
+    setIsShowSearchTagPeople(false);
+  };
+
   return (
     <>
       <form className="form-post-modal" onSubmit={submitHandler}>
@@ -147,6 +165,13 @@ const InputEditPostModal: FC<InputEditPostModalProps> = ({ setIsShowPostModal, p
                   onClick={() => showDragAndDrop()}
                 />
               </div>
+              <div style={{ cursor: 'pointer', fontSize: '35px' }}>
+                <FaUserPlus
+                  color="#05f"
+                  fontSize="inherit"
+                  onClick={() => setIsShowSearchTagPeople(true)}
+                />
+              </div>
             </div>
           </div>
           <button type="submit" disabled={postContent.length === 0} className="form-post-submit">
@@ -154,6 +179,13 @@ const InputEditPostModal: FC<InputEditPostModalProps> = ({ setIsShowPostModal, p
           </button>
         </div>
       </form>
+      {isShowSearchTagPeople && (
+        <SearchPeopleToTag
+          onClose={handleCloseSearchTagPeople}
+          currentUser={currentUser}
+          setTagsPeople={setTagsPeople}
+        />
+      )}
       {isSubmit && <ProgressLoading />}
       {isSubmit && <Notification type="success" content="Your post is being on process..." />}
     </>

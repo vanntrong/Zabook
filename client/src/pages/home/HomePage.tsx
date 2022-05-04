@@ -3,10 +3,14 @@ import Feed from 'components/feed/Feed';
 import FriendRequest from 'components/friendRequest/FriendRequest';
 import withLayout from 'components/layout/Layout';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { friendRequestType } from 'shared/types';
+import { useAppSelector } from 'store/hooks';
+import { selectCurrentUser } from 'store/slice/userSlice';
 import './home.scss';
 
 const HomePage = () => {
+  const currentUser = useAppSelector(selectCurrentUser);
   const [friendsRequest, setFriendsRequest] = useState<friendRequestType[]>([]);
   useEffect(() => {
     document.title = 'Sociala.';
@@ -15,10 +19,11 @@ const HomePage = () => {
   useEffect(() => {
     const getFriendsRequest = async () => {
       const res = await getAllFriendRequestApi({ page: 0 });
-      setFriendsRequest(res);
+      setFriendsRequest((prev) => [...prev, ...res]);
     };
     getFriendsRequest();
   }, []);
+
   return (
     <>
       <div className="homePage">
@@ -31,7 +36,9 @@ const HomePage = () => {
               <div className="home-main-right-list">
                 <div className="home-main-right-title">
                   <h3>Friend Request</h3>
-                  <span>See all</span>
+                  <Link to={`/${currentUser?.username}/friends/request`}>
+                    <span>See all</span>
+                  </Link>
                 </div>
                 <hr />
                 <div className="home-main-right-content">

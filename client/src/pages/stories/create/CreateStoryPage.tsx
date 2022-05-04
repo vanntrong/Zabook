@@ -75,7 +75,7 @@ const CreateStoryPage = () => {
             <h1 className="createStoryPage-title">Your story</h1>
             <div className="createStoryPage-info">
               <Avatar className="createStoryPage-avatar" src="" alt="" />
-              <h3 className="createStoryPage-name">Vo Van Trong</h3>
+              <h3 className="createStoryPage-name">{currentUser?.fullName}</h3>
             </div>
           </div>
           <hr />

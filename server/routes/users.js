@@ -19,6 +19,9 @@ router.get("/:username/profile", verifyToken, userController.getOtherUserProfile
 //get Friend List
 router.get("/:userId/friends", verifyToken, userController.getFriendListHandler);
 
+//get Friend post
+router.get("/:userId/friends/posts", verifyToken, userController.getFriendPostHandler);
+
 //add user to searchHistory
 router.put("/:userId/searchHistory", verifyToken, userController.addHistorySearchHandler);
 
@@ -29,5 +32,6 @@ router.get("/:userId/searchHistory", verifyToken, userController.getHistoryInfo)
 router.delete("/:userId/searchHistory/:historyId", verifyToken, userController.deleteHistoryHandler);
 
 //delete friend
-router.delete("/:userId/friend/:friendId", verifyToken, userController.deleteFriendHandler);
+router.delete("/:userId/friends/:friendId", verifyToken, userController.deleteFriendHandler);
+
 export default router;

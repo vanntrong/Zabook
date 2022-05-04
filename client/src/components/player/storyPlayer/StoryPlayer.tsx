@@ -31,6 +31,7 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
 
   useEffect(() => {
     const getStoriesApi = async () => {
+      setIsFetchingStory(true);
       const res = await getAllStoriesOfOneUserApi({ userPost: userPost });
       setStories(res);
       setCurrentStoryId(res[0]._id);
@@ -71,6 +72,7 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
   const deleteStoryHandler = async (id: string) => {
     try {
       const res = await deleteStoryApi(id);
+
       setStories((prevState) => prevState.filter((story) => story._id !== res._id));
     } catch (error) {
       console.log(error.response.data);

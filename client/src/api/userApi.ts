@@ -46,4 +46,4 @@ export const getFriendListApi = (id: string, params: { page: number }): Promise<
   axiosClient.get(`users/${id}/friends`, { params });
 
 export const deleteFriendApi = (payload: { id: string; friendId: string }): Promise<[string]> =>
-  axiosClient.delete(`users/${payload.id}/friend/${payload.friendId}`);
+  axiosClient.delete(`users/${payload.id}/friends/${payload.friendId}`);

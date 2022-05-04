@@ -1,5 +1,5 @@
 import { Avatar, Paper } from '@mui/material';
-import { likePostApi } from 'api/postApi';
+import { deletePostApi, likePostApi } from 'api/postApi';
 import Backdrop from 'components/backdrop/Backdrop';
 import { Comments } from 'components/comments/Comments';
 import InputEditPostModal from 'components/input/InputPost/inputEditPostModal/InputEditPostModal';
@@ -14,8 +14,7 @@ import { FiEdit2, FiShare2 } from 'react-icons/fi';
 import { MdDeleteOutline } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { PostType } from 'shared/types';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { postAction } from 'store/slice/postSlice';
+import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import './post.scss';
 import PostAssets from './PostAssets';
@@ -23,9 +22,10 @@ import PostAssets from './PostAssets';
 interface PostProps {
   // className?: string;
   post: PostType;
+  setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
 }
 
-const Post: FC<PostProps> = ({ post }) => {
+const Post: FC<PostProps> = ({ post, setPosts }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isLiked, setIsLiked] = useState<boolean>(post.likes!.includes(currentUser!._id));
   const [isShowModalMenu, setIsShowModalMenu] = useState<boolean>(false);
@@ -34,7 +34,6 @@ const Post: FC<PostProps> = ({ post }) => {
   const [isShowComments, setIsShowComments] = useState<boolean>(false);
   const [commentCount, setCommentCount] = useState<number>(post.comments!.length || 0);
   const [likeCount, setLikeCount] = useState<number>(post.likes!.length || 0);
-  const dispatch = useAppDispatch();
 
   const handleLikePost = async () => {
     setIsLiked((prevState) => !prevState);
@@ -51,8 +50,10 @@ const Post: FC<PostProps> = ({ post }) => {
     setIsShowDialog(false);
   };
 
-  const deletePostHandler = () => {
-    dispatch(postAction.deletePostRequest(post._id));
+  const deletePostHandler = async () => {
+    // dispatch(postAction.deletePostRequest(post._id));
+    await deletePostApi(post._id);
+    setPosts((prevState) => prevState.filter((item) => item._id !== post._id));
     handleCloseDialog();
   };
 
@@ -163,7 +164,11 @@ const Post: FC<PostProps> = ({ post }) => {
         )}
       </Paper>
       {isShowPostModal && (
-        <InputEditPostModal setIsShowPostModal={setIsShowPostModal} post={post} />
+        <InputEditPostModal
+          setIsShowPostModal={setIsShowPostModal}
+          post={post}
+          setPosts={setPosts}
+        />
       )}
       <PopUp
         isOpen={isShowDialog}
