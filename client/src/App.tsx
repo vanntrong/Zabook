@@ -18,6 +18,7 @@ const SettingPage = lazy(() => import('pages/setting/SettingPage'));
 const NotFoundPage = lazy(() => import('pages/404/NotFoundPage'));
 const CreateStoryPage = lazy(() => import('pages/stories/create/CreateStoryPage'));
 const StoriesPage = lazy(() => import('pages/stories/StoriesPage'));
+const MessagesPage = lazy(() => import('pages/messages/MessagesPage'));
 
 function App() {
   const user = useAppSelector(selectCurrentUser);
@@ -47,10 +48,12 @@ function App() {
       {!isFetchingUser && (
         <Suspense fallback={<SimpleLoading />}>
           <Routes>
+            {/* login route */}
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
             <Route path="/register" element={!user ? <SignupPage /> : <Navigate to="/" />} />
             <Route path="/" element={!user ? <Navigate to="/login" /> : <HomePage />} />
 
+            {/* profile route */}
             <Route path="/:username">
               <Route index element={!user ? <Navigate to="/login" /> : <ProfilePage />} />
               <Route path="photos" element={!user ? <Navigate to="/login" /> : <PhotosPage />} />
@@ -63,8 +66,10 @@ function App() {
               </Route>
             </Route>
 
+            {/* badges route */}
             <Route path="/badges" element={!user ? <Navigate to="/login" /> : <p>Badges</p>} />
 
+            {/* stories route */}
             <Route path="/stories">
               <Route index element={!user ? <Navigate to="/login" /> : <StoriesPage />} />
               <Route
@@ -76,9 +81,11 @@ function App() {
                 element={!user ? <Navigate to="/login" /> : <ViewStoryPage />}
               />
             </Route>
+
+            {/* messages route */}
             <Route path="/groups" element={!user ? <Navigate to="/login" /> : <p>groups</p>} />
             <Route path="/settings" element={!user ? <Navigate to="/login" /> : <SettingPage />} />
-            <Route path="/messages" element={!user ? <Navigate to="/login" /> : <p>messages</p>} />
+            <Route path="/messages" element={!user ? <Navigate to="/login" /> : <MessagesPage />} />
             <Route path="/404" element={<NotFoundPage />} />
 
             <Route path="*" element={<Navigate to={'/404'} />} />

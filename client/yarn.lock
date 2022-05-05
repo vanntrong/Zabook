@@ -8330,10 +8330,10 @@ react-transition-group@^4.4.2:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-tuby@^0.1.20:
-  version "0.1.20"
-  resolved "https://registry.yarnpkg.com/react-tuby/-/react-tuby-0.1.20.tgz#9f474e9e0fd0c1a61275c63e34da475339f5a61c"
-  integrity sha512-ONwhShmdNosgEwKvYd9xZ/05A7qE+5suHtj159xxyHSB0OwJLG9fnS2OtlqZfdvBEu3vRqAC3cG3QqoVhjV0+g==
+react-tuby@0.1.22:
+  version "0.1.22"
+  resolved "https://registry.yarnpkg.com/react-tuby/-/react-tuby-0.1.22.tgz#8e8f9e988e0af005c8ffe2d3ecac30c13da25b02"
+  integrity sha512-WdcCbpUPwhHUupbLn4sfz5zIoeXzFH3bVOioCj9zZhDY1XWSF207Xw510xpR4+quGdyY437R5PxCVtGofdtjTA==
 
 react@^18.0.0:
   version "18.0.0"

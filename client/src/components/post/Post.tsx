@@ -32,8 +32,8 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
   const [isShowPostModal, setIsShowPostModal] = useState<boolean>(false);
   const [isShowDialog, setIsShowDialog] = useState<boolean>(false);
   const [isShowComments, setIsShowComments] = useState<boolean>(false);
-  const [commentCount, setCommentCount] = useState<number>(post.comments!.length || 0);
-  const [likeCount, setLikeCount] = useState<number>(post.likes!.length || 0);
+  const [commentCount, setCommentCount] = useState<number>(post.comments?.length || 0);
+  const [likeCount, setLikeCount] = useState<number>(post.likes?.length || 0);
 
   const handleLikePost = async () => {
     setIsLiked((prevState) => !prevState);

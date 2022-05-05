@@ -1,6 +1,6 @@
 import { Avatar } from '@mui/material';
 import Backdrop from 'components/backdrop/Backdrop';
-import SearchResultModal from 'components/searchResultModal/SearchResultModal';
+import SearchResultModal from 'components/modal/searchResultModal/SearchResultModal';
 import React, { FC, useState } from 'react';
 import { AiOutlineClose, AiOutlineHome, AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import { BiMessage, BiMessageRoundedDots } from 'react-icons/bi';
@@ -9,8 +9,8 @@ import { FiSettings } from 'react-icons/fi';
 // import { AiOutlineClose } from "react-icons/ai";
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { Link, NavLink } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectCurrentUser, userAction } from 'store/slice/userSlice';
+import { useAppSelector } from 'store/hooks';
+import { selectCurrentUser } from 'store/slice/userSlice';
 import './navbar.scss';
 
 interface NavbarProps {
@@ -20,15 +20,8 @@ interface NavbarProps {
 const Navbar: FC<NavbarProps> = ({ className }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isShowSearchBox, setIsShowSearchBox] = useState<boolean>(false);
-  // const [isShowInputPostModal, setIsShowInputPostModal] = useState<boolean>(false);
-  // const [isShowModalUser, setIsShowModalUser] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
   const [isMobileSideBarShow, setIsMobileSideBarShow] = useState<boolean>(false);
-  // const dispatch = useAppDispatch();
-
-  // const logoutHandler = () => {
-  //   dispatch(userAction.logoutUser());
-  // };
 
   const clickShowMenuMobileHandler = () => {
     if (!isMobileSideBarShow) {

@@ -59,7 +59,13 @@ const DragImage: FC<DragImageProps> = ({ changFilesHandler, filesPreview }) => {
         (filesPreview[0].media_type === 'image' ? (
           <img src={filesPreview[0].url} alt="" />
         ) : (
-          <Player src={filesPreview[0].url} dimensions={{ width: '100%', height: '100%' }} />
+          <Player
+            src={filesPreview[0].url}
+            dimensions={{ width: '100%', height: '100%' }}
+            keyboardShortcut={false}
+          >
+            {(ref, props) => <video ref={ref} {...props} autoPlay />}
+          </Player>
         ))}
       {filesPreview && filesPreview.length > 1 && (
         <span className="img-count-more">+ {filesPreview.length - 1}</span>

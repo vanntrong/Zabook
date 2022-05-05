@@ -1,5 +1,5 @@
 import { getHistoryInfoApi, searchUserApi } from 'api/userApi';
-import ResultUser from 'components/searchResultModal/resultuser/ResultUser';
+import ResultUser from 'components/modal/searchResultModal/resultuser/ResultUser';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';

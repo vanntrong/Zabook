@@ -7,7 +7,7 @@ import { searchUserApi } from 'api/userApi';
 import DragImage from 'components/dragImage/DragImage';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
 import Notification from 'components/notification/Notification';
-import { searchResult } from 'components/searchResultModal/SearchResultModal';
+import { searchResult } from 'components/modal/searchResultModal/SearchResultModal';
 import { Picker } from 'emoji-mart';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai';

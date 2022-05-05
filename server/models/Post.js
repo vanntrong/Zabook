@@ -20,11 +20,8 @@ const postSchema = mongoose.Schema(
     tagsPeople: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
     shares: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
   },
+  { timestamps: true },
   {
     toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals
     toObject: { virtuals: true }, // So `console.log()` and other functions that use `toObject()` include virtuals
