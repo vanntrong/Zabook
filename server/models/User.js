@@ -50,11 +50,8 @@ const userSchema = mongoose.Schema(
     school: String,
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     historySearch: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
   },
+  { timestamps: true },
   {
     toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals
     toObject: { virtuals: true }, // So `console.log()` and other functions that use `toObject()` include virtuals

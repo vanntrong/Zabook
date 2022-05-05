@@ -1,0 +1,49 @@
+@import '../../shared/variable.scss';
+
+.chatBox {
+  height: 100%;
+
+  .chatBox-messages {
+    height: calc(100% - 60px - 67px);
+    background-color: white;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    gap: 5px 0;
+  }
+
+  .chatBox-input {
+    form {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-top: 10px;
+      gap: 0 10px;
+      input {
+        width: 100%;
+        resize: none;
+        height: 100%;
+        background-color: $border-color;
+        border-radius: 30px;
+        padding: 10px 15px;
+        font-size: 16px;
+      }
+      button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: transparent;
+        cursor: pointer;
+        font-size: 18px;
+        color: $blue-500;
+        &:hover {
+          background-color: $border-color;
+        }
+      }
+    }
+  }
+}

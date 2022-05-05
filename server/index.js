@@ -11,6 +11,8 @@ import tokenRoute from "./routes/token.js";
 import usersRoute from "./routes/users.js";
 import friendRoute from "./routes/friend.js";
 import storyRoute from "./routes/story.js";
+import conversationRoute from "./routes/conversation.js";
+import messageRoute from "./routes/message.js";
 
 dotenv.config();
 const app = express();
@@ -31,6 +33,8 @@ app.use("/token", tokenRoute);
 app.use("/search", searchRoute);
 app.use("/friend", friendRoute);
 app.use("/story", storyRoute);
+app.use("/conversation", conversationRoute);
+app.use("/message", messageRoute);
 
 mongoose.connect(process.env.DB_CONNECTION, (err) => {
   if (err) console.log(err);

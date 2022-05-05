@@ -1,0 +1,36 @@
+@import '../../shared/variable.scss';
+
+.conversations {
+  display: flex;
+  flex-direction: column;
+  gap: 5px 0;
+  overflow: scroll;
+  height: 100%;
+  padding-bottom: 10px;
+  padding-right: 10px;
+
+  /* width */
+  &::-webkit-scrollbar {
+    width: 8px;
+    display: none;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    background: #a8a8a8;
+  }
+}
+
+@media screen and (min-width: $laptop-screen) {
+  .conversations {
+    &::-webkit-scrollbar {
+      display: block;
+    }
+  }
+}

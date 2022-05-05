@@ -17,11 +17,8 @@ const FriendRequestSchema = new mongoose.Schema(
       enum: [0, 1, 2],
       default: 0,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
   },
+  { timestamps: true },
   {
     toJSON: { virtuals: true }, // So `res.json()` and other `JSON.stringify()` functions include virtuals
     toObject: { virtuals: true }, // So `console.log()` and other functions that use `toObject()` include virtuals

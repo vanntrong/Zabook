@@ -85,7 +85,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
                   <button
                     className="userInfo-addFriend"
                     style={{ position: 'relative' }}
-                    onClick={() => setIsShowFriendMenu(true)}
+                    onClick={() => setIsShowFriendMenu((prev) => !prev)}
                   >
                     <FiUserCheck /> Friends
                     {isShowFriendMenu && (

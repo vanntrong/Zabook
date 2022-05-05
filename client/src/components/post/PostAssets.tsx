@@ -19,7 +19,9 @@ const PostAssets: FC<PostAssetsProps> = React.memo(({ assets }) => {
                 {asset.media_type === 'image' && (
                   <img src={asset.url} alt="" className="wrapper-1__item__image" />
                 )}
-                {asset.media_type === 'video' && <Player src={asset.url} />}
+                {asset.media_type === 'video' && (
+                  <Player src={asset.url} keyboardShortcut={false} />
+                )}
               </div>
             )
         )}
@@ -31,7 +33,9 @@ const PostAssets: FC<PostAssetsProps> = React.memo(({ assets }) => {
       <div className="wrapper-3">
         <div className="wrapper-3__item1">
           {assets[0].media_type === 'image' && <img src={assets[0].url} alt="" />}
-          {assets[0].media_type === 'video' && <Player src={assets[0].url} />}
+          {assets[0].media_type === 'video' && (
+            <Player src={assets[0].url} keyboardShortcut={false} />
+          )}
         </div>
         <div className="wrapper-3__item2">
           {assets?.map((asset, index) => (
@@ -39,7 +43,9 @@ const PostAssets: FC<PostAssetsProps> = React.memo(({ assets }) => {
               {index !== 0 && index <= 3 && (
                 <div className="wrapper-3__item" key={index}>
                   {asset.media_type === 'image' && <img src={asset.url} alt="" />}
-                  {asset.media_type === 'video' && <Player src={asset.url} />}
+                  {asset.media_type === 'video' && (
+                    <Player src={asset.url} keyboardShortcut={false} />
+                  )}
                   {assets.length > 4 && index === 3 && (
                     <div className="bonus_count">
                       <span>+ {assets.length - 4}</span>
