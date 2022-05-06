@@ -1,6 +1,7 @@
-import { getHistoryInfoApi, searchUserApi } from 'api/userApi';
+import { getHistoryInfoApi } from 'api/userApi';
 import ResultUser from 'components/modal/searchResultModal/resultuser/ResultUser';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import useSearchUser from 'hooks/useSearchUser';
+import React, { FC, useEffect, useState } from 'react';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import './searchResultModal.scss';
@@ -28,8 +29,8 @@ interface userHistoryInfoType {
 const SearchResultModal: FC<SearchResultModalProps> = ({ handleClose, searchText }) => {
   const [historySearchResultInfo, setHistorySearchResultInfo] = useState<userHistoryInfoType[]>([]);
   const currentUser = useAppSelector(selectCurrentUser);
-  const [searchResult, setSearchResult] = useState<searchResult[]>([]);
-  const typingTimeout = useRef<any>(null);
+
+  const { searchResult } = useSearchUser(searchText);
 
   useEffect(() => {
     const getHistorySearchInfo = async () => {
@@ -38,24 +39,6 @@ const SearchResultModal: FC<SearchResultModalProps> = ({ handleClose, searchText
     };
     getHistorySearchInfo();
   }, [currentUser]);
-
-  useEffect(() => {
-    if (typingTimeout.current) {
-      clearTimeout(typingTimeout.current);
-    }
-    typingTimeout.current = setTimeout(async () => {
-      if (searchText.trim().length === 0) {
-        setSearchResult([]);
-      } else {
-        const params = {
-          q: searchText,
-          limit: 10,
-        };
-        const res = await searchUserApi(params);
-        setSearchResult(res);
-      }
-    }, 300);
-  }, [searchText]);
 
   return (
     <div className="search-result">

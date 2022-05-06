@@ -14,3 +14,17 @@ export const uploadFile = async (file: File) => {
     throw new Error(error);
   }
 };
+
+export const convertFileSize = (size: number) => {
+  return size / (1024 * 1024); // byte -> kb -> mb
+};
+
+export const convertFile = (file: File): any => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => {
+    const media_type = file.type.split('/')[0];
+    const url = reader.result as string;
+    return { media_type, url };
+  };
+};

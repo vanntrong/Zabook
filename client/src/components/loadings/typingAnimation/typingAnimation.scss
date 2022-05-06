@@ -1,0 +1,42 @@
+$bob-distance: 23%;
+@import '../../../shared/variable.scss';
+.typing-animation-wrapper {
+  height: 30px;
+  width: max-content;
+  padding: 10px;
+  border-radius: 12px;
+  background-color: $border-color;
+}
+.typing-animation {
+  animation: bob 1s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+  border-radius: 100%;
+  float: left;
+  height: 10px;
+  width: 10px;
+  transform: translateY(-$bob-distance);
+
+  &:not(:last-child) {
+    margin-right: 5px;
+  }
+
+  @for $i from 1 through 4 {
+    &:nth-child(#{$i}) {
+      background-color: $text-gray-500;
+      animation-delay: $i * 0.15s;
+    }
+  }
+}
+
+@keyframes bob {
+  0% {
+    transform: translateY(-$bob-distance);
+  }
+
+  50% {
+    transform: translateY($bob-distance);
+  }
+
+  100% {
+    transform: translateY(-$bob-distance);
+  }
+}

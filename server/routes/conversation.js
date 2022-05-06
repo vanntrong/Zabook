@@ -17,6 +17,8 @@ router.put("/group/add", verifyToken, conversationController.addUserToGroupConve
 
 router.put("/group/remove", verifyToken, conversationController.removeUserFromGroupConversation);
 
+router.put("/group/avatar", verifyToken, conversationController.setGroupConversationAvatar);
+
 // router.delete("/", verifyToken, conversationController.deleteConversation);
 
 export default router;

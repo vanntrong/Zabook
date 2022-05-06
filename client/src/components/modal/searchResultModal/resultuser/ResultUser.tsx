@@ -52,11 +52,7 @@ const ResultUser: FC<ResultUserProps> = ({ user, type }) => {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectCurrentUser);
   const handleClick = () => {
-    if (currentUser!.historySearch.includes(user.id) || currentUser?._id === user._id) {
-      return;
-    } else {
-      dispatch(userAction.addHistoryRequest({ id: currentUser!._id, historyId: user._id }));
-    }
+    dispatch(userAction.addHistoryRequest({ id: currentUser!._id, historyId: user._id }));
   };
 
   const handleDeleteClick = () => {

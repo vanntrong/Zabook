@@ -1,19 +1,14 @@
 import { Avatar } from '@mui/material';
 import React, { FC } from 'react';
-
-import { BsPencil } from 'react-icons/bs';
-import { BsCameraVideo } from 'react-icons/bs';
-import { BiImage } from 'react-icons/bi';
 import { AiOutlineCamera } from 'react-icons/ai';
-import { BsThreeDots } from 'react-icons/bs';
-
-import './createPost.scss';
+import { BiImage } from 'react-icons/bi';
+import { BsCameraVideo, BsPencil, BsThreeDots } from 'react-icons/bs';
+import { PostType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
-import InputPostModal from './../../input/InputPost/inputPostModal/InputPostModal';
 import Backdrop from '../../backdrop/Backdrop';
-import Notification from 'components/notification/Notification';
-import { PostType } from 'shared/types';
+import InputPostModal from './../../input/InputPost/inputPostModal/InputPostModal';
+import './createPost.scss';
 
 interface CreatePostProps {
   setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
@@ -22,7 +17,6 @@ interface CreatePostProps {
 const CreatePost: FC<CreatePostProps> = ({ setPosts }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isShowCreatePostModal, setIsShowCreatePostModal] = React.useState(false);
-  const [isShowNotification, setIsShowNotification] = React.useState(false);
   return (
     <>
       <div className="createPost">
@@ -73,17 +67,9 @@ const CreatePost: FC<CreatePostProps> = ({ setPosts }) => {
         </div>
       </div>
       {isShowCreatePostModal && (
-        <InputPostModal
-          currentUser={currentUser}
-          setIsShowPostModal={setIsShowCreatePostModal}
-          setIsShowNotification={setIsShowNotification}
-          setPosts={setPosts}
-        />
+        <InputPostModal setIsShowPostModal={setIsShowCreatePostModal} setPosts={setPosts} />
       )}
       <Backdrop isShow={isShowCreatePostModal} setIsShow={setIsShowCreatePostModal} />
-      {isShowNotification && (
-        <Notification type="success" content="Your post is being on progress" />
-      )}
     </>
   );
 };

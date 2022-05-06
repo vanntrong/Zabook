@@ -3,52 +3,33 @@ import CloseIcon from '@mui/icons-material/Close';
 import EmojiEmotionsOutlinedIcon from '@mui/icons-material/EmojiEmotionsOutlined';
 import Avatar from '@mui/material/Avatar';
 import { createPostApi } from 'api/postApi';
-import { searchUserApi } from 'api/userApi';
 import DragImage from 'components/dragImage/DragImage';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
-import Notification from 'components/notification/Notification';
-import { searchResult } from 'components/modal/searchResultModal/SearchResultModal';
 import { Picker } from 'emoji-mart';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import useSearchUser from 'hooks/useSearchUser';
+import React, { FC, useState } from 'react';
 import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai';
 import { FaUserPlus } from 'react-icons/fa';
 import { IoArrowBackOutline } from 'react-icons/io5';
-import { formPostData, PostType, UserType } from 'shared/types';
+import { toast } from 'react-toastify';
+import { formPostData, PostType } from 'shared/types';
+import { useAppSelector } from 'store/hooks';
+import { selectCurrentUser } from 'store/slice/userSlice';
+import { convertFileSize } from 'utils/upload';
 import '../inputpost.scss';
 
 interface SearchPeopleToTagProps {
-  currentUser: UserType | null;
   onClose: () => void;
   setTagsPeople: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({
-  onClose,
-  currentUser,
-  setTagsPeople,
-}) => {
+export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({ onClose, setTagsPeople }) => {
   const [searchText, setSearchText] = useState('');
-  const [searchResult, setSearchResult] = useState<searchResult[]>([]);
   const [tagsPeoplePreview, setTagsPeoplePreview] = useState<{ name: string; id: string }[]>([]);
-  const typingTimeout = useRef<any>(null);
 
-  useEffect(() => {
-    if (typingTimeout.current) {
-      clearTimeout(typingTimeout.current);
-    }
-    typingTimeout.current = setTimeout(async () => {
-      if (searchText.trim().length === 0) {
-        setSearchResult([]);
-      } else {
-        const params = {
-          q: searchText,
-          limit: 10,
-        };
-        const res = await searchUserApi(params);
-        setSearchResult(res);
-      }
-    }, 300);
-  }, [searchText]);
+  const { searchResult, setSearchResult } = useSearchUser(searchText);
+
+  const currentUser = useAppSelector(selectCurrentUser);
 
   const handleClickResult = (user: any) => {
     if (tagsPeoplePreview.includes(user._id)) {
@@ -122,18 +103,11 @@ export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({
 };
 
 interface InputPostModalProps {
-  currentUser: UserType | null;
   setIsShowPostModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsShowNotification: React.Dispatch<React.SetStateAction<boolean>>;
   setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
 }
 
-const InputPostModal: FC<InputPostModalProps> = ({
-  currentUser,
-  setIsShowPostModal,
-  setIsShowNotification,
-  setPosts,
-}) => {
+const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts }) => {
   const [isShowEmojiPicker, setIsShowEmojiPicker] = useState<boolean>(false);
   const [postContent, setPostContent] = useState<string>('');
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
@@ -142,6 +116,7 @@ const InputPostModal: FC<InputPostModalProps> = ({
   const [isShowDragAndDrop, setIsShowDragAndDrop] = useState<boolean>(false);
   const [isShowSearchTagPeople, setIsShowSearchTagPeople] = useState<boolean>(false);
   const [tagsPeople, setTagsPeople] = useState<string[]>([]);
+  const currentUser = useAppSelector(selectCurrentUser);
 
   const selectEmojiHandler = (emoji: any) => {
     setPostContent(postContent + emoji.native);
@@ -161,8 +136,8 @@ const InputPostModal: FC<InputPostModalProps> = ({
     const timer = setTimeout(() => {
       setIsSubmit(false);
       setIsShowPostModal(false);
-      setIsShowNotification(true);
-    }, 300);
+    }, 500);
+    toast.success('Your post is being on process...', {});
     const res = await createPostApi(data);
     setPosts((prev) => [res, ...prev]);
     setPostContent('');
@@ -184,10 +159,22 @@ const InputPostModal: FC<InputPostModalProps> = ({
     if (files) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
+        const fileSize = convertFileSize(file.size);
+        const media_type = file.type.split('/')[0];
+
+        if (media_type === 'image' && fileSize > 10) {
+          toast.error('Image size must be less than 10MB');
+          return;
+        }
+
+        if (media_type === 'video' && fileSize > 100) {
+          toast.error('Video size must be less than 100MB');
+          return;
+        }
+
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-          const media_type = file.type.split('/')[0];
           const url = reader.result;
           setAssetsData((prev) => [...prev, { media_type, url }]);
           setFilesPreview((prev) => [...prev, { media_type, url: reader.result }]);
@@ -284,15 +271,10 @@ const InputPostModal: FC<InputPostModalProps> = ({
         </div>
       </form>
       {isShowSearchTagPeople && (
-        <SearchPeopleToTag
-          onClose={handleCloseSearchTagPeople}
-          currentUser={currentUser}
-          setTagsPeople={setTagsPeople}
-        />
+        <SearchPeopleToTag onClose={handleCloseSearchTagPeople} setTagsPeople={setTagsPeople} />
       )}
 
       {isSubmit && <ProgressLoading />}
-      {isSubmit && <Notification type="success" content="Your post is being uploaded" />}
     </>
   );
 };

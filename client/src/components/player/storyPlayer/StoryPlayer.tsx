@@ -119,6 +119,16 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
     arrayVideoRef[currentStoryIndex]?.current?.play();
   }, [arrayVideoRef, currentStoryIndex]);
 
+  const handlePauseStory = () => {
+    //stop timing animation when pause
+    document.querySelector(`.story-player-timings-item.active`)?.classList.add('paused');
+  };
+
+  const handlePlayStory = () => {
+    //start timing animation when play
+    document.querySelector(`.story-player-timings-item.active`)?.classList.remove('paused');
+  };
+
   return (
     <>
       {isFetchingStory && <SkeletonLoading type="story" />}
@@ -196,7 +206,15 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
                       dimensions={{ width: '100%', height: '100%' }}
                       playerRef={arrayVideoRef[index]}
                     >
-                      {(ref, props) => <video ref={ref} {...props} loop />}
+                      {(ref, props) => (
+                        <video
+                          ref={ref}
+                          {...props}
+                          loop
+                          onPause={handlePauseStory}
+                          onPlay={handlePlayStory}
+                        />
+                      )}
                     </Player>
                   )}
 

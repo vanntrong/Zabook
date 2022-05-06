@@ -41,7 +41,6 @@
         border-radius: 8px;
         background-color: #cac8c6;
         position: relative;
-
         &.active {
           &::before {
             content: '';
@@ -51,6 +50,11 @@
             height: 100%;
             background-color: white;
             animation: story-player-timings var(--timing) ease-in-out forwards;
+          }
+        }
+        &.paused {
+          &::before {
+            animation-play-state: paused;
           }
         }
       }

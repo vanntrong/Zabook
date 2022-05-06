@@ -149,3 +149,37 @@ export interface storyType {
   createdAt: string;
   id: string;
 }
+
+export interface conversationType {
+  chatName: string;
+  createdAt: Date;
+  groupAdmin: string[];
+  isGroupChat: true;
+  members: { avatar: string; fullName: string; username: string; _id: string }[];
+  messageCount: Number;
+  updatedAt: Date;
+  _id: string;
+  lastMessage?: messageType;
+  avatar: string;
+}
+
+// {
+//   content: string;
+//   createdAt: Date;
+//   sender: {
+//     avatar: string;
+//     fullName: string;
+//     username: string;
+//     _id: string;
+//   };
+// };
+
+export interface messageType {
+  content: string;
+  conversation: string;
+  createdAt: string;
+  isDeleted: boolean;
+  sender: { _id: string; avatar: string; username: string; fullName: string };
+  updatedAt: Date;
+  _id: string;
+}

@@ -10,6 +10,9 @@ const ConversationSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    avatar: {
+      type: String,
+    },
     members: [
       {
         type: mongoose.Schema.Types.ObjectId,
