@@ -43,8 +43,9 @@
     }
 
     .conversation-time {
-      font-size: 14px;
+      font-size: 13px;
       color: $text-gray-600;
+      width: max-content;
     }
   }
 }

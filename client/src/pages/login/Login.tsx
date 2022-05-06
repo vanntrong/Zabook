@@ -2,9 +2,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
-import Notification from 'components/notification/Notification';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import yup from 'shared/yubGlobal';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectLogging, selectLoginError, userAction } from 'store/slice/userSlice';
@@ -37,6 +38,12 @@ const Login = () => {
   const onSubmit: SubmitHandler<LoginFormData> = (data) => {
     dispatch(userAction.loginUserRequest(data));
   };
+
+  useEffect(() => {
+    if (loginError) {
+      toast.error(loginError, {});
+    }
+  }, [loginError]);
   return (
     <div className="login-page">
       <div className="login-header">
@@ -75,7 +82,6 @@ const Login = () => {
         </div>
       </div>
       {isLogging && <ProgressLoading />}
-      {loginError && <Notification type="error" content={loginError} />}
     </div>
   );
 };

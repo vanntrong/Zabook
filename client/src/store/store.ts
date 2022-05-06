@@ -3,17 +3,29 @@ import { Action, combineReducers, configureStore, ThunkAction } from '@reduxjs/t
 import counterReducer from '../features/counter/counterSlice';
 import rootSaga from './sagas';
 import userReducer from './slice/userSlice';
+import socketReducer from './slice/socketSlice';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
   counter: counterReducer,
   user: userReducer,
+  socket: socketReducer,
 });
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignore these action types
+        ignoredActions: ['socket/setSocket'],
+        // Ignore these field paths in all actions
+        ignoredActionPaths: ['socket.socket'],
+        // Ignore these paths in the state
+        ignoredPaths: ['socket.socket'],
+      },
+    }).concat(sagaMiddleware),
 });
 
 sagaMiddleware.run(rootSaga);

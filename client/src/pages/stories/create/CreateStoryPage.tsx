@@ -11,6 +11,8 @@ import { selectCurrentUser } from 'store/slice/userSlice';
 import './createStoryPage.scss';
 import { Player } from 'react-tuby';
 import 'react-tuby/css/main.css';
+import { convertFileSize } from 'utils/upload';
+import { toast } from 'react-toastify';
 export interface formSubmitStoryType {
   userPost: string;
   asset?: { media_type: string; url: string };
@@ -22,7 +24,7 @@ const CreateStoryPage = () => {
   const [isShowPreview, setIsShowPreview] = useState<boolean>(false);
   const [file, setFile] = useState<{ media_type: string; url: string } | null>(null);
   const [filePreview, setFilePreview] = useState<{ media_type: string; url: string } | null>(null);
-  const [content, setContent] = useState('');
+  // const [content, setContent] = useState('');
   const [isPending, setIsPending] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
@@ -36,10 +38,22 @@ const CreateStoryPage = () => {
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
+    const media_type = file.type.split('/')[0];
+    const fileSize = convertFileSize(file.size);
+
+    if (media_type === 'image' && fileSize > 10) {
+      toast.error('File size must be less than 10MB');
+      return;
+    }
+
+    if (media_type === 'video' && fileSize > 100) {
+      toast.error('File size must be less than 100MB');
+      return;
+    }
+
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      const media_type = file.type.split('/')[0];
       const url = reader.result as string;
       setFile({ media_type, url });
       setFilePreview({ media_type, url });
@@ -55,9 +69,9 @@ const CreateStoryPage = () => {
     if (file) {
       data.asset = file;
     }
-    if (content.trim().length > 0) {
-      data.content = content;
-    }
+    // if (content.trim().length > 0) {
+    //   data.content = content;
+    // }
     const res = await createStoryApi(data);
     setIsPending(false);
     setFile(null);
@@ -111,12 +125,12 @@ const CreateStoryPage = () => {
                 </div>
                 <p className="createStoryPage-choose-item-text">Create a media story</p>
               </div>
-              <div className="createStoryPage-choose-item createStoryPage-choose-item-text">
+              {/* <div className="createStoryPage-choose-item createStoryPage-choose-item-text">
                 <div className="createStoryPage-choose-item-icon">
                   <IoTextSharp />
                 </div>
                 <p className="createStoryPage-choose-item-text">Create a text story</p>
-              </div>
+              </div> */}
             </div>
           ) : (
             <div className="createStoryPage-preview">

@@ -108,7 +108,7 @@ export async function addHistorySearchHandler(req, res) {
     }
     const newUser = await User.findByIdAndUpdate(
       req.params.userId,
-      { $push: { historySearch: req.body.searchId, $position: 0 } },
+      { $addToSet: { historySearch: req.body.searchId, $position: 0 } },
       { new: true }
     );
     res.status(200).json(newUser.historySearch);

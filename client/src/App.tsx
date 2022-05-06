@@ -3,7 +3,11 @@ import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
 import ViewStoryPage from 'pages/stories/view/ViewStoryPage';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { io } from 'socket.io-client';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectSocket, socketAction } from 'store/slice/socketSlice';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
 import './app.scss';
 
@@ -24,6 +28,17 @@ function App() {
   const user = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const [isFetchingUser, setIsFetchingUser] = useState<boolean>(true);
+  const socket = useAppSelector(selectSocket);
+
+  useEffect(() => {
+    dispatch(socketAction.setSocket(io(process.env.REACT_APP_API_URL as string)));
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      socket?.emit('setup', user);
+    }
+  }, [socket, user]);
 
   useEffect(() => {
     const token = localStorage.getItem('token') || null;
@@ -85,13 +100,32 @@ function App() {
             {/* messages route */}
             <Route path="/groups" element={!user ? <Navigate to="/login" /> : <p>groups</p>} />
             <Route path="/settings" element={!user ? <Navigate to="/login" /> : <SettingPage />} />
-            <Route path="/messages" element={!user ? <Navigate to="/login" /> : <MessagesPage />} />
+            <Route path="/messages">
+              <Route index element={!user ? <Navigate to="/login" /> : <MessagesPage />} />
+              <Route
+                path=":conversationId"
+                element={!user ? <Navigate to="/login" /> : <MessagesPage />}
+              />
+            </Route>
             <Route path="/404" element={<NotFoundPage />} />
 
             <Route path="*" element={<Navigate to={'/404'} />} />
           </Routes>
         </Suspense>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      {/* Same as */}
+      <ToastContainer />
     </>
   );
 }

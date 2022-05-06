@@ -11,10 +11,9 @@ export async function getMessages(req, res) {
     if (!conversation.members.includes(req.user.id)) {
       return errorController.errorHandler(res, "You are not member of this conversation", 401);
     }
-    const messages = await Message.find({ conversation: req.params.conversationId }).populate(
-      "sender",
-      "_id username fullName avatar"
-    );
+    const messages = await Message.find({ conversation: req.params.conversationId })
+      .populate("sender", "_id username fullName avatar")
+      .sort({ createdAt: -1 });
     return res.status(200).json(messages);
   } catch (error) {
     return errorController.serverErrorHandler(error, res);

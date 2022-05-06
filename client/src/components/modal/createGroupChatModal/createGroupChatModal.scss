@@ -11,6 +11,7 @@
   border-radius: 8px;
   background-color: white;
   z-index: 999;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
   .CreateGroupChatModal-header {
     font-size: 24px;
@@ -59,6 +60,9 @@
     .CreateGroupChatModal-button-cancel {
       background-color: $border-color;
       color: $text-gray-900;
+      &:hover {
+        color: white;
+      }
     }
   }
 }

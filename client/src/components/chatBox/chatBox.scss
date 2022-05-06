@@ -9,9 +9,14 @@
     padding: 10px;
     overflow-y: auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     position: relative;
     gap: 5px 0;
+
+    .no-message {
+      text-align: center;
+      color: $text-gray-900;
+    }
   }
 
   .chatBox-input {

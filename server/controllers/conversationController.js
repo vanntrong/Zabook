@@ -1,5 +1,6 @@
 import * as errorController from "../controllers/errorController.js";
 import Conversation from "../models/Conversation.js";
+import * as factoryController from "./factoryController.js";
 
 export async function getConversations(req, res) {
   try {
@@ -9,7 +10,6 @@ export async function getConversations(req, res) {
       .populate("members", "_id fullName username avatar")
       .populate({
         path: "lastMessage",
-        select: "content createdAt",
         populate: {
           path: "sender",
           select: "fullName username avatar",
@@ -33,14 +33,13 @@ export async function createConversation(req, res) {
       .populate("members", "_id fullName username avatar")
       .populate({
         path: "lastMessage",
-        select: "content createdAt",
         populate: {
           path: "sender",
           select: "fullName username avatar",
         },
       });
     if (conversation) {
-      return res.status(200).json(conversation);
+      return res.status(200).json({ conversation, isNew: false });
     } else {
       const conversationData = {
         members: [req.user.id, req.body.userId],
@@ -50,7 +49,7 @@ export async function createConversation(req, res) {
         "members",
         "_id fullName username avatar"
       );
-      return res.status(200).json(savedConversation);
+      return res.status(200).json({ conversation: savedConversation, isNew: true });
     }
   } catch (error) {
     return errorController.serverErrorHandler(error, res);
@@ -58,7 +57,6 @@ export async function createConversation(req, res) {
 }
 
 export async function createGroupConversation(req, res) {
-  console.log(req.body);
   try {
     if (!req.body.members || req.body.members.length < 2 || !req.body.chatName) {
       return errorController.errorHandler(res, "Group conversation must have at least 2 members and a chat name", 400);
@@ -67,7 +65,7 @@ export async function createGroupConversation(req, res) {
     const conversation = await Conversation.create({
       chatName: req.body.chatName,
       isGroupChat: true,
-      members: req.body.members,
+      members: [...req.body.members, req.user.id],
       groupAdmin: req.user.id,
     });
 
@@ -98,7 +96,6 @@ export async function renameGroupConversation(req, res) {
       })
       .populate({
         path: "lastMessage",
-        select: "content createdAt",
         populate: {
           path: "sender",
           select: "fullName username avatar",
@@ -129,7 +126,6 @@ export async function addUserToGroupConversation(req, res) {
       })
       .populate({
         path: "lastMessage",
-        select: "content createdAt",
         populate: {
           path: "sender",
           select: "fullName username avatar",
@@ -149,9 +145,48 @@ export async function removeUserFromGroupConversation(req, res) {
     if (!req.body.memberId || !req.body.groupId) {
       return errorController.errorHandler(res, "Remove member from group must have memberId and groupId", 400);
     }
+
+    const conversation = await Conversation.findOne({ _id: req.body.groupId, members: { $in: req.user.id } });
+    if (!conversation) {
+      return errorController.errorHandler(res, "You are not a member of this group", 400);
+    }
+
+    if (!conversation.groupAdmin.includes(req.user.id) && req.body.memberId !== req.user.id) {
+      return errorController.errorHandler(res, "You are not allow to remove this user from group", 400);
+    } else {
+      const updatedConversation = await Conversation.findOneAndUpdate(
+        { _id: req.body.groupId, members: { $in: req.user.id } },
+        { $pull: { members: req.body.memberId } },
+        { new: true }
+      )
+        .populate({
+          path: "members",
+          select: "_id fullName username avatar",
+        })
+        .populate({
+          path: "lastMessage",
+          populate: {
+            path: "sender",
+            select: "fullName username avatar",
+          },
+        });
+      return res.status(200).json(updatedConversation);
+    }
+  } catch (error) {
+    return errorController.serverErrorHandler(error, res);
+  }
+}
+
+export async function setGroupConversationAvatar(req, res) {
+  try {
+    if (!req.body.groupId || !req.body.avatar) {
+      return errorController.errorHandler(res, "Group conversation must have a group id and an avatar", 400);
+    }
+    const result = await factoryController.uploadFile(req.body.avatar, "conversation", "image");
+    req.body.avatar = result.secure_url;
     const updatedConversation = await Conversation.findOneAndUpdate(
-      { _id: req.body.groupId, members: { $in: req.user.id }, groupAdmin: { $in: req.user.id } },
-      { $pull: { members: req.body.memberId } },
+      { _id: req.body.groupId, members: { $in: req.user.id } },
+      { avatar: req.body.avatar },
       { new: true }
     )
       .populate({
@@ -160,18 +195,17 @@ export async function removeUserFromGroupConversation(req, res) {
       })
       .populate({
         path: "lastMessage",
-        select: "content createdAt",
         populate: {
           path: "sender",
           select: "fullName username avatar",
         },
       });
     if (!updatedConversation) {
-      return errorController.errorHandler(res, "You are not an admin of this group", 400);
+      return errorController.errorHandler(res, "You are not a member of this group", 400);
     }
     return res.status(200).json(updatedConversation);
   } catch (error) {
-    return errorController.serverErrorHandler(error, res);
+    errorController.serverErrorHandler(error, res);
   }
 }
 

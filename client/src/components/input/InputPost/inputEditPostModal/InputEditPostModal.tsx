@@ -5,10 +5,10 @@ import Avatar from '@mui/material/Avatar';
 import { updatePostApi } from 'api/postApi';
 import DragImage from 'components/dragImage/DragImage';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
-import Notification from 'components/notification/Notification';
 import { Picker } from 'emoji-mart';
 import React, { FC, useState } from 'react';
 import { FaUserPlus } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import { formPostData, PostType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
@@ -56,13 +56,13 @@ const InputEditPostModal: FC<InputEditPostModalProps> = ({
     }
     // dispatch(postAction.updatePostRequest({ data, id: post._id }));
     const res = await updatePostApi({ data, id: post._id });
-    console.log(res);
     setPosts((prev) => prev.map((item) => (item._id === post._id ? res : item)));
     setPostContent('');
     const timer = setTimeout(() => {
       setIsSubmit(false);
       setIsShowPostModal(false);
     }, 300);
+    toast.success('Your post is being on process...', {});
     return () => clearTimeout(timer);
   };
 
@@ -187,7 +187,6 @@ const InputEditPostModal: FC<InputEditPostModalProps> = ({
         />
       )}
       {isSubmit && <ProgressLoading />}
-      {isSubmit && <Notification type="success" content="Your post is being on process..." />}
     </>
   );
 };

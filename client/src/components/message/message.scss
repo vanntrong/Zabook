@@ -6,10 +6,36 @@
   gap: 0 10px;
   position: relative;
   left: 10px;
-  .message-avatar {
-    width: 30px;
-    height: 30px;
+  width: 100%;
+
+  &:hover {
+    .message-button {
+      display: flex;
+    }
   }
+  .message-avatar-and-name {
+    &:hover .message-name {
+      display: block;
+    }
+    .message-avatar {
+      width: 30px;
+      height: 30px;
+    }
+    .message-name {
+      position: absolute;
+      top: -100%;
+      left: 0;
+      z-index: 99;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: $bg-dark;
+      color: white;
+      font-size: 14px;
+      width: max-content;
+      display: none;
+    }
+  }
+
   .message-content-and-time {
     position: relative;
     &:hover .message-time {
@@ -23,6 +49,11 @@
       line-height: 1.25;
       background-color: $border-color;
       font-size: 14px;
+
+      &.deleted {
+        background-color: inherit;
+        border: 1px solid $border-color;
+      }
     }
     .message-time {
       position: absolute;
@@ -32,6 +63,7 @@
       border-radius: 8px;
       background-color: $bg-dark;
       color: white;
+      width: max-content;
       font-size: 14px;
       display: none;
     }
@@ -41,9 +73,10 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
+    position: relative;
 
     &:hover {
       background-color: $border-color;
@@ -58,7 +91,46 @@
       .message-content {
         background-color: $blue-500;
         color: white;
+        &.deleted {
+          background-color: inherit;
+          border: 1px solid $border-color;
+          color: $text-gray-600;
+        }
       }
+    }
+    .message-name {
+      right: 0;
+      left: unset;
+    }
+  }
+
+  .modal-message {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-15px);
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 999;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    &:hover {
+      background-color: $border-color;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      bottom: 0;
+      left: 50%;
+
+      transform: translateX(-50%) translateY(50%) rotate(45deg);
+      background-color: inherit;
     }
   }
 }

@@ -5,10 +5,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import { registerUser } from 'api/userApi';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
-import Notification from 'components/notification/Notification';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import yup from 'shared/yubGlobal';
 import { SignUpFormData } from '../../shared/types';
 import './SignUp.scss';
@@ -37,7 +37,6 @@ const SignupPage = () => {
   } = useForm<SignUpFormData>({
     resolver: yupResolver(SignUpSchema),
   });
-  const [error, SetError] = useState<string | null>(null);
   const [pending, SetPending] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -45,9 +44,10 @@ const SignupPage = () => {
     try {
       SetPending(true);
       await registerUser(data);
+      toast.success("You're successfully registered!", {});
       navigate('/login');
     } catch (error) {
-      SetError(error.response.data);
+      toast.error(error.response.data, {});
     }
     SetPending(false);
   };
@@ -147,7 +147,6 @@ const SignupPage = () => {
         </form>
       </div>
       {pending && <ProgressLoading />}
-      {error && <Notification type="error" content={error} />}
     </>
   );
 };
