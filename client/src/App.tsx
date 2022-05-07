@@ -5,10 +5,9 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { io } from 'socket.io-client';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { selectSocket, socketAction } from 'store/slice/socketSlice';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
+import { socket } from 'utils/socket';
 import './app.scss';
 
 const Login = lazy(() => import('pages/login/Login'));
@@ -28,17 +27,6 @@ function App() {
   const user = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const [isFetchingUser, setIsFetchingUser] = useState<boolean>(true);
-  const socket = useAppSelector(selectSocket);
-
-  useEffect(() => {
-    dispatch(socketAction.setSocket(io(process.env.REACT_APP_API_URL as string)));
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      socket?.emit('setup', user);
-    }
-  }, [socket, user]);
 
   useEffect(() => {
     const token = localStorage.getItem('token') || null;
@@ -56,6 +44,12 @@ function App() {
       clearTimeout(timer);
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      socket.emit('setup', user);
+    }
+  }, [user]);
 
   return (
     <>

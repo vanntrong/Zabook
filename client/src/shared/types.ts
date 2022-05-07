@@ -175,6 +175,7 @@ export interface conversationType {
 // };
 
 export interface messageType {
+  type: 'message' | 'image' | 'video' | 'audio' | 'file' | 'notification';
   content: string;
   conversation: string;
   createdAt: string;

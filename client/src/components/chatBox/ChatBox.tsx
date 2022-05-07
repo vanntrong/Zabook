@@ -1,4 +1,6 @@
+import { Avatar } from '@mui/material';
 import { createMessageApi, getMessagesApi } from 'api/messageApi';
+import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
 import TypingAnimation from 'components/loadings/typingAnimation/TypingAnimation';
 import Message from 'components/message/Message';
 import React, { FC, useEffect, useRef, useState } from 'react';
@@ -6,8 +8,8 @@ import { FiSend } from 'react-icons/fi';
 import { useParams } from 'react-router-dom';
 import { conversationType, messageType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
-import { selectSocket } from 'store/slice/socketSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
+import { socket } from 'utils/socket';
 import './chatBox.scss';
 
 interface ChatBoxProps {
@@ -19,38 +21,64 @@ const ChatBox: FC<ChatBoxProps> = ({ setConversations, currentConversation }) =>
   const [messages, setMessages] = useState<messageType[]>([]);
   const currentUser = useAppSelector(selectCurrentUser);
   const [messageContent, setMessageContent] = useState('');
+  const [isFetchingMessage, setIsFetchingMessage] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeout = useRef<any>(null);
   const params = useParams();
   const { conversationId } = params;
-  const socket = useAppSelector(selectSocket);
+  const selectConversationId = useRef<string>('');
 
   useEffect(() => {
-    socket?.emit('join chat', conversationId);
-    socket?.on('typing', () => setIsTyping(true));
-    socket?.on('stop typing', () => setIsTyping(false));
-  }, [socket, conversationId]);
+    socket.emit('join chat', conversationId);
+  }, [conversationId]);
 
   useEffect(() => {
-    socket?.on('getMessage', (data: { message: messageType; conversation: conversationType }) => {
-      console.log('getMessage', data);
-      setMessages((prev) => [data.message, ...prev]);
+    socket.on('typing', (conversationId) => {
+      if (conversationId === selectConversationId.current) {
+        setIsTyping(true);
+      } else return;
     });
-  }, [socket]);
+    socket.on('stop typing', (conversationId) => {
+      if (conversationId === selectConversationId.current) {
+        setIsTyping(false);
+      } else return;
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on('getMessage', (data) => {
+      if (selectConversationId.current === data.conversation) {
+        setMessages((prev) => [data, ...prev]);
+      } else {
+        return;
+      }
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   socket.on('get-group-avatar-change', (data) => {
+  //     if (selectConversationId.current === data.group._id) {
+  //       setNotifications((prev) => [{ message: data.message, avatar: data.group.avatar }, ...prev]);
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     const getMessages = async () => {
+      setIsFetchingMessage(true);
       if (conversationId) {
+        selectConversationId.current = conversationId;
         const res = await getMessagesApi(conversationId);
         setMessages(res);
       }
+      setIsFetchingMessage(false);
     };
     getMessages();
   }, [conversationId]);
 
   const handleChangeMessageText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessageContent(e.target.value);
-    socket?.emit('typing', conversationId);
+    socket.emit('typing', conversationId);
     if (typingTimeout.current) {
       clearTimeout(typingTimeout.current);
     }
@@ -63,13 +91,11 @@ const ChatBox: FC<ChatBoxProps> = ({ setConversations, currentConversation }) =>
     e.preventDefault();
     if (conversationId) {
       const res = await createMessageApi(conversationId, messageContent);
-      if (res) {
-        setMessages((prev) => [res, ...prev]);
-        setConversations((prev) =>
-          prev.map((c) => (c._id === conversationId ? { ...c, lastMessage: res } : c))
-        );
-        socket?.emit('newMessage', { message: res, conversation: currentConversation });
-      }
+      socket.emit('newMessage', res);
+      setMessages((prev) => [res, ...prev]);
+      setConversations((prev) =>
+        prev.map((c) => (c._id === conversationId ? { ...c, lastMessage: res } : c))
+      );
     }
     setMessageContent('');
   };
@@ -91,8 +117,10 @@ const ChatBox: FC<ChatBoxProps> = ({ setConversations, currentConversation }) =>
               </>
             ))}
 
-          {messages.length === 0 && (
-            <p className="no-message">No message recently. Start chatting now.</p>
+          {!isFetchingMessage && messages.length === 0 && (
+            <>
+              <p className="no-message">No message recently. Start chatting now.</p>
+            </>
           )}
         </div>
         <div className="chatBox-input">
@@ -104,6 +132,7 @@ const ChatBox: FC<ChatBoxProps> = ({ setConversations, currentConversation }) =>
           </form>
         </div>
       </div>
+      {isFetchingMessage && <ProgressLoading />}
     </>
   );
 };

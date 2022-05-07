@@ -15,8 +15,12 @@ import tokenRoute from "./routes/token.js";
 import usersRoute from "./routes/users.js";
 import { Server } from "socket.io";
 import * as socketController from "./socket/index.js";
+import { instrument } from "@socket.io/admin-ui";
+import { createServer } from "http";
 dotenv.config();
 const app = express();
+
+const httpServer = createServer(app);
 
 //middleware
 app.use(cors());
@@ -44,59 +48,126 @@ mongoose.connect(process.env.DB_CONNECTION, (err) => {
   }
 });
 
-const server = app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log("Server is running on port: ", PORT);
 });
 
-const io = new Server(server, {
-  pingTimeout: 60000,
+const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000"],
   },
 });
 
 let onlineUsers = [];
 
+const addNewUser = (userData, socketId) => {
+  !onlineUsers.some((user) => user.userData._id === userData._id) && onlineUsers.push({ userData, socketId });
+};
+
+const removeUser = (socketId) => {
+  onlineUsers = onlineUsers.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+  return onlineUsers.find((user) => user.userData._id === userId);
+};
+
+const getSocketId = (userId) => {
+  return onlineUsers.find((user) => user.userData._id === userId)?.socketId;
+};
+
 io.on("connection", (socket) => {
   socket.on("setup", (userData) => {
-    socket.join(userData._id);
     console.log("User connect: ", userData._id);
-    socketController.addNewUser(userData, socket.id, onlineUsers);
+    addNewUser(userData, socket.id);
     socket.emit("onlineUsers", onlineUsers);
   });
 
   socket.on("join chat", (room) => {
+    // // check if user joined room
+    // let previousRoom = null;
+    // // socket.rooms is Set so use rooms.values()
+    // const iterator = socket.rooms.values();
+    // // the first value is the socket.id
+    // iterator.next().value;
+    // // the second value is the room
+    // previousRoom = iterator.next().value;
+    // if (previousRoom) {
+    //   // if user is already in a room, leave the room
+    //   socket.leave(previousRoom);
+    // }
+    // // join the room
     socket.join(room);
     console.log("User joined chat: ", room);
   });
 
-  socket.on("newMessage", ({ message, conversation }) => {
-    const userReceived = conversation.members.filter((member) => member._id !== message.sender._id);
-
-    userReceived.forEach((user) => {
-      const socketId = socketController.getSocketId(user._id, onlineUsers);
-      io.to(socketId).emit("getMessage", { message, conversation });
-    });
+  socket.on("newMessage", (message) => {
+    socket.in(message.conversation).emit("getMessage", message);
   });
 
   socket.on("createConversation", ({ creator, conversation }) => {
     const userReceived = conversation.members.filter((member) => member._id !== creator);
 
     userReceived.forEach((user) => {
-      const socketId = socketController.getSocketId(user._id, onlineUsers);
+      const socketId = getSocketId(user._id);
       io.to(socketId).emit("getConversation", { conversation });
     });
   });
 
+  socket.on("change-group-info", (userChange, group, message) => {
+    const userReceived = group.members.filter((member) => member._id !== userChange._id);
+
+    userReceived.forEach((user) => {
+      const socketId = getSocketId(user._id);
+      io.to(socketId).emit("get-change-group-info", { userChange, group });
+    });
+
+    if (message) {
+      group.members.forEach((member) => {
+        const socketId = getSocketId(member._id);
+        io.to(socketId).emit("getMessage", message);
+      });
+    }
+  });
+
+  // socket.on("change-group-name", (userChange, group) => {
+  //   const userReceived = group.members.filter((member) => member._id !== userChange._id);
+  //   userReceived.forEach((user) => {
+  //     const socketId = getSocketId(user._id);
+  //     io.to(socketId).emit("get-group-name-change", {
+  //       userChange,
+  //       message: `${userChange.fullName} changed the group name to ${group.chatName}`,
+  //       group,
+  //     });
+  //   });
+  // });
+
+  // socket.on("change-group-avatar", (userChange, group) => {
+  //   const userReceived = group.members.filter((member) => member._id !== userChange._id);
+  //   userReceived.forEach((user) => {
+  //     const socketId = getSocketId(user._id);
+  //     io.to(socketId).emit("get-group-avatar-change", {
+  //       userChange,
+  //       message: `${userChange.fullName} changed the group avatar`,
+  //       group,
+  //     });
+  //   });
+  // });
+
   socket.on("typing", (room) => {
     socket.in(room).emit("typing");
   });
+
   socket.on("stop typing", (room) => {
     socket.in(room).emit("stop typing");
   });
 
   socket.on("disconnect", () => {
-    socketController.removeUser(socket.id, onlineUsers);
+    console.log("User disconnect");
+    removeUser(socket.id);
     socket.emit("onlineUsers", onlineUsers);
   });
+});
+instrument(io, {
+  auth: false,
 });

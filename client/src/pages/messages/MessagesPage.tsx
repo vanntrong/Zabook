@@ -1,49 +1,38 @@
 import { Avatar } from '@mui/material';
 import {
-  changeNameConversationApi,
-  getConversationsApi,
   changeAvatarConversationApi,
-  createNewConversationApi,
+  changeNameConversationApi,
   createGroupConversationApi,
+  createNewConversationApi,
+  getConversationsApi,
   removeUserFromGroupConversationApi,
 } from 'api/conversationApi';
+import Backdrop from 'components/backdrop/Backdrop';
 import ChatBox from 'components/chatBox/ChatBox';
-import Conversations from 'components/conversations/Conversations';
-import React, { useEffect, useRef, useState } from 'react';
-import { AiOutlineEdit, AiOutlineSearch } from 'react-icons/ai';
+import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
+import RightbarMessagePage from 'components/rightbar/rightbarMessagePage/RightbarMessagePage';
+import SidebarMessagePage from 'components/sidebar/sidebarMessagePage/SidebarMessagePage';
+import React, { useEffect, useState } from 'react';
 import { BsFillCameraVideoFill, BsThreeDots } from 'react-icons/bs';
-import { FiLogOut } from 'react-icons/fi';
-import { HiPhotograph } from 'react-icons/hi';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { IoCreateOutline } from 'react-icons/io5';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { conversationType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
-import { toast } from 'react-toastify';
+import { socket } from 'utils/socket';
+import { convertFileSize } from 'utils/upload';
 import CreateGroupChatModal from './../../components/modal/createGroupChatModal/CreateGroupChatModal';
 import './messagesPage.scss';
-import { convertFileSize } from 'utils/upload';
-import useSearchUser from 'hooks/useSearchUser';
-import Backdrop from 'components/backdrop/Backdrop';
-import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
-import { selectSocket } from 'store/slice/socketSlice';
 
 const MessagesPage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isShowRightBar, setIsShowRightBar] = useState(false);
-  const [isShowChangeChatName, setIsShowChangeChatName] = useState(false);
   const [conversations, setConversations] = useState<conversationType[]>([]);
   const [currentConversation, setCurrenConversation] = useState<conversationType>();
-  const [newGroupNameValue, setNewGroupNameValue] = useState('');
-  const [searchText, setSearchText] = useState('');
   const [isShowCreateGroupChatModal, setIsShowCreateGroupChatModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const photoGroupRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const params = useParams();
-  const { searchResult } = useSearchUser(searchText);
-  const socket = useAppSelector(selectSocket);
 
   const nameOfConversation = currentConversation?.isGroupChat
     ? currentConversation?.chatName
@@ -56,68 +45,6 @@ const MessagesPage = () => {
   useEffect(() => {
     document.title = 'Sociala. | Messages';
   }, []);
-
-  const handleChangePhotoClick = () => {
-    photoGroupRef.current?.click();
-  };
-
-  const handlePhotoGroupChange = async () => {
-    if (photoGroupRef.current?.files?.length) {
-      const file = photoGroupRef.current?.files[0];
-      const fileSize = convertFileSize(file.size);
-      if (fileSize > 10) {
-        toast.error('File size must be less than 10MB');
-      } else {
-        setIsLoading(true);
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = async () => {
-          const url = reader.result as string;
-          const res = await changeAvatarConversationApi(currentConversation!._id, url);
-          setConversations((prev) =>
-            prev.map((conversation) =>
-              conversation._id === currentConversation!._id ? res : conversation
-            )
-          );
-          setIsLoading(false);
-        };
-      }
-    }
-  };
-
-  const handleLeaveGroup = async () => {
-    setIsLoading(true);
-    try {
-      const res = await removeUserFromGroupConversationApi(
-        currentUser!._id,
-        currentConversation!._id
-      );
-      setConversations((prev) => prev.filter((conversation) => conversation._id !== res._id));
-      setIsLoading(false);
-    } catch (error) {
-      toast.error(error.response.data);
-    }
-  };
-
-  const handleChangeChatName = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (currentConversation) {
-      setIsLoading(true);
-      try {
-        const res = await changeNameConversationApi(currentConversation._id, newGroupNameValue);
-        setConversations((prev) =>
-          prev.map((conversation) =>
-            conversation._id === currentConversation._id ? res : conversation
-          )
-        );
-        toast.success('🦄 Change group name success!', {});
-      } catch (error) {
-        toast.error(`🦄 Oops! ${error.response.data}`, {});
-      }
-      setIsLoading(false);
-    }
-    setNewGroupNameValue('');
-  };
 
   useEffect(() => {
     const getConversations = async () => {
@@ -136,6 +63,90 @@ const MessagesPage = () => {
     );
   }, [navigate, conversations, params.conversationId]);
 
+  useEffect(() => {
+    socket.on('getConversation', (data: { conversation: conversationType }) => {
+      setConversations((prev) => [data.conversation, ...prev]);
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on('get-change-group-info', (data) => {
+      setConversations((prev) =>
+        prev.map((conversation) =>
+          conversation._id !== data.group._id ? conversation : data.group
+        )
+      );
+    });
+
+    // socket.on('get-group-name-change', (data) => {
+    //   setConversations((prev) =>
+    //     prev.map((conversation) =>
+    //       conversation._id !== data.group._id ? conversation : data.group
+    //     )
+    //   );
+    // });
+  }, []);
+
+  const handlePhotoGroupChange = async (file: File) => {
+    if (file) {
+      const fileSize = convertFileSize(file.size);
+      if (fileSize > 10) {
+        toast.error('File size must be less than 10MB');
+      } else {
+        setIsLoading(true);
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async () => {
+          const url = reader.result as string;
+          const { conversation, message } = await changeAvatarConversationApi(
+            currentConversation!._id,
+            url
+          );
+          socket.emit('change-group-info', currentUser, conversation, message);
+          setConversations((prev) =>
+            prev.map((c) => (c._id === currentConversation!._id ? conversation : c))
+          );
+          setIsLoading(false);
+        };
+      }
+    }
+  };
+
+  const handleLeaveGroup = async () => {
+    setIsLoading(true);
+    try {
+      const { conversation, message } = await removeUserFromGroupConversationApi(
+        currentUser!._id,
+        currentConversation!._id
+      );
+      socket.emit('remove-user-from-group', currentUser, conversation, message);
+      setConversations((prev) => prev.filter((c) => c._id !== conversation._id));
+      setIsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data);
+    }
+  };
+
+  const handleChangeChatName = async (newGroupNameValue: string) => {
+    if (currentConversation) {
+      setIsLoading(true);
+      try {
+        const { conversation, message } = await changeNameConversationApi(
+          currentConversation._id,
+          newGroupNameValue
+        );
+        socket.emit('change-group-info', currentUser, conversation, message);
+        setConversations((prev) =>
+          prev.map((c) => (c._id === currentConversation._id ? conversation : c))
+        );
+        toast.success('🦄 Change group name success!', {});
+      } catch (error) {
+        toast.error(`🦄 Oops! ${error.response.data}`, {});
+      }
+      setIsLoading(false);
+    }
+  };
+
   const handleCreateSingleConversation = async (userId: string) => {
     setIsLoading(true);
     const { conversation, isNew } = await createNewConversationApi(userId);
@@ -145,31 +156,28 @@ const MessagesPage = () => {
         creator: currentUser?._id,
         conversation: conversation,
       });
-      navigate(`/messages/${conversation._id}`);
     } else {
       setConversations((prev) => prev.map((c) => (c._id === conversation._id ? conversation : c)));
     }
+    navigate(`/messages/${conversation._id}`);
     setIsLoading(false);
-    setSearchText('');
   };
 
   const handleCreateGroupConversation = async (members: string[], chatName: string) => {
     setIsLoading(true);
-    const newConversation = await createGroupConversationApi(members, chatName);
+    const { conversation: newConversation, message } = await createGroupConversationApi(
+      members,
+      chatName
+    );
     setConversations((prev) => [newConversation, ...prev]);
     socket?.emit('createConversation', {
       creator: currentUser?._id,
       conversation: newConversation,
+      message,
     });
     navigate(`/messages/${newConversation._id}`);
     setIsLoading(false);
   };
-
-  useEffect(() => {
-    socket?.on('getConversation', (data: { conversation: conversationType }) => {
-      setConversations((prev) => [data.conversation, ...prev]);
-    });
-  }, [socket]);
 
   const handleCloseCreateGroupChatModal = () => {
     setIsShowCreateGroupChatModal(false);
@@ -179,42 +187,11 @@ const MessagesPage = () => {
     <>
       <div className="messagesPage">
         <div className="messagesPage-wrapper">
-          <div className="messagesPage-wrapper-left">
-            <div className="messagesPage-wrapper-left-top">
-              <Avatar className="messagesPage-wrapper-left-top-avatar" />
-              <h4 className="messagesPage-wrapper-left-top-title">Chats</h4>
-              <div
-                className="messagesPage-wrapper-left-top-button"
-                onClick={() => setIsShowCreateGroupChatModal(true)}
-              >
-                <IoCreateOutline />
-              </div>
-            </div>
-            <div className="messagesPage-wrapper-left-input-search">
-              <AiOutlineSearch />
-              <input
-                type="text"
-                placeholder="Search Messenger"
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-              />
-              {searchResult.length > 0 && (
-                <div className="messagesPage-searchResult-list">
-                  {searchResult.map((user) => (
-                    <div
-                      className="messagesPage-searchResult-item"
-                      key={user._id}
-                      onClick={() => handleCreateSingleConversation(user._id)}
-                    >
-                      <Avatar src={user.avatar} />
-                      <span>{user.fullName}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <Conversations conversations={conversations} />
-          </div>
+          <SidebarMessagePage
+            setIsShowCreateGroupChatModal={setIsShowCreateGroupChatModal}
+            handleCreateSingleConversation={handleCreateSingleConversation}
+            conversations={conversations}
+          />
           <div className="messagesPage-wrapper-center">
             {currentConversation && (
               <div className="messagesPage-wrapper-center-top">
@@ -241,67 +218,20 @@ const MessagesPage = () => {
                 currentConversation={currentConversation}
               />
             )}
-            {conversations.length === 0 && <p className="no-conversation">No Conversation</p>}
+            {!isLoading && conversations.length === 0 && (
+              <p className="no-conversation">No Conversation</p>
+            )}
           </div>
 
           {isShowRightBar && (
-            <div className="messagesPage-wrapper-right">
-              <div className="messagesPage-wrapper-right-top">
-                <Avatar className="messagesPage-wrapper-right-avatar" src={avatarOfConversation} />
-                <h3>{nameOfConversation}</h3>
-              </div>
-              {currentConversation?.isGroupChat && (
-                <div className="messagesPage-wrapper-right-options">
-                  <div
-                    className="messagesPage-wrapper-right-options-item"
-                    onClick={() => setIsShowChangeChatName((prev) => !prev)}
-                  >
-                    <AiOutlineEdit />
-                    <span style={{ marginRight: 'auto' }}>Change chat name</span>
-                    {isShowChangeChatName && <IoIosArrowUp />}
-                    {!isShowChangeChatName && <IoIosArrowDown />}
-                  </div>
-
-                  {isShowChangeChatName && (
-                    <div className="change-chat-name">
-                      <form onSubmit={handleChangeChatName}>
-                        <input
-                          type="text"
-                          placeholder="Enter new chat name"
-                          value={newGroupNameValue}
-                          onChange={(e) => setNewGroupNameValue(e.target.value)}
-                        />
-                        <button type="submit">Change</button>
-                      </form>
-                    </div>
-                  )}
-
-                  <div
-                    className="messagesPage-wrapper-right-options-item"
-                    onClick={handleChangePhotoClick}
-                  >
-                    <HiPhotograph />
-                    <span>Change group photo</span>
-                    <input
-                      type="file"
-                      hidden
-                      accept="image/*"
-                      multiple={false}
-                      ref={photoGroupRef}
-                      onChange={handlePhotoGroupChange}
-                    />
-                  </div>
-
-                  <div
-                    className="messagesPage-wrapper-right-options-item"
-                    onClick={handleLeaveGroup}
-                  >
-                    <FiLogOut />
-                    <span>Leave group</span>
-                  </div>
-                </div>
-              )}
-            </div>
+            <RightbarMessagePage
+              avatarOfConversation={avatarOfConversation}
+              nameOfConversation={nameOfConversation}
+              currentConversation={currentConversation}
+              handleChangeChatName={handleChangeChatName}
+              handlePhotoGroupChange={handlePhotoGroupChange}
+              handleLeaveGroup={handleLeaveGroup}
+            />
           )}
         </div>
       </div>
