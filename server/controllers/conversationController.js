@@ -1,5 +1,6 @@
 import * as errorController from "../controllers/errorController.js";
 import Conversation from "../models/Conversation.js";
+import Message from "../models/Message.js";
 import * as factoryController from "./factoryController.js";
 
 export async function getConversations(req, res) {
@@ -69,12 +70,24 @@ export async function createGroupConversation(req, res) {
       groupAdmin: req.user.id,
     });
 
+    const message = await Message.create({
+      type: "notification",
+      content: "created a group chat",
+      conversation: conversation._id,
+      sender: req.user.id,
+    });
+
+    const fullMessage = await Message.findById(message._id).populate({
+      path: "sender",
+      select: "fullName username avatar",
+    });
+
     const fullConversation = await Conversation.findById(conversation._id).populate({
       path: "members",
       select: "_id fullName username avatar",
     });
 
-    return res.status(200).json(fullConversation);
+    return res.status(200).json({ conversation: fullConversation, message: fullMessage });
   } catch (error) {
     return errorController.serverErrorHandler(error, res);
   }
@@ -104,7 +117,19 @@ export async function renameGroupConversation(req, res) {
     if (!updatedConversation) {
       return errorController.errorHandler(res, "You are not a member of this group", 400);
     }
-    return res.status(200).json(updatedConversation);
+    const message = await Message.create({
+      type: "notification",
+      content: `renamed the group chat to ${updatedConversation.chatName}`,
+      conversation: updatedConversation._id,
+      sender: req.user.id,
+    });
+
+    const fullMessage = await Message.findById(message._id).populate({
+      path: "sender",
+      select: "fullName username avatar",
+    });
+
+    return res.status(200).json({ conversation: updatedConversation, message: fullMessage });
   } catch (error) {
     return errorController.serverErrorHandler(error, res);
   }
@@ -134,7 +159,22 @@ export async function addUserToGroupConversation(req, res) {
     if (!updatedConversation) {
       return errorController.errorHandler(res, "You are not a member of this group", 400);
     }
-    return res.status(200).json(updatedConversation);
+
+    const message = await Message.create({
+      type: "notification",
+      content: `added ${
+        updatedConversation.members.find((member) => member._id.toString() === req.body.newMemberId).fullName
+      } to the group chat`,
+      conversation: updatedConversation._id,
+      sender: req.user.id,
+    });
+
+    const fullMessage = await Message.findById(message._id).populate({
+      path: "sender",
+      select: "fullName username avatar",
+    });
+
+    return res.status(200).json({ conversation: updatedConversation, message: fullMessage });
   } catch (error) {
     return errorController.serverErrorHandler(error, res);
   }
@@ -170,7 +210,22 @@ export async function removeUserFromGroupConversation(req, res) {
             select: "fullName username avatar",
           },
         });
-      return res.status(200).json(updatedConversation);
+
+      const message = await Message.create({
+        type: "notification",
+        content: `removed ${
+          updatedConversation.members.find((member) => member._id.toString() === req.body.newMemberId).fullName
+        } from the group chat`,
+        conversation: updatedConversation._id,
+        sender: req.user.id,
+      });
+
+      const fullMessage = await Message.findById(message._id).populate({
+        path: "sender",
+        select: "fullName username avatar",
+      });
+
+      return res.status(200).json({ conversation: updatedConversation, message: fullMessage });
     }
   } catch (error) {
     return errorController.serverErrorHandler(error, res);
@@ -203,7 +258,20 @@ export async function setGroupConversationAvatar(req, res) {
     if (!updatedConversation) {
       return errorController.errorHandler(res, "You are not a member of this group", 400);
     }
-    return res.status(200).json(updatedConversation);
+
+    const message = await Message.create({
+      type: "notification",
+      content: `changed the group avatar`,
+      conversation: updatedConversation._id,
+      sender: req.user.id,
+    });
+
+    const fullMessage = await Message.findById(message._id).populate({
+      path: "sender",
+      select: "fullName username avatar",
+    });
+
+    return res.status(200).json({ conversation: updatedConversation, message: fullMessage });
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }

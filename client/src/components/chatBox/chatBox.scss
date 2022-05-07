@@ -52,3 +52,26 @@
     }
   }
 }
+
+.notificationChatBox {
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  gap: 0 10px;
+  background-color: $bg-gray;
+  padding: 10px;
+  border-radius: 30px;
+
+  .notificationChatBox-avatar {
+    width: 30px;
+    height: 30px;
+  }
+  .notification-content {
+    font-size: 14px;
+    color: $text-gray-900;
+  }
+
+  .notification-name {
+    font-weight: 600;
+  }
+}

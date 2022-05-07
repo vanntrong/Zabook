@@ -1,8 +1,6 @@
 import { Avatar } from '@mui/material';
 import React, { FC, useState } from 'react';
 import { UserType } from 'shared/types';
-import { useAppSelector } from 'store/hooks';
-import { selectSocket } from 'store/slice/socketSlice';
 import './rightbar.scss';
 
 interface RightbarProps {
@@ -10,7 +8,6 @@ interface RightbarProps {
 }
 
 const RightBar: FC<RightbarProps> = ({ className }) => {
-  const socket = useAppSelector(selectSocket);
   const [onlineUserList, setOnlineUserList] = useState<UserType[]>([]);
 
   // useEffect(() => {

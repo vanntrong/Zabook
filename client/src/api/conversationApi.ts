@@ -1,5 +1,5 @@
 import axiosClient from 'api';
-import { conversationType } from 'shared/types';
+import { conversationType, messageType } from 'shared/types';
 
 export const getConversationsApi = async (): Promise<conversationType[]> =>
   axiosClient.get(`conversation`);
@@ -12,20 +12,23 @@ export const createNewConversationApi = async (
 export const changeNameConversationApi = async (
   groupId: string,
   newGroupName: string
-): Promise<conversationType> =>
+): Promise<{ conversation: conversationType; message: messageType }> =>
   axiosClient.put('conversation/group/rename', { groupId, newGroupName });
 
 export const changeAvatarConversationApi = async (
   groupId: string,
   avatar: string
-): Promise<conversationType> => axiosClient.put('conversation/group/avatar', { groupId, avatar });
+): Promise<{ conversation: conversationType; message: messageType }> =>
+  axiosClient.put('conversation/group/avatar', { groupId, avatar });
 
 export const createGroupConversationApi = async (
   members: string[],
   chatName: string
-): Promise<conversationType> => axiosClient.post('conversation/group', { members, chatName });
+): Promise<{ conversation: conversationType; message: messageType }> =>
+  axiosClient.post('conversation/group', { members, chatName });
 
 export const removeUserFromGroupConversationApi = async (
   memberId: string,
   groupId: string
-): Promise<conversationType> => axiosClient.put('conversation/group/remove', { memberId, groupId });
+): Promise<{ conversation: conversationType; message: messageType }> =>
+  axiosClient.put('conversation/group/remove', { memberId, groupId });
