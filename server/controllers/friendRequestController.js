@@ -18,7 +18,13 @@ export async function createFriendRequestHandler(req, res) {
     if (existingFriendRequest) {
       return errorController.errorHandler(res, "You already sent friend request to this user", 403);
     }
-    await factoryController.createOne(FriendRequest, req.body, res);
+    // await factoryController.createOne(FriendRequest, req.body, res);
+    const friendRequest = await FriendRequest.create(req.body);
+    const fullFriendRequest = await FriendRequest.findById(friendRequest._id).populate({
+      path: "requester",
+      select: "fullName avatar",
+    });
+    res.status(201).json(fullFriendRequest);
   } catch (error) {
     errorController.serverErrorHandler(res, error);
   }

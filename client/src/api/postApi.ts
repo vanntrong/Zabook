@@ -1,8 +1,10 @@
 import { formPostData, PostType } from 'shared/types';
 import axiosClient from './index';
 
-export const getPostsApi = (id: string, params: { page: number }): Promise<PostType[]> =>
-  axiosClient.get(`users/${id}/posts`, { params });
+export const getPostsApi = (
+  id: string,
+  params: { page: number; limit: number }
+): Promise<PostType[]> => axiosClient.get(`users/${id}/posts`, { params });
 
 export const createPostApi = (data: formPostData): Promise<PostType> =>
   axiosClient.post(`posts`, data);

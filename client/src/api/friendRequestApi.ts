@@ -1,8 +1,10 @@
 import axiosClient from 'api';
 import { friendRequestType } from 'shared/types';
 
-export const sendFriendRequestApi = async (data: { requester: string; receiver: string }) =>
-  axiosClient.post(`friend/request`, data);
+export const sendFriendRequestApi = async (data: {
+  requester: string;
+  receiver: string;
+}): Promise<friendRequestType> => axiosClient.post(`friend/request`, data);
 
 export const acceptFriendRequestApi = async (id: string) => axiosClient.put(`friend/accept/${id}`);
 

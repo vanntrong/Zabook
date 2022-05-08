@@ -181,9 +181,10 @@ const InputEditPostModal: FC<InputEditPostModalProps> = ({
       </form>
       {isShowSearchTagPeople && (
         <SearchPeopleToTag
+          type="tag"
           onClose={handleCloseSearchTagPeople}
-          currentUser={currentUser}
           setTagsPeople={setTagsPeople}
+          tagsPeople={tagsPeople}
         />
       )}
       {isSubmit && <ProgressLoading />}

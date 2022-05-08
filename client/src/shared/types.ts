@@ -175,8 +175,9 @@ export interface conversationType {
 // };
 
 export interface messageType {
-  type: 'message' | 'image' | 'video' | 'audio' | 'file' | 'notification';
-  content: string;
+  type: 'message' | 'asset' | 'audio' | 'file' | 'notification';
+  content?: string;
+  asset?: { url: string; media_type: string };
   conversation: string;
   createdAt: string;
   isDeleted: boolean;

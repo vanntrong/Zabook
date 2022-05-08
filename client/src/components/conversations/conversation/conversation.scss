@@ -20,6 +20,9 @@
 
   .conversation-info {
     display: none;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .conversation-name {
@@ -36,10 +39,16 @@
     .conversation-lastedMessage {
       font-size: 15px;
       color: $text-gray-600;
-      width: 250px;
+      width: max-content;
+      max-width: 250px;
+      margin-right: 10px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis; // This is where the magic happens
+      &.not-seen {
+        font-weight: 700;
+        color: $black-color;
+      }
     }
 
     .conversation-time {
@@ -47,6 +56,13 @@
       color: $text-gray-600;
       width: max-content;
     }
+  }
+  .conversation-not-seen {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: $blue-400;
+    margin-left: auto;
   }
 }
 
@@ -62,15 +78,15 @@
     justify-content: flex-start;
   }
   .conversation .conversation-info {
-    display: block;
+    display: flex;
   }
   .conversation .conversation-lastedMessage-and-time .conversation-lastedMessage {
-    width: 200px;
+    max-width: 200px;
   }
 }
 
 @media screen and (min-width: $desktop-screen) {
   .conversation .conversation-lastedMessage-and-time .conversation-lastedMessage {
-    width: 280px;
+    max-width: 280px;
   }
 }

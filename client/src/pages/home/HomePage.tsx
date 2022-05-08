@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { friendRequestType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
+import { socket } from 'utils/socket';
 import './home.scss';
 
 const HomePage = () => {
@@ -22,6 +23,12 @@ const HomePage = () => {
       setFriendsRequest((prev) => [...prev, ...res]);
     };
     getFriendsRequest();
+  }, []);
+
+  useEffect(() => {
+    socket.on('get-friend-request', (friendRequest) => {
+      setFriendsRequest((prev) => [friendRequest, ...prev]);
+    });
   }, []);
 
   return (

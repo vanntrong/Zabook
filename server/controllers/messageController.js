@@ -1,4 +1,5 @@
 import * as errorController from "../controllers/errorController.js";
+import * as factoryController from "../controllers/factoryController.js";
 import Message from "../models/Message.js";
 import Conversation from "../models/Conversation.js";
 
@@ -22,24 +23,45 @@ export async function getMessages(req, res) {
 
 export async function createMessage(req, res) {
   try {
-    if (!req.body.content || !req.body.conversationId) {
+    if ((!req.body.content && !req.body.asset) || !req.body.conversationId) {
       return errorController.errorHandler(res, "Create message must have content and Conversation Id", 400);
     }
+
     const conversation = await Conversation.findById(req.body.conversationId);
+
     if (!conversation) {
       return errorController.errorHandler(res, "Conversation not found", 404);
     }
+
     if (!conversation.members.includes(req.user.id)) {
       return errorController.errorHandler(res, "You are not member of this conversation", 401);
     }
-    const message = await Message.create({
-      sender: req.user.id,
-      content: req.body.content,
-      conversation: req.body.conversationId,
-    });
-    await Conversation.findByIdAndUpdate(req.body.conversationId, { lastMessage: message._id });
-    const fullMessage = await Message.findById(message._id).populate("sender", "_id username fullName avatar");
-    return res.status(200).json(fullMessage);
+
+    if (req.body.asset) {
+      const result = await factoryController.uploadFile(req.body.asset.url, "message", req.body.asset.media_type);
+      req.body.asset = {
+        url: result.secure_url,
+        media_type: result.resource_type,
+      };
+      const message = await Message.create({
+        sender: req.user.id,
+        conversation: req.body.conversationId,
+        asset: req.body.asset,
+        type: "asset",
+      });
+
+      const fullMessage = await Message.findById(message._id).populate("sender", "_id username fullName avatar");
+      return res.status(200).json(fullMessage);
+    } else {
+      const message = await Message.create({
+        sender: req.user.id,
+        content: req.body.content,
+        conversation: req.body.conversationId,
+      });
+      await Conversation.findByIdAndUpdate(req.body.conversationId, { lastMessage: message._id });
+      const fullMessage = await Message.findById(message._id).populate("sender", "_id username fullName avatar");
+      return res.status(200).json(fullMessage);
+    }
   } catch (error) {
     return errorController.serverErrorHandler(error, res);
   }

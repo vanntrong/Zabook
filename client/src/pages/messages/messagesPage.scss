@@ -23,6 +23,16 @@
         margin-bottom: 10px;
         display: none;
 
+        .logo {
+          h2 {
+            font-size: $font-24;
+            font-weight: bold;
+            color: $blue-500;
+            margin-right: 10px;
+            font-weight: 900;
+          }
+        }
+
         .messagesPage-wrapper-left-top-avatar {
           cursor: pointer;
         }
@@ -204,6 +214,75 @@
           }
           span {
             font-size: 16px;
+            margin-right: auto;
+          }
+        }
+
+        .messagesPage-member-list {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 15px 0;
+
+          .messagesPage-member-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            position: relative;
+
+            .messagesPage-member-item-info {
+              display: flex;
+              align-items: center;
+              gap: 0 10px;
+
+              span {
+                font-size: 15px;
+                font-weight: 600;
+              }
+            }
+            .messagesPage-member-modal {
+              display: flex;
+              width: max-content;
+              align-items: center;
+              gap: 0 10px;
+              padding: 10px;
+              border-radius: 8px;
+              cursor: pointer;
+
+              &:hover {
+                background-color: $border-color;
+              }
+            }
+          }
+
+          .messagesPage-member-add {
+            display: flex;
+            align-items: center;
+            gap: 0 10px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            &:hover {
+              background-color: $border-color;
+            }
+
+            .messagesPage-member-add-icon {
+              width: 30px;
+              height: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 50%;
+              background-color: $border-color;
+              color: $black-color;
+              font-weight: 700;
+            }
+
+            span {
+              font-size: 15px;
+              font-weight: 600;
+            }
           }
         }
       }

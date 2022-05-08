@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import jwt_decode from 'jwt-decode';
 import queryString from 'query-string';
 
-const access_token = (localStorage.getItem('token') as string) || '';
+const access_token = localStorage.getItem('token');
 
 //axios no header used with login and register
 export const axiosAuthClient = axios.create({
@@ -29,23 +29,31 @@ const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
     'content-type': 'application/json',
-    Authorization: `Bearer ${access_token}`,
   },
   paramsSerializer: (params) => queryString.stringify(params),
 });
 
+if (access_token) {
+  axiosClient.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+}
+
 axiosClient.interceptors.request.use(
   async (config: AxiosRequestConfig) => {
     const currentDate = new Date();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const decodedToken = jwt_decode<any>(access_token);
-    if (decodedToken.exp * 1000 < currentDate.getTime()) {
-      const refresh_token = localStorage.getItem('refresh_token');
-      const newToken = await refreshAccessToken(refresh_token);
-      if (config.headers === undefined) {
-        config.headers = {};
+    try {
+      if (access_token) {
+        const decodedToken = jwt_decode<any>(access_token);
+        if (decodedToken.exp * 1000 < currentDate.getTime()) {
+          const refresh_token = localStorage.getItem('refresh_token');
+          const newToken = await refreshAccessToken(refresh_token);
+          if (config.headers === undefined) {
+            config.headers = {};
+          }
+          config.headers['Authorization'] = 'Bearer ' + newToken;
+        }
       }
-      config.headers['Authorization'] = 'Bearer ' + newToken;
+    } catch (error) {
+      console.log(error);
     }
     return config;
   },

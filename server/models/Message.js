@@ -4,7 +4,7 @@ const MessageSchema = new mongoose.Schema(
   {
     type: {
       type: String,
-      enum: ["message", "image", "video", "audio", "file", "notification"],
+      enum: ["message", "asset", "file", "notification"],
       default: "message",
     },
     sender: {
@@ -16,6 +16,7 @@ const MessageSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    asset: { url: String, media_type: String },
     conversation: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Conversation",

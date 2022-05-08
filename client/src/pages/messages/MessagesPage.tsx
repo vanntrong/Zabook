@@ -1,5 +1,6 @@
 import { Avatar } from '@mui/material';
 import {
+  addUserToGroupConversationApi,
   changeAvatarConversationApi,
   changeNameConversationApi,
   createGroupConversationApi,
@@ -31,6 +32,7 @@ const MessagesPage = () => {
   const [currentConversation, setCurrenConversation] = useState<conversationType>();
   const [isShowCreateGroupChatModal, setIsShowCreateGroupChatModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [conversationNotSeenList, setConversationNotSeenList] = useState<string[]>([]);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -46,11 +48,12 @@ const MessagesPage = () => {
     document.title = 'Sociala. | Messages';
   }, []);
 
+  const getConversations = async () => {
+    const res = await getConversationsApi();
+    setConversations(res);
+  };
+
   useEffect(() => {
-    const getConversations = async () => {
-      const res = await getConversationsApi();
-      setConversations(res);
-    };
     getConversations();
   }, []);
 
@@ -77,14 +80,6 @@ const MessagesPage = () => {
         )
       );
     });
-
-    // socket.on('get-group-name-change', (data) => {
-    //   setConversations((prev) =>
-    //     prev.map((conversation) =>
-    //       conversation._id !== data.group._id ? conversation : data.group
-    //     )
-    //   );
-    // });
   }, []);
 
   const handlePhotoGroupChange = async (file: File) => {
@@ -119,7 +114,7 @@ const MessagesPage = () => {
         currentUser!._id,
         currentConversation!._id
       );
-      socket.emit('remove-user-from-group', currentUser, conversation, message);
+      socket.emit('change-group-info', currentUser, conversation, message);
       setConversations((prev) => prev.filter((c) => c._id !== conversation._id));
       setIsLoading(false);
     } catch (error) {
@@ -183,6 +178,32 @@ const MessagesPage = () => {
     setIsShowCreateGroupChatModal(false);
   };
 
+  const handleRemoveUserFromGroup = async (userId: string) => {
+    try {
+      const { conversation, message } = await removeUserFromGroupConversationApi(
+        userId,
+        currentConversation!._id
+      );
+      socket.emit('change-group-info', currentUser, conversation, message);
+      setConversations((prev) => prev.map((c) => (c._id === conversation._id ? conversation : c)));
+    } catch (error) {
+      toast.error(error.response.data);
+    }
+  };
+
+  const handleAddUsersToGroup = async (members: string[]) => {
+    try {
+      const { conversation, message } = await addUserToGroupConversationApi(
+        members,
+        currentConversation!._id
+      );
+      socket.emit('change-group-info', currentUser, conversation, message);
+      setConversations((prev) => prev.map((c) => (c._id === conversation._id ? conversation : c)));
+    } catch (error) {
+      toast.error(error.response.data);
+    }
+  };
+
   return (
     <>
       <div className="messagesPage">
@@ -191,6 +212,7 @@ const MessagesPage = () => {
             setIsShowCreateGroupChatModal={setIsShowCreateGroupChatModal}
             handleCreateSingleConversation={handleCreateSingleConversation}
             conversations={conversations}
+            conversationNotSeenList={conversationNotSeenList}
           />
           <div className="messagesPage-wrapper-center">
             {currentConversation && (
@@ -216,6 +238,8 @@ const MessagesPage = () => {
               <ChatBox
                 setConversations={setConversations}
                 currentConversation={currentConversation}
+                setConversationNotSeenList={setConversationNotSeenList}
+                conversationNotSeenList={conversationNotSeenList}
               />
             )}
             {!isLoading && conversations.length === 0 && (
@@ -231,6 +255,8 @@ const MessagesPage = () => {
               handleChangeChatName={handleChangeChatName}
               handlePhotoGroupChange={handlePhotoGroupChange}
               handleLeaveGroup={handleLeaveGroup}
+              handleRemoveUserFromGroup={handleRemoveUserFromGroup}
+              handleAddUsersToGroup={handleAddUsersToGroup}
             />
           )}
         </div>

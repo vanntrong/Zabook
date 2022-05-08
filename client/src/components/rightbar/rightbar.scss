@@ -41,17 +41,17 @@
       font-weight: 600;
       margin-bottom: 10px;
     }
-    .rightBar-item {
-      display: flex;
-      align-items: center;
-      gap: 0 10px;
-      margin-bottom: 15px;
-      .rightBar-item-name {
-        font-size: 13px;
-        font-weight: 600;
-        color: $text-gray-600;
-      }
-    }
+    // .rightBar-item {
+    //   display: flex;
+    //   align-items: center;
+    //   gap: 0 10px;
+    //   margin-bottom: 15px;
+    //   .rightBar-item-name {
+    //     font-size: 13px;
+    //     font-weight: 600;
+    //     color: $text-gray-600;
+    //   }
+    // }
   }
 }
 
@@ -65,7 +65,7 @@
   .rightBar {
     width: 280px;
   }
-  .rightBar .rightBar-list .rightBar-item .rightBar-item-name {
-    font-size: 15px;
-  }
+  // .rightBar .rightBar-list .rightBar-item .rightBar-item-name {
+  //   font-size: 15px;
+  // }
 }

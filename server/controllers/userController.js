@@ -50,8 +50,8 @@ export async function getPostsHandler(req, res) {
           select: "_id",
         },
       ])
-      .limit(5)
-      .skip(5 * req.query.page)
+      .limit(req.query.limit)
+      .skip(req.query.limit * req.query.page)
       .sort({ createdAt: -1 });
 
     res.status(200).json(posts);

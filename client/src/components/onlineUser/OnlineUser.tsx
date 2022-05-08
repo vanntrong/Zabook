@@ -1,8 +1,10 @@
 import { Avatar, Badge } from '@mui/material';
-import React from 'react';
+import React, { FC } from 'react';
 import { styled } from '@mui/material/styles';
 
 import './onlineUser.scss';
+import { UserType } from 'shared/types';
+import { Link } from 'react-router-dom';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -33,21 +35,24 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const OnlineUser = () => {
+interface Props {
+  user: UserType;
+}
+
+const OnlineUser: FC<Props> = ({ user }) => {
   return (
-    <div className="online-user">
-      <StyledBadge
-        overlap="circular"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        variant="dot"
-      >
-        <Avatar
-          src="https://images.unsplash.com/photo-1601455763557-db1bea8a9a5a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8dXNlciUyMGF2YXRhcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-          className="online"
-        />
-      </StyledBadge>
-      <span className="online-user-name">Alibaba</span>
-    </div>
+    <Link to={`/${user.username}`}>
+      <div className="online-user">
+        <StyledBadge
+          overlap="circular"
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          variant="dot"
+        >
+          <Avatar src={user.avatar} className="online" />
+        </StyledBadge>
+        <span className="online-user-name">{user.fullName}</span>
+      </div>
+    </Link>
   );
 };
 

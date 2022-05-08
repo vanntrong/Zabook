@@ -32,3 +32,9 @@ export const removeUserFromGroupConversationApi = async (
   groupId: string
 ): Promise<{ conversation: conversationType; message: messageType }> =>
   axiosClient.put('conversation/group/remove', { memberId, groupId });
+
+export const addUserToGroupConversationApi = async (
+  members: string[],
+  groupId: string
+): Promise<{ conversation: conversationType; message: messageType }> =>
+  axiosClient.put('conversation/group/add', { members, groupId });

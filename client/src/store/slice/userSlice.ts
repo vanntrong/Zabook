@@ -5,6 +5,7 @@ import { LoginFormData, updateUserFormType, UserType } from '../../shared/types'
 
 export interface userState {
   currentUser: UserType | null;
+  onlineUsers: { userData: UserType; socketId: string }[];
   logging: boolean;
   error: null | string;
 }
@@ -15,6 +16,7 @@ export interface updateUserPayload {
 
 const initialState: userState = {
   currentUser: null,
+  onlineUsers: [],
   logging: false,
   error: null,
 };
@@ -86,6 +88,10 @@ export const userSlice = createSlice({
       state.logging = false;
       state.error = action.payload;
     },
+
+    setOnlineUsers: (state, action: PayloadAction<{ userData: UserType; socketId: string }[]>) => {
+      state.onlineUsers = action.payload;
+    },
   },
 });
 
@@ -95,5 +101,6 @@ export const selectCurrentUser = (state: RootState) => state.user.currentUser;
 export const selectHistorySearch = (state: RootState) => state.user.currentUser!.historySearch;
 export const selectLogging = (state: RootState) => state.user.logging;
 export const selectLoginError = (state: RootState) => state.user.error;
+export const selectOnlineUsers = (state: RootState) => state.user.onlineUsers;
 
 export default userSlice.reducer;

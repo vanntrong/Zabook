@@ -1,6 +1,7 @@
 import * as errorController from "../controllers/errorController.js";
 import Conversation from "../models/Conversation.js";
 import Message from "../models/Message.js";
+import User from "../models/User.js";
 import * as factoryController from "./factoryController.js";
 
 export async function getConversations(req, res) {
@@ -137,12 +138,12 @@ export async function renameGroupConversation(req, res) {
 
 export async function addUserToGroupConversation(req, res) {
   try {
-    if (!req.body.newMemberId || !req.body.groupId) {
-      return errorController.errorHandler(res, "Add member to group must have memberId and groupId", 400);
+    if (!req.body.members || !req.body.groupId) {
+      return errorController.errorHandler(res, "Add member to group must have member and groupId", 400);
     }
     const updatedConversation = await Conversation.findOneAndUpdate(
       { _id: req.body.groupId, members: { $in: req.user.id } },
-      { $addToSet: { members: req.body.newMemberId } },
+      { $set: { members: req.body.members } },
       { new: true }
     )
       .populate({
@@ -162,9 +163,7 @@ export async function addUserToGroupConversation(req, res) {
 
     const message = await Message.create({
       type: "notification",
-      content: `added ${
-        updatedConversation.members.find((member) => member._id.toString() === req.body.newMemberId).fullName
-      } to the group chat`,
+      content: `added ${req.body.members.length > 1 ? "users" : "a user"} to the group chat`,
       conversation: updatedConversation._id,
       sender: req.user.id,
     });
@@ -211,11 +210,14 @@ export async function removeUserFromGroupConversation(req, res) {
           },
         });
 
+      const userDeleted = await User.findById(req.body.memberId);
+
       const message = await Message.create({
         type: "notification",
-        content: `removed ${
-          updatedConversation.members.find((member) => member._id.toString() === req.body.newMemberId).fullName
-        } from the group chat`,
+        content:
+          userDeleted._id.toString() !== req.user.id
+            ? `removed ${userDeleted.fullName} from the group chat`
+            : `left the group chat`,
         conversation: updatedConversation._id,
         sender: req.user.id,
       });

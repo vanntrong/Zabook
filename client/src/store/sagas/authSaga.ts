@@ -2,6 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import * as Effects from 'redux-saga/effects';
 import { LoginFormData, UserType } from 'shared/types';
 import { updateUserPayload, userAction } from 'store/slice/userSlice';
+import axiosClient from 'api';
 import History from 'utils/history';
 import * as api from '../../api/userApi';
 
@@ -16,6 +17,7 @@ function* handleLogin(payload: LoginFormData) {
     const { user, token, refreshToken } = yield call(api.loginUser, payload);
     localStorage.setItem('token', token);
     localStorage.setItem('refresh_token', refreshToken);
+    axiosClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     yield put(userAction.setUser(user));
     History.push('/');
   } catch (error) {

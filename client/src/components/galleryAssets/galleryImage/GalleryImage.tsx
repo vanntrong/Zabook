@@ -2,17 +2,17 @@ import React, { FC } from 'react';
 import './galleryImage.scss';
 
 interface GalleryImageProps {
-  images: any[];
+  assets: any[];
 }
 
-const GalleryImage: FC<GalleryImageProps> = ({ images }) => {
+const GalleryImage: FC<GalleryImageProps> = ({ assets }) => {
   return (
     <div className="gallery">
-      {images.map(
-        (image, index) =>
-          image && (
+      {assets.map(
+        (asset, index) =>
+          asset && (
             <div className="gallery-item" key={index}>
-              <img src={image} alt="" />
+              <img src={asset.url} alt="" />
             </div>
           )
       )}
