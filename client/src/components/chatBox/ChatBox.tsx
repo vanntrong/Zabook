@@ -1,4 +1,3 @@
-import { Avatar } from '@mui/material';
 import { createMessageApi, getMessagesApi } from 'api/messageApi';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
 import TypingAnimation from 'components/loadings/typingAnimation/TypingAnimation';
@@ -10,14 +9,24 @@ import { conversationType, messageType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import { socket } from 'utils/socket';
+import { BiImageAdd } from 'react-icons/bi';
 import './chatBox.scss';
+import { convertFileSize } from 'utils/upload';
+import { toast } from 'react-toastify';
 
 interface ChatBoxProps {
   setConversations: React.Dispatch<React.SetStateAction<conversationType[]>>;
+  setConversationNotSeenList: React.Dispatch<React.SetStateAction<string[]>>;
+  conversationNotSeenList: string[];
   currentConversation: conversationType;
 }
 
-const ChatBox: FC<ChatBoxProps> = ({ setConversations, currentConversation }) => {
+const ChatBox: FC<ChatBoxProps> = ({
+  setConversations,
+  currentConversation,
+  setConversationNotSeenList,
+  conversationNotSeenList,
+}) => {
   const [messages, setMessages] = useState<messageType[]>([]);
   const currentUser = useAppSelector(selectCurrentUser);
   const [messageContent, setMessageContent] = useState('');
@@ -26,7 +35,8 @@ const ChatBox: FC<ChatBoxProps> = ({ setConversations, currentConversation }) =>
   const typingTimeout = useRef<any>(null);
   const params = useParams();
   const { conversationId } = params;
-  const selectConversationId = useRef<string>('');
+  const selectConversationId = useRef<string | null>(null);
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     socket.emit('join chat', conversationId);
@@ -47,21 +57,22 @@ const ChatBox: FC<ChatBoxProps> = ({ setConversations, currentConversation }) =>
 
   useEffect(() => {
     socket.on('getMessage', (data) => {
-      if (selectConversationId.current === data.conversation) {
-        setMessages((prev) => [data, ...prev]);
+      if (!selectConversationId || selectConversationId.current !== data.conversation) {
+        // notification login
+        setConversationNotSeenList((prev) => [data.conversation, ...prev]);
       } else {
-        return;
+        setMessages((prev) => [data, ...prev]);
       }
+      setConversations((prev) =>
+        prev.map((c) => (c._id === data.conversation ? { ...c, lastMessage: data } : c))
+      );
+      setConversations((prev) =>
+        prev.sort((a, b) =>
+          a._id === data.conversation ? -1 : b._id === data.conversation ? 1 : 0
+        )
+      );
     });
-  }, []);
-
-  // useEffect(() => {
-  //   socket.on('get-group-avatar-change', (data) => {
-  //     if (selectConversationId.current === data.group._id) {
-  //       setNotifications((prev) => [{ message: data.message, avatar: data.group.avatar }, ...prev]);
-  //     }
-  //   });
-  // }, []);
+  }, [setConversations, setConversationNotSeenList]);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -70,6 +81,9 @@ const ChatBox: FC<ChatBoxProps> = ({ setConversations, currentConversation }) =>
         selectConversationId.current = conversationId;
         const res = await getMessagesApi(conversationId);
         setMessages(res);
+        if (conversationNotSeenList.includes(conversationId)) {
+          setConversationNotSeenList((prev) => prev.filter((c) => c !== conversationId));
+        }
       }
       setIsFetchingMessage(false);
     };
@@ -89,16 +103,65 @@ const ChatBox: FC<ChatBoxProps> = ({ setConversations, currentConversation }) =>
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (messageContent.trim().length === 0) {
+      return;
+    }
     if (conversationId) {
-      const res = await createMessageApi(conversationId, messageContent);
-      socket.emit('newMessage', res);
+      const res = await createMessageApi({ content: messageContent, conversationId });
+      socket.emit('newMessage', res, currentConversation);
       setMessages((prev) => [res, ...prev]);
       setConversations((prev) =>
-        prev.map((c) => (c._id === conversationId ? { ...c, lastMessage: res } : c))
+        prev.map((c) => (c._id === res.conversation ? { ...c, lastMessage: res } : c))
+      );
+      setConversations((prev) =>
+        prev.sort((a, b) => (a._id === res.conversation ? -1 : b._id === res.conversation ? 1 : 0))
       );
     }
     setMessageContent('');
   };
+
+  const handleChangeInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && conversationId) {
+      const files = e.target.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        console.log({ file, files });
+        const fileSize = convertFileSize(file.size);
+        const media_type = file.type.split('/')[0];
+
+        if (media_type === 'image' && fileSize > 10) {
+          toast.error('Image size must be less than 10MB');
+          return;
+        }
+
+        if (media_type === 'video' && fileSize > 100) {
+          toast.error('Video size must be less than 100MB');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = async () => {
+          const url = reader.result as string;
+          const res = await createMessageApi({ asset: { url, media_type }, conversationId });
+          socket.emit('newMessage', res, currentConversation);
+          setMessages((prev) => [res, ...prev]);
+          setConversations((prev) =>
+            prev.map((c) => (c._id === res.conversation ? { ...c, lastMessage: res } : c))
+          );
+          setConversations((prev) =>
+            prev.sort((a, b) =>
+              a._id === res.conversation ? -1 : b._id === res.conversation ? 1 : 0
+            )
+          );
+        };
+      }
+    }
+  };
+
+  useEffect(() => {}, []);
+
+  console.log(messages);
 
   return (
     <>
@@ -124,6 +187,21 @@ const ChatBox: FC<ChatBoxProps> = ({ setConversations, currentConversation }) =>
           )}
         </div>
         <div className="chatBox-input">
+          <div className="chatBox-input-assets">
+            <div
+              className="chatBox-input-assets-icon"
+              onClick={() => inputFileRef.current?.click()}
+            >
+              <BiImageAdd />
+            </div>
+            <input
+              type="file"
+              hidden
+              accept="image/*,video/*"
+              ref={inputFileRef}
+              onChange={handleChangeInputFile}
+            />
+          </div>
           <form onSubmit={handleSubmit}>
             <input placeholder="Aa" value={messageContent} onChange={handleChangeMessageText} />
             <button type="submit">

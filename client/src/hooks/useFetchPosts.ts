@@ -2,13 +2,13 @@ import { getPostsApi } from 'api/postApi';
 import { useEffect, useState } from 'react';
 import { PostType, UserType } from 'shared/types';
 
-const useFetchPosts = (page: number, user: UserType | null) => {
+const useFetchPosts = (page: number, user: UserType | null, limit: number = 10) => {
   const [posts, setPosts] = useState<PostType[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [isFetchingPosts, setIsFetchingPosts] = useState<boolean>(true);
   useEffect(() => {
     const getPostsOfUser = async (id: string) => {
-      const posts = await getPostsApi(id, { page });
+      const posts = await getPostsApi(id, { page, limit });
 
       if (posts.length === 0) {
         setHasMore(false);
@@ -26,7 +26,7 @@ const useFetchPosts = (page: number, user: UserType | null) => {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [user, page]);
+  }, [user, page, limit]);
 
   return {
     posts,

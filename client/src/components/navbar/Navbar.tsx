@@ -113,7 +113,7 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
           <FiSettings className="navbar-navigate-item-icon icon-rotate" />
           <div className="setting-app-box"></div>
         </div>
-        <Link to="/settings" className="navbar-user">
+        <Link to={`/${currentUser?.username}`} className="navbar-user">
           <Avatar src={currentUser?.avatar} className="navbar-user-avatar" />
         </Link>
       </div>

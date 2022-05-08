@@ -8,6 +8,10 @@
   left: 10px;
   width: 100%;
 
+  &.message-asset {
+    align-items: flex-end;
+  }
+
   &:hover {
     .message-button {
       display: flex;
@@ -66,6 +70,20 @@
       width: max-content;
       font-size: 14px;
       display: none;
+    }
+
+    &.message-content-image {
+      width: auto;
+      max-width: 300px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    &.message-content-video {
+      width: 100%;
+      max-width: 300px;
     }
   }
   .message-button {
@@ -144,5 +162,9 @@
   .message .message-content-and-time .message-content {
     max-width: 600px;
     font-size: 16px;
+  }
+  .message .message-content-and-time.message-content-image,
+  .message .message-content-and-time.message-content-video {
+    max-width: 600px;
   }
 }

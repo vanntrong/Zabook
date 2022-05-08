@@ -11,7 +11,15 @@
     background-color: #cccaca;
   }
   .online-user-name {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 17px;
+    color: $text-gray-900;
+    font-size: 13px;
+  }
+}
+
+@media screen and (min-width: $desktop-screen) {
+  .online-user .online-user-name {
+    font-size: 15px;
   }
 }

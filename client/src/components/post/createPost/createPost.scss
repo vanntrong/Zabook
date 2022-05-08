@@ -26,7 +26,7 @@
     }
 
     span {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 600;
       color: $text-gray-500;
     }
@@ -49,11 +49,11 @@
       background-color: transparent;
       font-weight: 500;
       color: $black-color;
-      font-size: 12px;
+      font-size: 14px;
       resize: none;
       font-family: 'Poppins', sans-serif;
       &::placeholder {
-        font-size: 12px;
+        font-size: 14px;
         color: $text-gray-500;
         font-family: inherit;
       }
@@ -119,7 +119,7 @@
     display: block;
     color: $text-gray-700;
     margin-left: 8px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
   }
 }

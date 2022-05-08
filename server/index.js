@@ -80,29 +80,24 @@ io.on("connection", (socket) => {
   socket.on("setup", (userData) => {
     console.log("User connect: ", userData._id);
     addNewUser(userData, socket.id);
-    socket.emit("onlineUsers", onlineUsers);
+    socket.emit("getOnlineUsers", onlineUsers);
   });
 
   socket.on("join chat", (room) => {
-    // // check if user joined room
-    // let previousRoom = null;
-    // // socket.rooms is Set so use rooms.values()
-    // const iterator = socket.rooms.values();
-    // // the first value is the socket.id
-    // iterator.next().value;
-    // // the second value is the room
-    // previousRoom = iterator.next().value;
-    // if (previousRoom) {
-    //   // if user is already in a room, leave the room
-    //   socket.leave(previousRoom);
-    // }
-    // // join the room
     socket.join(room);
     console.log("User joined chat: ", room);
   });
 
-  socket.on("newMessage", (message) => {
-    socket.in(message.conversation).emit("getMessage", message);
+  socket.on("newMessage", (message, conversation) => {
+    // socket.in(message.conversation).emit("getMessage", message);
+    conversation.members.forEach((member) => {
+      if (member._id !== message.sender._id) {
+        const socketId = getSocketId(member._id);
+        if (socketId) {
+          io.in(socketId).emit("getMessage", message);
+        }
+      } else return;
+    });
   });
 
   socket.on("createConversation", ({ creator, conversation }) => {
@@ -130,42 +125,25 @@ io.on("connection", (socket) => {
     }
   });
 
-  // socket.on("change-group-name", (userChange, group) => {
-  //   const userReceived = group.members.filter((member) => member._id !== userChange._id);
-  //   userReceived.forEach((user) => {
-  //     const socketId = getSocketId(user._id);
-  //     io.to(socketId).emit("get-group-name-change", {
-  //       userChange,
-  //       message: `${userChange.fullName} changed the group name to ${group.chatName}`,
-  //       group,
-  //     });
-  //   });
-  // });
-
-  // socket.on("change-group-avatar", (userChange, group) => {
-  //   const userReceived = group.members.filter((member) => member._id !== userChange._id);
-  //   userReceived.forEach((user) => {
-  //     const socketId = getSocketId(user._id);
-  //     io.to(socketId).emit("get-group-avatar-change", {
-  //       userChange,
-  //       message: `${userChange.fullName} changed the group avatar`,
-  //       group,
-  //     });
-  //   });
-  // });
-
   socket.on("typing", (room) => {
-    socket.in(room).emit("typing");
+    socket.in(room).emit("typing", room);
   });
 
   socket.on("stop typing", (room) => {
-    socket.in(room).emit("stop typing");
+    socket.in(room).emit("stop typing", room);
+  });
+
+  socket.on("send-friend-request", (friendRequest) => {
+    const socketId = getSocketId(friendRequest.receiver);
+    if (socketId) {
+      io.to(socketId).emit("get-friend-request", friendRequest);
+    }
   });
 
   socket.on("disconnect", () => {
     console.log("User disconnect");
     removeUser(socket.id);
-    socket.emit("onlineUsers", onlineUsers);
+    socket.emit("getOnlineUsers", onlineUsers);
   });
 });
 instrument(io, {

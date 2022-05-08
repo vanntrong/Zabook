@@ -258,26 +258,30 @@
       border-radius: 6px;
       border: 1px solid $border-color;
       padding: 10px;
-      flex-wrap: wrap;
-      height: 65px;
-      overflow-y: auto;
+      flex-wrap: nowrap;
+      overflow-x: auto;
       width: 100%;
       background-color: white;
+      transition: all 0.3s ease-in-out;
 
       .tagPeople-item {
-        color: $blue-color-300;
-        background-color: #c4dffa;
+        color: $text-gray-700;
         font-weight: 600;
         padding: 8px;
         display: flex;
         align-items: center;
+        justify-content: center;
+        flex-direction: column;
         gap: 0 5px;
         border-radius: inherit;
+
+        .tagPeople-item-avatar {
+          position: relative;
+        }
 
         button {
           color: inherit;
           font-weight: inherit;
-          background-color: transparent;
           cursor: pointer;
           display: flex;
           justify-content: center;
@@ -285,11 +289,44 @@
           width: 28px;
           height: 28px;
           border-radius: 50%;
-          &:hover {
-            background-color: $bg-gray;
-          }
+          position: absolute;
+          top: 0;
+          right: 0;
+          z-index: 99;
+          background: red;
+          transform: translate(10px, -5px);
+          background-color: white;
+        }
+
+        h4 {
+          font-size: 14px;
+          margin-top: 5px;
         }
       }
+    }
+  }
+  .inputPostSearchPeople-button-add {
+    position: absolute;
+    left: 0;
+    bottom: 10px;
+    right: 0;
+    width: calc(100% - 20px);
+    height: 40px;
+    background-color: $border-color;
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    color: $text-gray-900;
+    &:hover {
+      background-color: $bg-greylight;
+    }
+    &:disabled {
+      cursor: not-allowed;
+      background-color: #d3d8e0;
+      color: #bdbdbd;
     }
   }
 }

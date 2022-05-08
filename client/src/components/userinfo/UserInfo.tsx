@@ -14,6 +14,7 @@ import { NavLink } from 'react-router-dom';
 import { UserType } from 'shared/types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
+import { socket } from 'utils/socket';
 import './userinfo.scss';
 
 interface UserInfoProps {
@@ -44,6 +45,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
     setIsPending(true);
     const res = await sendFriendRequestApi({ requester: currentUser!._id, receiver: user!._id });
     if (res) {
+      socket.emit('send-friend-request', res);
       setIsPending(false);
       setIsSendFriendRequest(true);
     } else {
@@ -123,6 +125,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
         <hr />
         <div className="userInfo-navigate">
           <NavLink
+            end
             to={`/${user?.username}`}
             className={({ isActive }) =>
               isActive ? 'userInfo-navigate-item active' : 'userInfo-navigate-item'
@@ -131,6 +134,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
             <span>About</span>
           </NavLink>
           <NavLink
+            end
             to={`/${user?.username}/videos`}
             className={({ isActive }) =>
               isActive ? 'userInfo-navigate-item active' : 'userInfo-navigate-item'
@@ -139,6 +143,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
             <span>Videos</span>
           </NavLink>
           <NavLink
+            end
             to={`/${user?.username}/photos`}
             className={({ isActive }) =>
               isActive ? 'userInfo-navigate-item active' : 'userInfo-navigate-item'
@@ -147,20 +152,13 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
             <span>Photos</span>
           </NavLink>
           <NavLink
+            end
             to={`/${user?.username}/friends`}
             className={({ isActive }) =>
               isActive ? 'userInfo-navigate-item active' : 'userInfo-navigate-item'
             }
           >
             <span>Friends</span>
-          </NavLink>
-          <NavLink
-            to={`/${user?.username}/groups`}
-            className={({ isActive }) =>
-              isActive ? 'userInfo-navigate-item active' : 'userInfo-navigate-item'
-            }
-          >
-            <span>Group</span>
           </NavLink>
         </div>
       </div>

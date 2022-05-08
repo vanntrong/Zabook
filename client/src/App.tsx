@@ -1,6 +1,7 @@
 import { getProfileApi } from 'api/userApi';
 import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
 import ViewStoryPage from 'pages/stories/view/ViewStoryPage';
+import PrivateRoute from 'PrivateRoute';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -14,7 +15,7 @@ const Login = lazy(() => import('pages/login/Login'));
 const SignupPage = lazy(() => import('pages/signup/SignUpPage'));
 const HomePage = lazy(() => import('pages/home/HomePage'));
 const ProfilePage = lazy(() => import('pages/profile/ProfilePage'));
-const PhotosPage = lazy(() => import('pages/photo/PhotosPage'));
+const AssetsPage = lazy(() => import('pages/photo/AssetsPage'));
 const FriendsPage = lazy(() => import('pages/friends/FriendsPage'));
 const FriendsRequestsPage = lazy(() => import('pages/friends/requests/FriendsRequestsPage'));
 const SettingPage = lazy(() => import('pages/setting/SettingPage'));
@@ -51,6 +52,12 @@ function App() {
     }
   }, [user]);
 
+  useEffect(() => {
+    socket.on('getOnlineUsers', (data) => {
+      dispatch(userAction.setOnlineUsers(data));
+    });
+  }, []);
+
   return (
     <>
       {isFetchingUser && <SimpleLoading />}
@@ -60,45 +67,133 @@ function App() {
             {/* login route */}
             <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
             <Route path="/register" element={!user ? <SignupPage /> : <Navigate to="/" />} />
-            <Route path="/" element={!user ? <Navigate to="/login" /> : <HomePage />} />
+
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <HomePage />
+                </PrivateRoute>
+              }
+            />
 
             {/* profile route */}
             <Route path="/:username">
-              <Route index element={!user ? <Navigate to="/login" /> : <ProfilePage />} />
-              <Route path="photos" element={!user ? <Navigate to="/login" /> : <PhotosPage />} />
+              <Route
+                index
+                element={
+                  <PrivateRoute>
+                    <ProfilePage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="photos"
+                element={
+                  <PrivateRoute>
+                    <AssetsPage type="photos" />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="videos"
+                element={
+                  <PrivateRoute>
+                    <AssetsPage type="videos" />
+                  </PrivateRoute>
+                }
+              />
               <Route path="friends">
-                <Route index element={!user ? <Navigate to="/login" /> : <FriendsPage />} />
+                <Route
+                  index
+                  element={
+                    <PrivateRoute>
+                      <FriendsPage />
+                    </PrivateRoute>
+                  }
+                />
                 <Route
                   path="request"
-                  element={!user ? <Navigate to="/login" /> : <FriendsRequestsPage />}
+                  element={
+                    <PrivateRoute>
+                      <FriendsRequestsPage />
+                    </PrivateRoute>
+                  }
                 />
               </Route>
             </Route>
 
             {/* badges route */}
-            <Route path="/badges" element={!user ? <Navigate to="/login" /> : <p>Badges</p>} />
+            <Route
+              path="/badges"
+              element={
+                <PrivateRoute>
+                  <p>Badges</p>
+                </PrivateRoute>
+              }
+            />
 
             {/* stories route */}
             <Route path="/stories">
-              <Route index element={!user ? <Navigate to="/login" /> : <StoriesPage />} />
+              <Route
+                index
+                element={
+                  <PrivateRoute>
+                    <StoriesPage />
+                  </PrivateRoute>
+                }
+              />
               <Route
                 path="create"
-                element={!user ? <Navigate to="/login" /> : <CreateStoryPage />}
+                element={
+                  <PrivateRoute>
+                    <CreateStoryPage />
+                  </PrivateRoute>
+                }
               />
               <Route
                 path=":storyId"
-                element={!user ? <Navigate to="/login" /> : <ViewStoryPage />}
+                element={
+                  <PrivateRoute>
+                    <ViewStoryPage />
+                  </PrivateRoute>
+                }
               />
             </Route>
 
             {/* messages route */}
-            <Route path="/groups" element={!user ? <Navigate to="/login" /> : <p>groups</p>} />
-            <Route path="/settings" element={!user ? <Navigate to="/login" /> : <SettingPage />} />
+            <Route
+              path="/groups"
+              element={
+                <PrivateRoute>
+                  <p>groups</p>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <PrivateRoute>
+                  <SettingPage />
+                </PrivateRoute>
+              }
+            />
             <Route path="/messages">
-              <Route index element={!user ? <Navigate to="/login" /> : <MessagesPage />} />
+              <Route
+                index
+                element={
+                  <PrivateRoute>
+                    <MessagesPage />
+                  </PrivateRoute>
+                }
+              />
               <Route
                 path=":conversationId"
-                element={!user ? <Navigate to="/login" /> : <MessagesPage />}
+                element={
+                  <PrivateRoute>
+                    <MessagesPage />
+                  </PrivateRoute>
+                }
               />
             </Route>
             <Route path="/404" element={<NotFoundPage />} />
@@ -109,7 +204,7 @@ function App() {
       )}
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -118,7 +213,6 @@ function App() {
         draggable
         pauseOnHover
       />
-      {/* Same as */}
       <ToastContainer />
     </>
   );

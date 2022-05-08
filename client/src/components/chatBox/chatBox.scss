@@ -20,6 +20,15 @@
   }
 
   .chatBox-input {
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+    padding-left: 10px;
+    .chatBox-input-assets-icon {
+      font-size: 25px;
+      color: $blue-500;
+      cursor: pointer;
+    }
     form {
       display: flex;
       align-items: center;
@@ -28,6 +37,7 @@
       padding-right: 10px;
       margin-top: 10px;
       gap: 0 10px;
+      flex: 1;
       input {
         width: 100%;
         resize: none;

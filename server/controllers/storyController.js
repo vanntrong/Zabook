@@ -10,7 +10,6 @@ export async function createStoryHandler(req, res) {
     }
     if (req.body.asset) {
       const result = await factoryController.uploadFile(req.body.asset.url, "story", req.body.asset.media_type);
-      console.log(result);
       req.body.asset = {
         url: result.secure_url,
         media_type: result.resource_type,

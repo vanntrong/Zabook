@@ -19,13 +19,28 @@ import { convertFileSize } from 'utils/upload';
 import '../inputpost.scss';
 
 interface SearchPeopleToTagProps {
+  type: 'add' | 'tag';
   onClose: () => void;
   setTagsPeople: React.Dispatch<React.SetStateAction<string[]>>;
+  tagsPeople: string[];
+  handleAdd?: () => void;
 }
 
-export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({ onClose, setTagsPeople }) => {
+interface tagPeoplePreview {
+  name: string;
+  id: string;
+  avatar: string;
+}
+
+export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({
+  type,
+  onClose,
+  setTagsPeople,
+  tagsPeople,
+  handleAdd,
+}) => {
   const [searchText, setSearchText] = useState('');
-  const [tagsPeoplePreview, setTagsPeoplePreview] = useState<{ name: string; id: string }[]>([]);
+  const [tagsPeoplePreview, setTagsPeoplePreview] = useState<tagPeoplePreview[]>([]);
 
   const { searchResult, setSearchResult } = useSearchUser(searchText);
 
@@ -35,7 +50,10 @@ export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({ onClose, setTags
     if (tagsPeoplePreview.includes(user._id)) {
       return;
     }
-    setTagsPeoplePreview([...tagsPeoplePreview, { id: user._id, name: user.fullName }]);
+    setTagsPeoplePreview([
+      ...tagsPeoplePreview,
+      { id: user._id, name: user.fullName, avatar: user.avatar },
+    ]);
     setTagsPeople((prev) => [...prev, user._id]);
     setSearchResult([]);
   };
@@ -52,7 +70,7 @@ export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({ onClose, setTags
             <IoArrowBackOutline />
           </Avatar>
         </div>
-        <h3>Tag people</h3>
+        <h3>{type === 'tag' ? 'Tag people' : 'Add people'}</h3>
       </div>
       <hr />
       <div className="inputPostSearchPeople-center">
@@ -74,10 +92,13 @@ export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({ onClose, setTags
           <div className="tagPeople-list">
             {tagsPeoplePreview.map((item, index) => (
               <div className="tagPeople-item" key={index}>
+                <div className="tagPeople-item-avatar">
+                  <Avatar src={item.avatar} />
+                  <button onClick={() => handleClickDelete(item.id)}>
+                    <AiOutlineClose />
+                  </button>
+                </div>
                 <h4>{item.name}</h4>
-                <button onClick={() => handleClickDelete(item.id)}>
-                  <AiOutlineClose />
-                </button>
               </div>
             ))}
           </div>
@@ -88,7 +109,8 @@ export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({ onClose, setTags
         {searchResult.length > 0 &&
           searchResult.map(
             (user) =>
-              user._id !== currentUser!._id && (
+              user._id !== currentUser!._id &&
+              !tagsPeople.includes(user._id) && (
                 <div className="result" onClick={() => handleClickResult(user)} key={user._id}>
                   <div className="result-info">
                     <Avatar src={user.avatar} alt={user.fullName} />
@@ -98,6 +120,20 @@ export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({ onClose, setTags
               )
           )}
       </div>
+      {type === 'add' && (
+        <button
+          className="inputPostSearchPeople-button-add"
+          disabled={tagsPeoplePreview.length === 0}
+          onClick={() => {
+            if (handleAdd) {
+              handleAdd();
+              onClose();
+            }
+          }}
+        >
+          <span>Add People</span>
+        </button>
+      )}
     </div>
   );
 };
@@ -271,7 +307,12 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
         </div>
       </form>
       {isShowSearchTagPeople && (
-        <SearchPeopleToTag onClose={handleCloseSearchTagPeople} setTagsPeople={setTagsPeople} />
+        <SearchPeopleToTag
+          type="tag"
+          onClose={handleCloseSearchTagPeople}
+          setTagsPeople={setTagsPeople}
+          tagsPeople={tagsPeople}
+        />
       )}
 
       {isSubmit && <ProgressLoading />}

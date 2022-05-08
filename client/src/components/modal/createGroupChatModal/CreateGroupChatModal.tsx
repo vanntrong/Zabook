@@ -66,7 +66,12 @@ const CreateGroupChatModal: FC<CreateGroupChatModalProps> = ({
             </div>
           </div>
           {isOpenSearchUser && (
-            <SearchPeopleToTag onClose={changeCloseSearchUser} setTagsPeople={setTagsPeople} />
+            <SearchPeopleToTag
+              type="tag"
+              onClose={changeCloseSearchUser}
+              setTagsPeople={setTagsPeople}
+              tagsPeople={tagsPeople}
+            />
           )}
         </>
       ) : null}

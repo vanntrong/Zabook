@@ -5,6 +5,7 @@ import useSearchUser from 'hooks/useSearchUser';
 import React, { FC, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { IoCreateOutline } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 import { conversationType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
@@ -13,12 +14,14 @@ interface Props {
   setIsShowCreateGroupChatModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleCreateSingleConversation: (userId: string) => Promise<void>;
   conversations: conversationType[];
+  conversationNotSeenList: string[];
 }
 
 const SidebarMessagePage: FC<Props> = ({
   setIsShowCreateGroupChatModal,
   handleCreateSingleConversation,
   conversations,
+  conversationNotSeenList,
 }) => {
   const [searchText, setSearchText] = useState('');
 
@@ -33,7 +36,9 @@ const SidebarMessagePage: FC<Props> = ({
   return (
     <div className="messagesPage-wrapper-left">
       <div className="messagesPage-wrapper-left-top">
-        <Avatar className="messagesPage-wrapper-left-top-avatar" />
+        <Link to="/" className="logo">
+          <h2>Sociala.</h2>
+        </Link>
         <h4 className="messagesPage-wrapper-left-top-title">Chats</h4>
         <div
           className="messagesPage-wrapper-left-top-button"
@@ -68,7 +73,10 @@ const SidebarMessagePage: FC<Props> = ({
           </div>
         )}
       </div>
-      <Conversations conversations={conversations} />
+      <Conversations
+        conversations={conversations}
+        conversationNotSeenList={conversationNotSeenList}
+      />
     </div>
   );
 };

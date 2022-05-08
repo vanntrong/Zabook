@@ -1,12 +1,13 @@
 import { getProfileOtherApi } from 'api/userApi';
-import GalleryImage from 'components/galleryImage/GalleryImage';
+import GalleryImage from 'components/galleryAssets/galleryImage/GalleryImage';
+import GalleryVideo from 'components/galleryAssets/galleryVideo/GalleryVideo';
 import withLayout from 'components/layout/Layout';
 import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
 import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 // import SkeletonLoading from 'components/SkeletonLoading';
 import UserInfo from 'components/userinfo/UserInfo';
 import useFetchPosts from 'hooks/useFetchPosts';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserType } from 'shared/types';
@@ -14,14 +15,34 @@ import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import './photopage.scss';
 
-const PhotosPage = () => {
+interface Props {
+  type: 'photos' | 'videos';
+}
+
+const AssetsPage: FC<Props> = ({ type }) => {
   const [user, setUser] = useState<null | UserType>(null);
   const [page, setPage] = useState<number>(0);
-  const { posts, hasMore, isFetchingPosts } = useFetchPosts(page, user);
+  const { posts, hasMore, isFetchingPosts } = useFetchPosts(page, user, 30);
   const currentUser = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
   const params = useParams();
-  const userPhotos = posts.map((post) => post.assets!.map((asset) => asset.url)).flat(Infinity);
+  const [userAssets, setUserAssets] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (type === 'photos') {
+      setUserAssets(
+        posts
+          .map((post) => post.assets!.filter((asset) => asset.media_type === 'image'))
+          .flat(Infinity)
+      );
+    } else if (type === 'videos') {
+      setUserAssets(
+        posts
+          .map((post) => post.assets!.filter((asset) => asset.media_type === 'video'))
+          .flat(Infinity)
+      );
+    }
+  }, [posts, type]);
 
   useEffect(() => {
     const getFriendProfile = async (username: string) => {
@@ -69,7 +90,11 @@ const PhotosPage = () => {
             >
               <div className="photos-wrapper">
                 <UserInfo user={user} />
-                <GalleryImage images={userPhotos} />
+                {type === 'photos' ? (
+                  <GalleryImage assets={userAssets} />
+                ) : (
+                  <GalleryVideo assets={userAssets} />
+                )}
                 {isFetchingPosts && <SkeletonLoading type="post" />}
               </div>
             </InfiniteScroll>
@@ -80,4 +105,4 @@ const PhotosPage = () => {
   );
 };
 
-export default withLayout(PhotosPage);
+export default withLayout(AssetsPage);
