@@ -20,6 +20,7 @@ import { socket } from 'utils/socket';
 import './post.scss';
 import PostAssets from './PostAssets';
 import { FacebookShareButton } from 'react-share';
+import { selectTheme } from 'store/slice/themeSlice';
 
 interface PostProps {
   // className?: string;
@@ -37,6 +38,7 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
   const [commentCount, setCommentCount] = useState<number>(post.comments.length);
   const [likeCount, setLikeCount] = useState<number>(post.likes?.length || 0);
   const [isHidePostContent, setIsHidePostContent] = useState<boolean>(post.content.length > 150);
+  const isDarkMode = useAppSelector(selectTheme);
 
   const handleLikePost = async () => {
     setIsLiked((prevState) => !prevState);
@@ -80,7 +82,7 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
 
   return (
     <>
-      <Paper className="post" elevation={0}>
+      <Paper className={`post ${isDarkMode && 'dark'}`} elevation={0}>
         <div className="post-top">
           <div className="post-top-info">
             <Avatar className="post-top-user-avatar" src={post?.userPost.avatar} alt="" />

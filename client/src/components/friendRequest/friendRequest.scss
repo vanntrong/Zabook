@@ -59,4 +59,10 @@
     font-style: italic;
     margin-top: 10px;
   }
+  &.dark {
+    .friend-request-info .friend-request-name h4,
+    .friend-request-info .friend-request-name span {
+      color: white;
+    }
+  }
 }

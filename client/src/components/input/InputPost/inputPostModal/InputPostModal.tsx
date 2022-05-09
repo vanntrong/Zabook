@@ -14,6 +14,7 @@ import { IoArrowBackOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 import { formPostData, PostType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import { convertFileSize } from 'utils/upload';
 import '../inputpost.scss';
@@ -41,6 +42,7 @@ export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({
 }) => {
   const [searchText, setSearchText] = useState('');
   const [tagsPeoplePreview, setTagsPeoplePreview] = useState<tagPeoplePreview[]>([]);
+  const isDarkMode = useAppSelector(selectTheme);
 
   const { searchResult, setSearchResult } = useSearchUser(searchText);
 
@@ -63,7 +65,7 @@ export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({
     setTagsPeople((prev) => prev.filter((tag) => tag !== id));
   };
   return (
-    <div className="inputPostSearchPeople">
+    <div className={`inputPostSearchPeople ${isDarkMode && 'dark'}`}>
       <div className="inputPostSearchPeople-top">
         <div onClick={onClose}>
           <Avatar className="inputPostSearchPeople-top-close">
@@ -153,6 +155,7 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
   const [isShowSearchTagPeople, setIsShowSearchTagPeople] = useState<boolean>(false);
   const [tagsPeople, setTagsPeople] = useState<string[]>([]);
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
 
   const selectEmojiHandler = (emoji: any) => {
     setPostContent(postContent + emoji.native);
@@ -224,7 +227,7 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
   };
   return (
     <>
-      <form className="form-post-modal" onSubmit={submitHandler}>
+      <form className={`form-post-modal ${isDarkMode && 'dark'}`} onSubmit={submitHandler}>
         <div className="form-post-title">
           <h2>Create post</h2>
           <div onClick={hideButtonClickHandler} style={{ cursor: 'pointer' }}>

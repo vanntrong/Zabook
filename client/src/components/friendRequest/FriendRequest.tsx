@@ -3,6 +3,8 @@ import { acceptFriendRequestApi, declineFriendRequestApi } from 'api/friendReque
 import moment from 'moment';
 import React, { FC, useState } from 'react';
 import { friendRequestType } from 'shared/types';
+import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { socket } from 'utils/socket';
 
 import './friendRequest.scss';
@@ -15,6 +17,7 @@ interface FriendRequestProps {
 const FriendRequest: FC<FriendRequestProps> = ({ friendRequest, setFriendsRequest }) => {
   const [isAccept, setIsAccept] = useState(false);
   const [isRemove, setIsRemove] = useState(false);
+  const isDarkMode = useAppSelector(selectTheme);
 
   const confirmFriendRequestHandler = async () => {
     const { message, notification } = await acceptFriendRequestApi(friendRequest._id);
@@ -37,7 +40,7 @@ const FriendRequest: FC<FriendRequestProps> = ({ friendRequest, setFriendsReques
     }
   };
   return (
-    <div className="friend-request">
+    <div className={`friend-request ${isDarkMode && 'dark'}`}>
       <div className="friend-request-info">
         <Avatar className="friend-request-avatar" src={friendRequest.requester.avatar} alt="" />
         <div className="friend-request-name">

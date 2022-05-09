@@ -5,6 +5,7 @@ import { BiImage } from 'react-icons/bi';
 import { BsCameraVideo, BsPencil, BsThreeDots } from 'react-icons/bs';
 import { PostType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import Backdrop from '../../backdrop/Backdrop';
 import InputPostModal from './../../input/InputPost/inputPostModal/InputPostModal';
@@ -17,9 +18,10 @@ interface CreatePostProps {
 const CreatePost: FC<CreatePostProps> = ({ setPosts }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [isShowCreatePostModal, setIsShowCreatePostModal] = React.useState(false);
+  const isDarkMode = useAppSelector(selectTheme);
   return (
     <>
-      <div className="createPost">
+      <div className={`createPost ${isDarkMode && 'dark'}`}>
         <div className="createPost-top" onClick={() => setIsShowCreatePostModal(true)}>
           <div className="createPost-top-icon">
             <BsPencil />

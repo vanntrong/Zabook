@@ -106,6 +106,18 @@
       cursor: pointer;
     }
   }
+  &.dark {
+    background-color: $bg-dark-mode;
+    box-shadow: none;
+    .createPost-text-container {
+      border: none;
+      background-color: $bg-dark-mode-2;
+    }
+    .createPost-bottom .createPost-assets .createPost-assets-item span {
+      color: white;
+      font-weight: 500;
+    }
+  }
 }
 
 @media screen and (min-width: $tablet-screen) {

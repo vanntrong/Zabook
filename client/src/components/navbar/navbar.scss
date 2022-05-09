@@ -52,6 +52,24 @@
       margin-left: 25px;
     }
   }
+
+  &.dark {
+    background-color: $bg-dark-mode;
+    box-shadow: none;
+    .navbar-search-desktop {
+      background-color: $bg-dark-mode-2;
+      color: white;
+      input {
+        color: white;
+      }
+    }
+    .navbar-navlink .navbar-navlink-item {
+      background-color: $bg-dark-mode-2;
+      .navbar-navlink-icon {
+        color: white;
+      }
+    }
+  }
 }
 
 .notification-count {

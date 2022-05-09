@@ -4,6 +4,7 @@ import { BsChatLeft, BsLightningCharge, BsPerson } from 'react-icons/bs';
 import { FiLogOut, FiSettings } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
 import './sidebar.scss';
 
@@ -14,13 +15,14 @@ interface sidebarProps {
 const Sidebar: FC<sidebarProps> = ({ className }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
+  const isDarkMode = useAppSelector(selectTheme);
 
   const logoutHandler = () => {
     dispatch(userAction.logoutUser());
   };
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isDarkMode && 'dark'}`}>
       <div className="sidebar-list">
         <h4 className="sidebar-title">New Feeds</h4>
         <Link to="/" className="sidebar-item">

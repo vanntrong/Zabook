@@ -12,6 +12,7 @@ import Post from './../post/Post';
 import './feed.scss';
 
 // import SkeletonLoading from '../SkeletonLoading';
+import { selectTheme } from './../../store/slice/themeSlice';
 
 const Feed = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -20,6 +21,7 @@ const Feed = () => {
   const [hasMore, setHasMore] = useState(true);
   const currentUser = useAppSelector(selectCurrentUser);
   const { stories } = useFetchStories(0);
+  const isDarkMode = useAppSelector(selectTheme);
 
   useEffect(() => {
     const getFriendsPosts = async () => {
@@ -54,7 +56,15 @@ const Feed = () => {
             posts.map((post) => <Post key={post._id} post={post} setPosts={setPosts} />)}
           {isFetching && <SkeletonLoading type="post" />}
           {!hasMore && (
-            <p style={{ textAlign: 'center', marginTop: '10px' }}>Yay! You have seen it all</p>
+            <p
+              style={{
+                textAlign: 'center',
+                marginTop: '10px',
+                color: isDarkMode ? 'white' : 'black',
+              }}
+            >
+              Yay! You have seen it all
+            </p>
           )}
         </div>
       </InfiniteScroll>

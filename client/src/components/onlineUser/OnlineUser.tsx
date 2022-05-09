@@ -3,6 +3,8 @@ import { styled } from '@mui/material/styles';
 import { onlineUserType } from 'components/rightbar/Rightbar';
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import './onlineUser.scss';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -39,9 +41,10 @@ interface Props {
 }
 
 const OnlineUser: FC<Props> = ({ user }) => {
+  const isDarkMode = useAppSelector(selectTheme);
   return (
     <Link to={`/${user.username}`}>
-      <div className="online-user">
+      <div className={`online-user ${isDarkMode && 'dark'}`}>
         <StyledBadge
           overlap="circular"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}

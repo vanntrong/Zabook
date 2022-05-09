@@ -171,6 +171,35 @@
       }
     }
   }
+  &.dark {
+    background-color: $bg-dark-mode-2;
+    box-shadow: none;
+    .form-post-title h2 {
+      color: white;
+    }
+    hr {
+      border-bottom: 1px solid white;
+    }
+    .form-post-user-info {
+      color: white;
+    }
+
+    .form-post-feature {
+      .form-post-assets {
+        border: 1px solid white;
+        h4 {
+          color: white;
+        }
+      }
+      .form-post-content textarea {
+        color: white;
+        background-color: $bg-dark-mode;
+        &::placeholder {
+          color: white;
+        }
+      }
+    }
+  }
 }
 
 .inputPostSearchPeople {
@@ -327,6 +356,32 @@
       cursor: not-allowed;
       background-color: #d3d8e0;
       color: #bdbdbd;
+    }
+  }
+
+  &.dark {
+    background-color: $bg-dark-mode;
+    box-shadow: none;
+
+    .inputPostSearchPeople-top h3 {
+      color: white;
+    }
+
+    .result {
+      &:hover {
+        background-color: $bg-dark-mode-2;
+      }
+      .result-info {
+        color: white;
+      }
+    }
+
+    .inputSearchPeopleResults .tagPeople-list {
+      border: none;
+      background-color: $bg-dark-mode-2;
+      .tagPeople-item h4 {
+        color: white;
+      }
     }
   }
 }
