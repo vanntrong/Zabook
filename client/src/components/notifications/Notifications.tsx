@@ -20,8 +20,6 @@ const Notifications: FC<Props> = ({ notifications, setNotifications, unSeenNotif
     }
   };
 
-  console.log(unSeenNotifications);
-
   const readAllNotification = async () => {
     const res = await seenAllNotification();
     if (res) {

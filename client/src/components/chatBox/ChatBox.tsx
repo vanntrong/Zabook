@@ -125,7 +125,6 @@ const ChatBox: FC<ChatBoxProps> = ({
       const files = e.target.files;
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        console.log({ file, files });
         const fileSize = convertFileSize(file.size);
         const media_type = file.type.split('/')[0];
 
@@ -160,8 +159,6 @@ const ChatBox: FC<ChatBoxProps> = ({
   };
 
   useEffect(() => {}, []);
-
-  console.log(messages);
 
   return (
     <>

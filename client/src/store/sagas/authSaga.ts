@@ -54,7 +54,6 @@ function* handleAddHistory(action: PayloadAction<{ id: string; historyId: string
 function* handleDeleteHistory(action: PayloadAction<{ id: string; historyId: string }>) {
   try {
     const res: [string] = yield call(api.deleteHistoryApi, action.payload);
-    console.log(res);
     yield put(userAction.deleteHistorySuccess(res));
   } catch (error) {
     yield put(userAction.deleteHistoryFailure(error.response.data));

@@ -75,9 +75,7 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
     try {
       const res = await deleteStoryApi(id);
       setStories((prevState) => prevState.filter((story) => story._id !== res._id));
-    } catch (error) {
-      console.log(error.response.data);
-    }
+    } catch (error) {}
   };
 
   const onClosePopup = () => {

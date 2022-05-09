@@ -45,7 +45,6 @@ export const Comments: FC<CommentsProps> = React.memo(
     const handleSubmit = async (data: any) => {
       const { comment, notification } = await createCommentApi(postId, data);
       setComments([...comments, comment]);
-      console.log(notification);
       socket.emit('send-notification', notification);
 
       // call this function to update comment count
@@ -68,9 +67,7 @@ export const Comments: FC<CommentsProps> = React.memo(
 
         // call this function to update comment count
         onDeleteComment();
-      } catch (error) {
-        console.log(error.response.data);
-      }
+      } catch (error) {}
     };
 
     return (

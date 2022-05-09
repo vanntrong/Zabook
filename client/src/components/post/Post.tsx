@@ -47,7 +47,6 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
       data: currentUser!._id,
     });
     if (notification) {
-      console.log(notification);
       socket.emit('send-notification', notification);
     }
     setLikeCount((prevState) => prevState + (isLiked ? -1 : 1));
@@ -167,7 +166,7 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
           </div>
           <div className="post-action-item">
             <FacebookShareButton
-              url={`https://www.youtube.com/watch?v=DERd-C4ZbPE`}
+              url={`https://sociala-b253c.web.app/post/${post._id}`}
               hashtag="vantrong.dev"
             >
               <FiShare2 />
