@@ -1,0 +1,66 @@
+@import '../../../shared/variable.scss';
+.imagePlayer {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+}
+
+.imagePlayer-open {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba($color: #000000, $alpha: 0.7);
+  z-index: 999999;
+  padding: 20px;
+  overflow: hidden;
+  cursor: default;
+
+  .imagePlayer-open-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba($color: #000000, $alpha: 0.4);
+    color: white;
+    font-size: 16;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba($color: #000000, $alpha: 0.7);
+    }
+  }
+
+  .imagePlayer-open-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .imagePlayer-open-wrapper-img {
+      max-width: 1200px;
+      width: 100%;
+      height: auto;
+      img {
+        cursor: default;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $ipad-screen) {
+  .imagePlayer-open .imagePlayer-open-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+}

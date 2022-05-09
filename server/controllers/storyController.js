@@ -1,3 +1,4 @@
+import Notification from "../models/Notification.js";
 import Story from "../models/Story.js";
 import User from "../models/User.js";
 import * as errorController from "./errorController.js";
@@ -17,7 +18,30 @@ export async function createStoryHandler(req, res) {
       req.body.timing = result.duration || 10;
     }
     const newStory = await Story.create(req.body);
-    res.status(201).json(newStory);
+
+    const user = await User.findById(req.body.userPost);
+
+    const newNotification = new Notification({
+      type: "story",
+      content: "create new story",
+      from: req.body.userPost,
+      to: user.friends,
+      link: `/stories/${req.body.userPost}`,
+    });
+
+    const notification = await newNotification.save();
+    const fullNotification = await notification.populate([
+      {
+        path: "from",
+        select: "fullName username avatar",
+      },
+      {
+        path: "to",
+        select: "username fullName avatar",
+      },
+    ]);
+
+    res.status(201).json({ story: newStory, notification: fullNotification });
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }

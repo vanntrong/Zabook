@@ -35,6 +35,13 @@ export interface UserType {
   createdAt: Date;
 }
 
+export interface DifferentUserType {
+  _id: string;
+  fullName: string;
+  avatar: string;
+  username: string;
+}
+
 export interface updateUserFormType {
   avatar?: string | ArrayBuffer | null;
   firstName?: string;
@@ -55,12 +62,7 @@ interface assets {
 
 export interface PostType {
   _id: string;
-  userPost: {
-    _id: string;
-    fullName: string;
-    avatar: string;
-    username: string;
-  };
+  userPost: DifferentUserType;
   assets?: [assets];
   content: string;
   tagsPeople: [
@@ -97,24 +99,14 @@ export interface assetsType {
 export interface commentType {
   _id: string;
   postId: string;
-  userComment: {
-    _id: string;
-    fullName: string;
-    avatar: string;
-    username: string;
-  };
+  userComment: DifferentUserType;
   content: string;
   createdAt: Date;
 }
 
 export interface friendRequestType {
   _id: string;
-  requester: {
-    _id: string;
-    avatar: string;
-    fullName: string;
-    id: string;
-  };
+  requester: DifferentUserType;
   receiver: string;
   status: number;
   createdAt: Date;
@@ -133,12 +125,7 @@ export interface friendType {
 
 export interface storyType {
   _id: string;
-  userPost: {
-    _id: string;
-    avatar: string;
-    username: string;
-    fullName: string;
-  };
+  userPost: DifferentUserType;
   asset: {
     media_type: string;
     url: string;
@@ -155,24 +142,13 @@ export interface conversationType {
   createdAt: Date;
   groupAdmin: string[];
   isGroupChat: true;
-  members: { avatar: string; fullName: string; username: string; _id: string }[];
+  members: DifferentUserType[];
   messageCount: Number;
   updatedAt: Date;
   _id: string;
   lastMessage?: messageType;
   avatar: string;
 }
-
-// {
-//   content: string;
-//   createdAt: Date;
-//   sender: {
-//     avatar: string;
-//     fullName: string;
-//     username: string;
-//     _id: string;
-//   };
-// };
 
 export interface messageType {
   type: 'message' | 'asset' | 'audio' | 'file' | 'notification';
@@ -181,7 +157,19 @@ export interface messageType {
   conversation: string;
   createdAt: string;
   isDeleted: boolean;
-  sender: { _id: string; avatar: string; username: string; fullName: string };
+  sender: DifferentUserType;
   updatedAt: Date;
   _id: string;
+}
+
+export interface notificationType {
+  _id: string;
+  type: 'like' | 'comment' | 'friendRequest' | 'friendAccepted' | 'story';
+  content: string;
+  from: DifferentUserType;
+  to: [DifferentUserType];
+  link: string;
+  isRead: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

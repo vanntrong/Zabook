@@ -2,6 +2,7 @@ import { getProfileOtherApi } from 'api/userApi';
 import withLayout from 'components/layout/Layout';
 import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
 import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
+import ImagePlayer from 'components/player/imagePlayer/ImagePlayer';
 import CreatePost from 'components/post/createPost/CreatePost';
 import Post from 'components/post/Post';
 import UserInfo from 'components/userinfo/UserInfo';
@@ -22,7 +23,8 @@ import './profilepage.scss';
 const ProfilePage = () => {
   const [user, setUser] = useState<null | UserType>(null);
   const [page, setPage] = useState<number>(0);
-  const { posts, setPosts, hasMore, isFetchingPosts } = useFetchPosts(page, user, 30);
+  const limit = 30;
+  const { posts, setPosts, hasMore, isFetchingPosts } = useFetchPosts(page, user, limit);
   const navigate = useNavigate();
 
   const params = useParams();
@@ -34,14 +36,6 @@ const ProfilePage = () => {
     .filter((post, index) => index < maxLengthPhotoPost)
     .map((post) => post.assets!.map((asset) => asset.media_type === 'image' && asset.url))
     .flat(Infinity);
-
-  // const userPhotos = posts
-  //   .map((post) =>
-  //     post.assets!.map(
-  //       (asset, index) => asset.media_type === 'image' && index <= maxLengthPhotoPost && asset.url
-  //     )
-  //   )
-  //   .flat(Infinity);
 
   useEffect(() => {
     const getFriendProfile = async (username: string) => {
@@ -129,7 +123,7 @@ const ProfilePage = () => {
                     {userPhotos.length > 0 ? (
                       userPhotos.map((photo, index) => (
                         <div className="profile-preview-photos-item" key={index}>
-                          {photo && <img src={photo as string} alt="" />}
+                          {photo && <ImagePlayer src={photo as string} />}
                         </div>
                       ))
                     ) : (

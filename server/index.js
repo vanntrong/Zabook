@@ -13,6 +13,7 @@ import searchRoute from "./routes/search.js";
 import storyRoute from "./routes/story.js";
 import tokenRoute from "./routes/token.js";
 import usersRoute from "./routes/users.js";
+import notificationRoute from "./routes/notification.js";
 import { Server } from "socket.io";
 import * as socketController from "./socket/index.js";
 import { instrument } from "@socket.io/admin-ui";
@@ -40,6 +41,7 @@ app.use("/friend", friendRoute);
 app.use("/story", storyRoute);
 app.use("/conversation", conversationRoute);
 app.use("/message", messageRoute);
+app.use("/notification", notificationRoute);
 
 mongoose.connect(process.env.DB_CONNECTION, (err) => {
   if (err) console.log(err);
@@ -60,8 +62,8 @@ const io = new Server(httpServer, {
 
 let onlineUsers = [];
 
-const addNewUser = (userData, socketId) => {
-  !onlineUsers.some((user) => user.userData._id === userData._id) && onlineUsers.push({ userData, socketId });
+const addNewUser = (userId, socketId) => {
+  !onlineUsers.some((user) => user.userId === userId) && onlineUsers.push({ userId, socketId });
 };
 
 const removeUser = (socketId) => {
@@ -69,17 +71,17 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
-  return onlineUsers.find((user) => user.userData._id === userId);
+  return onlineUsers.find((user) => user.userId === userId);
 };
 
 const getSocketId = (userId) => {
-  return onlineUsers.find((user) => user.userData._id === userId)?.socketId;
+  return onlineUsers.find((user) => user.userId === userId)?.socketId;
 };
 
 io.on("connection", (socket) => {
-  socket.on("setup", (userData) => {
-    console.log("User connect: ", userData._id);
-    addNewUser(userData, socket.id);
+  socket.on("setup", (userId) => {
+    console.log("User connect: ", userId);
+    addNewUser(userId, socket.id);
     socket.emit("getOnlineUsers", onlineUsers);
   });
 
@@ -138,6 +140,19 @@ io.on("connection", (socket) => {
     if (socketId) {
       io.to(socketId).emit("get-friend-request", friendRequest);
     }
+  });
+
+  socket.on("send-notification", (notification) => {
+    // const socketId = getSocketId(notification.to._id);
+    // if (socketId) {
+    //   io.to(socketId).emit("get-notification", notification);
+    // }
+    notification.to.forEach((user) => {
+      const socketId = getSocketId(user._id);
+      if (socketId) {
+        io.to(socketId).emit("get-notification", notification);
+      }
+    });
   });
 
   socket.on("disconnect", () => {

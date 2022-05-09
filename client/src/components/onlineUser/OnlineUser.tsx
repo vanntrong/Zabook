@@ -1,10 +1,9 @@
 import { Avatar, Badge } from '@mui/material';
-import React, { FC } from 'react';
 import { styled } from '@mui/material/styles';
-
-import './onlineUser.scss';
-import { UserType } from 'shared/types';
+import { onlineUserType } from 'components/rightbar/Rightbar';
+import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
+import './onlineUser.scss';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -36,7 +35,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 interface Props {
-  user: UserType;
+  user: onlineUserType;
 }
 
 const OnlineUser: FC<Props> = ({ user }) => {

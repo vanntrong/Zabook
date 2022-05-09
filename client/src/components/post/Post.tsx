@@ -16,13 +16,15 @@ import { Link } from 'react-router-dom';
 import { PostType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
+import { socket } from 'utils/socket';
 import './post.scss';
 import PostAssets from './PostAssets';
+import { FacebookShareButton } from 'react-share';
 
 interface PostProps {
   // className?: string;
   post: PostType;
-  setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
+  setPosts?: React.Dispatch<React.SetStateAction<PostType[]>>;
 }
 
 const Post: FC<PostProps> = ({ post, setPosts }) => {
@@ -32,14 +34,21 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
   const [isShowPostModal, setIsShowPostModal] = useState<boolean>(false);
   const [isShowDialog, setIsShowDialog] = useState<boolean>(false);
   const [isShowComments, setIsShowComments] = useState<boolean>(false);
-  const [commentCount, setCommentCount] = useState<number>(post.comments?.length || 0);
+  const [commentCount, setCommentCount] = useState<number>(post.comments.length);
   const [likeCount, setLikeCount] = useState<number>(post.likes?.length || 0);
+  const [isHidePostContent, setIsHidePostContent] = useState<boolean>(post.content.length > 150);
 
   const handleLikePost = async () => {
     setIsLiked((prevState) => !prevState);
-    await likePostApi({ id: post._id, data: currentUser!._id });
+    const { notification } = await likePostApi({
+      id: post._id,
+      data: currentUser!._id,
+    });
+    if (notification) {
+      console.log(notification);
+      socket.emit('send-notification', notification);
+    }
     setLikeCount((prevState) => prevState + (isLiked ? -1 : 1));
-    // dispatch(postAction.likePostRequest({ id: post._id, data: currentUser!._id }));
   };
 
   const handleClickOpenDialog = () => {
@@ -53,7 +62,9 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
   const deletePostHandler = async () => {
     // dispatch(postAction.deletePostRequest(post._id));
     await deletePostApi(post._id);
-    setPosts((prevState) => prevState.filter((item) => item._id !== post._id));
+    if (setPosts) {
+      setPosts((prevState) => prevState.filter((item) => item._id !== post._id));
+    }
     handleCloseDialog();
   };
 
@@ -124,9 +135,10 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
           )}
         </div>
         <div className="post-content">
-          {post?.content.length > 150 ? (
+          {isHidePostContent ? (
             <p className="post-content-text">
-              {post?.content.slice(0, 150)} <span>See more</span>
+              {post?.content.slice(0, 150)}{' '}
+              <span onClick={() => setIsHidePostContent(false)}>See more</span>
             </p>
           ) : (
             <p className="post-content-text">{post?.content}</p>
@@ -152,7 +164,12 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
             </div>
           </div>
           <div className="post-action-item">
-            <FiShare2 />
+            <FacebookShareButton
+              url={`https://www.youtube.com/watch?v=DERd-C4ZbPE`}
+              hashtag="vantrong.dev"
+            >
+              <FiShare2 />
+            </FacebookShareButton>
           </div>
         </div>
         {isShowComments && (
@@ -160,6 +177,7 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
             postId={post._id}
             onDeleteComment={onDeleteComment}
             onAddComment={onAddComment}
+            commentCount={commentCount}
           />
         )}
       </Paper>

@@ -1,14 +1,11 @@
 import React, { FC } from 'react';
 import { BiBadgeCheck, BiGroup, BiNews } from 'react-icons/bi';
-import { BsChatLeft, BsHouseDoor, BsLightningCharge, BsPerson } from 'react-icons/bs';
-import { FiSettings } from 'react-icons/fi';
-import { GoLocation } from 'react-icons/go';
-import { HiOutlineMail } from 'react-icons/hi';
+import { BsChatLeft, BsLightningCharge, BsPerson } from 'react-icons/bs';
+import { FiLogOut, FiSettings } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
-import { FiLogOut } from 'react-icons/fi';
 import './sidebar.scss';
-import { Link } from 'react-router-dom';
 
 interface sidebarProps {
   className?: string;
@@ -56,27 +53,6 @@ const Sidebar: FC<sidebarProps> = ({ className }) => {
           </div>
           <span>Author Profile</span>
         </Link>
-      </div>
-      <div className="sidebar-list">
-        <h4 className="sidebar-title">More Pages</h4>
-        <div className="sidebar-item">
-          <div className="sidebar-item-icon sidebar-icon-2">
-            <HiOutlineMail />
-          </div>
-          <span>Email Box</span>
-        </div>
-        <div className="sidebar-item">
-          <div className="sidebar-item-icon sidebar-icon-2">
-            <BsHouseDoor />
-          </div>
-          <span>Near Hotel</span>
-        </div>
-        <div className="sidebar-item">
-          <div className="sidebar-item-icon sidebar-icon-2">
-            <GoLocation />
-          </div>
-          <span>Latest Event</span>
-        </div>
       </div>
       <div className="sidebar-list">
         <h4 className="sidebar-title">Account</h4>

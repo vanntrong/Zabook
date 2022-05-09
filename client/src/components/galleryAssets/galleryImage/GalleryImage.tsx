@@ -1,3 +1,4 @@
+import ImagePlayer from 'components/player/imagePlayer/ImagePlayer';
 import React, { FC } from 'react';
 import './galleryImage.scss';
 
@@ -12,7 +13,7 @@ const GalleryImage: FC<GalleryImageProps> = ({ assets }) => {
         (asset, index) =>
           asset && (
             <div className="gallery-item" key={index}>
-              <img src={asset.url} alt="" />
+              <ImagePlayer src={asset.url} />
             </div>
           )
       )}

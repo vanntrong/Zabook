@@ -1,7 +1,10 @@
-import { commentType } from 'shared/types';
+import { commentType, notificationType } from 'shared/types';
 import axiosClient from './index';
 
-export const createCommentApi = async (id: string, data: any): Promise<commentType> =>
+export const createCommentApi = async (
+  id: string,
+  data: any
+): Promise<{ comment: commentType; notification: notificationType }> =>
   axiosClient.post(`posts/${id}/comment`, data);
 
 export const updateCommentApi = async (

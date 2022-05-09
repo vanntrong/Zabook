@@ -19,7 +19,7 @@ interface InputEditPostModalProps {
   // currentUser: UserType | null;
   setIsShowPostModal: React.Dispatch<React.SetStateAction<boolean>>;
   post: PostType;
-  setPosts: React.Dispatch<React.SetStateAction<PostType[]>>;
+  setPosts?: React.Dispatch<React.SetStateAction<PostType[]>>;
 }
 
 const InputEditPostModal: FC<InputEditPostModalProps> = ({
@@ -56,7 +56,9 @@ const InputEditPostModal: FC<InputEditPostModalProps> = ({
     }
     // dispatch(postAction.updatePostRequest({ data, id: post._id }));
     const res = await updatePostApi({ data, id: post._id });
-    setPosts((prev) => prev.map((item) => (item._id === post._id ? res : item)));
+    if (setPosts) {
+      setPosts((prev) => prev.map((item) => (item._id === post._id ? res : item)));
+    }
     setPostContent('');
     const timer = setTimeout(() => {
       setIsSubmit(false);

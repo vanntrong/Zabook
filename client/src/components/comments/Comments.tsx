@@ -7,18 +7,20 @@ import {
 import SkeletonLoading from 'components/loadings/skeletonLoading/SkeletonLoading';
 import React, { FC, useEffect, useState } from 'react';
 import { commentType } from 'shared/types';
+import { socket } from 'utils/socket';
 import Comment from './comment/Comment';
 import './comments.scss';
 import CreateComment from './createComment/CreateComment';
 
 interface CommentsProps {
   postId: string;
+  commentCount: number;
   onDeleteComment: () => void;
   onAddComment: () => void;
 }
 
 export const Comments: FC<CommentsProps> = React.memo(
-  ({ postId, onDeleteComment, onAddComment }) => {
+  ({ postId, onDeleteComment, onAddComment, commentCount }) => {
     const [comments, setComments] = useState<commentType[]>([]);
     const [limit, setLimit] = useState<number>(2);
     const [isLoadingComment, setIsLoadingComment] = useState<boolean>(false);
@@ -41,8 +43,10 @@ export const Comments: FC<CommentsProps> = React.memo(
     }, [postId, limit, onAddComment]);
 
     const handleSubmit = async (data: any) => {
-      const res = await createCommentApi(postId, data);
-      setComments([...comments, res]);
+      const { comment, notification } = await createCommentApi(postId, data);
+      setComments([...comments, comment]);
+      console.log(notification);
+      socket.emit('send-notification', notification);
 
       // call this function to update comment count
       onAddComment();
@@ -84,9 +88,11 @@ export const Comments: FC<CommentsProps> = React.memo(
             />
           ))}
         {!isLoadingComment && comments.length === 0 && <p className="no-comment">No comments</p>}
-        <p className="view-more-comment" onClick={loadMore}>
-          View more comments
-        </p>
+        {comments.length < commentCount && (
+          <p className="view-more-comment" onClick={loadMore}>
+            View more comments
+          </p>
+        )}
       </div>
     );
   }

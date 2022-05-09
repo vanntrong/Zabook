@@ -71,14 +71,15 @@ export async function createGroupConversation(req, res) {
       groupAdmin: req.user.id,
     });
 
-    const message = await Message.create({
+    const newMessage = new Message({
       type: "notification",
       content: "created a group chat",
       conversation: conversation._id,
       sender: req.user.id,
     });
 
-    const fullMessage = await Message.findById(message._id).populate({
+    const message = await newMessage.save();
+    const fullMessage = await message.populate({
       path: "sender",
       select: "fullName username avatar",
     });
@@ -118,14 +119,27 @@ export async function renameGroupConversation(req, res) {
     if (!updatedConversation) {
       return errorController.errorHandler(res, "You are not a member of this group", 400);
     }
-    const message = await Message.create({
+    // const message = await Message.create({
+    //   type: "notification",
+    //   content: `renamed the group chat to ${updatedConversation.chatName}`,
+    //   conversation: updatedConversation._id,
+    //   sender: req.user.id,
+    // });
+
+    // const fullMessage = await Message.findById(message._id).populate({
+    //   path: "sender",
+    //   select: "fullName username avatar",
+    // });
+
+    const newMessage = new Message({
       type: "notification",
       content: `renamed the group chat to ${updatedConversation.chatName}`,
       conversation: updatedConversation._id,
       sender: req.user.id,
     });
 
-    const fullMessage = await Message.findById(message._id).populate({
+    const message = await newMessage.save();
+    const fullMessage = await message.populate({
       path: "sender",
       select: "fullName username avatar",
     });
@@ -161,14 +175,27 @@ export async function addUserToGroupConversation(req, res) {
       return errorController.errorHandler(res, "You are not a member of this group", 400);
     }
 
-    const message = await Message.create({
+    // const message = await Message.create({
+    //   type: "notification",
+    //   content: `added ${req.body.members.length > 1 ? "users" : "a user"} to the group chat`,
+    //   conversation: updatedConversation._id,
+    //   sender: req.user.id,
+    // });
+
+    // const fullMessage = await Message.findById(message._id).populate({
+    //   path: "sender",
+    //   select: "fullName username avatar",
+    // });
+
+    const newMessage = new Message({
       type: "notification",
       content: `added ${req.body.members.length > 1 ? "users" : "a user"} to the group chat`,
       conversation: updatedConversation._id,
       sender: req.user.id,
     });
 
-    const fullMessage = await Message.findById(message._id).populate({
+    const message = await newMessage.save();
+    const fullMessage = await message.populate({
       path: "sender",
       select: "fullName username avatar",
     });
@@ -212,7 +239,22 @@ export async function removeUserFromGroupConversation(req, res) {
 
       const userDeleted = await User.findById(req.body.memberId);
 
-      const message = await Message.create({
+      // const message = await Message.create({
+      //   type: "notification",
+      //   content:
+      //     userDeleted._id.toString() !== req.user.id
+      //       ? `removed ${userDeleted.fullName} from the group chat`
+      //       : `left the group chat`,
+      //   conversation: updatedConversation._id,
+      //   sender: req.user.id,
+      // });
+
+      // const fullMessage = await Message.findById(message._id).populate({
+      //   path: "sender",
+      //   select: "fullName username avatar",
+      // });
+
+      const newMessage = new Message({
         type: "notification",
         content:
           userDeleted._id.toString() !== req.user.id
@@ -222,7 +264,8 @@ export async function removeUserFromGroupConversation(req, res) {
         sender: req.user.id,
       });
 
-      const fullMessage = await Message.findById(message._id).populate({
+      const message = await newMessage.save();
+      const fullMessage = await message.populate({
         path: "sender",
         select: "fullName username avatar",
       });
@@ -261,14 +304,27 @@ export async function setGroupConversationAvatar(req, res) {
       return errorController.errorHandler(res, "You are not a member of this group", 400);
     }
 
-    const message = await Message.create({
+    // const message = await Message.create({
+    //   type: "notification",
+    //   content: `changed the group avatar`,
+    //   conversation: updatedConversation._id,
+    //   sender: req.user.id,
+    // });
+
+    // const fullMessage = await Message.findById(message._id).populate({
+    //   path: "sender",
+    //   select: "fullName username avatar",
+    // });
+
+    const newMessage = new Message({
       type: "notification",
       content: `changed the group avatar`,
       conversation: updatedConversation._id,
       sender: req.user.id,
     });
 
-    const fullMessage = await Message.findById(message._id).populate({
+    const message = await newMessage.save();
+    const fullMessage = await message.populate({
       path: "sender",
       select: "fullName username avatar",
     });

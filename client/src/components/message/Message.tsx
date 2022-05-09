@@ -8,6 +8,7 @@ import './message.scss';
 import { deleteMessageApi } from 'api/messageApi';
 import { toast } from 'react-toastify';
 import { Player } from 'react-tuby';
+import ImagePlayer from 'components/player/imagePlayer/ImagePlayer';
 
 interface MessageProps {
   isRightMessage: boolean;
@@ -86,7 +87,7 @@ const Message: FC<MessageProps> = ({ isRightMessage, message, setMessages }) => 
             {message.asset &&
               !message.isDeleted &&
               (message.asset.media_type === 'image' ? (
-                <img src={message.asset.url} alt="" />
+                <ImagePlayer src={message.asset.url} />
               ) : (
                 <Player src={message.asset.url} keyboardShortcut={false} />
               ))}

@@ -172,6 +172,7 @@ const MessagesPage = () => {
     });
     navigate(`/messages/${newConversation._id}`);
     setIsLoading(false);
+    handleCloseCreateGroupChatModal();
   };
 
   const handleCloseCreateGroupChatModal = () => {
