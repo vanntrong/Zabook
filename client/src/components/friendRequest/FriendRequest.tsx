@@ -3,6 +3,7 @@ import { acceptFriendRequestApi, declineFriendRequestApi } from 'api/friendReque
 import moment from 'moment';
 import React, { FC, useState } from 'react';
 import { friendRequestType } from 'shared/types';
+import { socket } from 'utils/socket';
 
 import './friendRequest.scss';
 
@@ -16,9 +17,10 @@ const FriendRequest: FC<FriendRequestProps> = ({ friendRequest, setFriendsReques
   const [isRemove, setIsRemove] = useState(false);
 
   const confirmFriendRequestHandler = async () => {
-    const res = await acceptFriendRequestApi(friendRequest._id);
-    if (res) {
+    const { message, notification } = await acceptFriendRequestApi(friendRequest._id);
+    if (message) {
       setIsAccept(true);
+      socket.emit('send-notification', notification);
       setTimeout(() => {
         setFriendsRequest((prevState) => prevState.filter((fr) => fr._id !== friendRequest._id));
       }, 1000);

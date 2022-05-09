@@ -20,6 +20,7 @@ const postSchema = mongoose.Schema(
     tagsPeople: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
     shares: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment", default: [] }],
   },
   { timestamps: true },
   {
@@ -28,10 +29,10 @@ const postSchema = mongoose.Schema(
   }
 );
 
-postSchema.virtual("comments", {
-  ref: "Comment",
-  localField: "_id",
-  foreignField: "postId",
-});
+// postSchema.virtual("comments", {
+//   ref: "Comment",
+//   localField: "_id",
+//   foreignField: "postId",
+// });
 
 export default mongoose.model("Post", postSchema);

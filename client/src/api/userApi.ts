@@ -47,3 +47,6 @@ export const getFriendListApi = (id: string, params: { page: number }): Promise<
 
 export const deleteFriendApi = (payload: { id: string; friendId: string }): Promise<[string]> =>
   axiosClient.delete(`users/${payload.id}/friends/${payload.friendId}`);
+
+export const getOnlineUsersApi = (onlineList: string[]): Promise<UserType[]> =>
+  axiosClient.post('users/online', { onlineList });

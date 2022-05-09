@@ -23,6 +23,7 @@ const NotFoundPage = lazy(() => import('pages/404/NotFoundPage'));
 const CreateStoryPage = lazy(() => import('pages/stories/create/CreateStoryPage'));
 const StoriesPage = lazy(() => import('pages/stories/StoriesPage'));
 const MessagesPage = lazy(() => import('pages/messages/MessagesPage'));
+const PostViewPage = lazy(() => import('pages/postViewPage/PostViewPage'));
 
 function App() {
   const user = useAppSelector(selectCurrentUser);
@@ -48,15 +49,12 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      socket.emit('setup', user);
+      socket.emit('setup', user._id);
     }
-  }, [user]);
-
-  useEffect(() => {
     socket.on('getOnlineUsers', (data) => {
       dispatch(userAction.setOnlineUsers(data));
     });
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -162,14 +160,7 @@ function App() {
             </Route>
 
             {/* messages route */}
-            <Route
-              path="/groups"
-              element={
-                <PrivateRoute>
-                  <p>groups</p>
-                </PrivateRoute>
-              }
-            />
+
             <Route
               path="/settings"
               element={
@@ -196,6 +187,15 @@ function App() {
                 }
               />
             </Route>
+
+            <Route
+              path="/posts/:postId"
+              element={
+                <PrivateRoute>
+                  <PostViewPage />
+                </PrivateRoute>
+              }
+            />
             <Route path="/404" element={<NotFoundPage />} />
 
             <Route path="*" element={<Navigate to={'/404'} />} />

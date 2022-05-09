@@ -1,7 +1,8 @@
 import { Avatar } from '@mui/material';
 import Backdrop from 'components/backdrop/Backdrop';
 import SearchResultModal from 'components/modal/searchResultModal/SearchResultModal';
-import React, { FC, useState } from 'react';
+import Notifications from 'components/notifications/Notifications';
+import React, { FC, useEffect, useState } from 'react';
 import { AiOutlineClose, AiOutlineHome, AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import { BiMessage, BiMessageRoundedDots } from 'react-icons/bi';
 import { BsCameraVideo, BsLightningCharge, BsPerson } from 'react-icons/bs';
@@ -9,9 +10,13 @@ import { FiSettings } from 'react-icons/fi';
 // import { AiOutlineClose } from "react-icons/ai";
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { Link, NavLink } from 'react-router-dom';
+import { notificationType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import './navbar.scss';
+import { getAllNotificationApi } from '../../api/notificationApi';
+import { toast } from 'react-toastify';
+import { socket } from 'utils/socket';
 
 interface NavbarProps {
   className?: string;
@@ -22,6 +27,9 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
   const [isShowSearchBox, setIsShowSearchBox] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
   const [isMobileSideBarShow, setIsMobileSideBarShow] = useState<boolean>(false);
+  const [isShowNotifications, setIsShowNotifications] = useState<boolean>(false);
+  const [notifications, setNotifications] = useState<notificationType[]>([]);
+  const [unSeenNotifications, setUnSeenNotifications] = useState<notificationType[]>([]);
 
   const clickShowMenuMobileHandler = () => {
     if (!isMobileSideBarShow) {
@@ -33,6 +41,28 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
     }
     setIsMobileSideBarShow(!isMobileSideBarShow);
   };
+
+  useEffect(() => {
+    const getAllNotification = async () => {
+      try {
+        const res = await getAllNotificationApi();
+        setNotifications(res);
+        setUnSeenNotifications(res.filter((notify) => !notify.isRead));
+      } catch (error) {
+        toast.error(error.response.data);
+      }
+    };
+    getAllNotification();
+  }, []);
+
+  useEffect(() => {
+    socket.on('get-notification', (notification) => {
+      setNotifications((prev) => [notification, ...prev]);
+      if (!notification.isRead) {
+        setUnSeenNotifications((prev) => [notification, ...prev]);
+      }
+    });
+  }, []);
 
   return (
     <div className="navbar">
@@ -103,8 +133,24 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
       </div>
 
       <div className="navbar-navigate-desktop">
-        <div className="navbar-navigate-item">
+        <div
+          className="navbar-navigate-item"
+          style={{ position: 'relative' }}
+          onClick={() => setIsShowNotifications((prev) => !prev)}
+        >
           <IoNotificationsOutline className="navbar-navigate-item-icon" />
+          {unSeenNotifications.length > 0 && (
+            <div className="notification-count">
+              <span>{unSeenNotifications.length}</span>
+            </div>
+          )}
+          {isShowNotifications && (
+            <Notifications
+              notifications={notifications}
+              setNotifications={setNotifications}
+              unSeenNotifications={unSeenNotifications}
+            />
+          )}
         </div>
         <Link to="/messages" className="navbar-navigate-item">
           <BiMessage className="navbar-navigate-item-icon" />

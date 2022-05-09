@@ -4,15 +4,15 @@ import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading
 import Navbar from 'components/navbar/Navbar';
 import React, { useEffect, useState } from 'react';
 import { IoMdPhotos } from 'react-icons/io';
-import { IoTextSharp } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from 'store/hooks';
-import { selectCurrentUser } from 'store/slice/userSlice';
-import './createStoryPage.scss';
+import { toast } from 'react-toastify';
 import { Player } from 'react-tuby';
 import 'react-tuby/css/main.css';
+import { useAppSelector } from 'store/hooks';
+import { selectCurrentUser } from 'store/slice/userSlice';
+import { socket } from 'utils/socket';
 import { convertFileSize } from 'utils/upload';
-import { toast } from 'react-toastify';
+import './createStoryPage.scss';
 export interface formSubmitStoryType {
   userPost: string;
   asset?: { media_type: string; url: string };
@@ -72,11 +72,12 @@ const CreateStoryPage = () => {
     // if (content.trim().length > 0) {
     //   data.content = content;
     // }
-    const res = await createStoryApi(data);
+    const { story, notification } = await createStoryApi(data);
     setIsPending(false);
     setFile(null);
     setFilePreview(null);
-    if (res) {
+    if (story) {
+      socket.emit('send-notification', notification);
       navigate('/');
     }
   };

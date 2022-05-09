@@ -1,0 +1,82 @@
+@import '../../shared/variable.scss';
+
+.notifications {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9999;
+  transform: translateY(35px);
+  background-color: white;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 8px;
+  padding-bottom: 15px;
+  // width: 100%;
+  max-width: 300px;
+
+  .notifications-title {
+    color: $black-color;
+    font-size: 24px;
+    font-weight: 600;
+    padding: 0 15px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+
+  .notifications-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0 15px;
+    padding: 0 15px;
+    margin-bottom: 10px;
+    button {
+      font-size: 16;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 30px;
+      cursor: pointer;
+      background-color: $border-color;
+      color: $black-color;
+      &:hover {
+        background-color: rgba($color: $blue-500, $alpha: 0.5);
+      }
+      &.active {
+        color: $blue-500;
+        background-color: $blue-400;
+      }
+    }
+  }
+
+  .notifications-title-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 20px;
+    padding: 0 15px;
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: $black-color;
+    }
+    button {
+      width: max-content;
+      padding: 10px;
+      border-radius: 30px;
+      cursor: pointer;
+      background-color: rgba($color: $blue-500, $alpha: 0.3);
+      color: $blue-500;
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: rgba($color: $blue-500, $alpha: 0.5);
+      }
+    }
+  }
+
+  .notifications-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 7.5px;
+  }
+}

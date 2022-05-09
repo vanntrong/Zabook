@@ -183,16 +183,16 @@ export async function getFriendPostHandler(req, res) {
         path: "posts",
         populate: [
           {
-            path: "comments",
-            select: "_id",
-          },
-          {
             path: "userPost",
             select: "fullName username avatar",
           },
           {
             path: "tagsPeople",
             select: "_id fullName username",
+          },
+          {
+            path: "comments",
+            select: "_id",
           },
         ],
         options: {
@@ -207,5 +207,17 @@ export async function getFriendPostHandler(req, res) {
     res.status(200).json(posts);
   } catch (error) {
     errorController.serverErrorHandler(error, res);
+  }
+}
+
+export async function getOnlineHandler(req, res) {
+  try {
+    if (!req.body.onlineList) {
+      return errorController.errorHandler(res, "Not found", 404);
+    }
+    const users = await User.find({ _id: { $in: req.body.onlineList } }).select("username fullName avatar");
+    res.status(200).json(users);
+  } catch (error) {
+    return errorController.serverErrorHandler(error, res);
   }
 }

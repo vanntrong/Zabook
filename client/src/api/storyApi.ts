@@ -1,8 +1,10 @@
 import axiosClient from 'api';
 import { formSubmitStoryType } from 'pages/stories/create/CreateStoryPage';
-import { storyType } from 'shared/types';
+import { notificationType, storyType } from 'shared/types';
 
-export const createStoryApi = (data: formSubmitStoryType) => axiosClient.post('story', data);
+export const createStoryApi = (
+  data: formSubmitStoryType
+): Promise<{ story: storyType; notification: notificationType }> => axiosClient.post('story', data);
 
 export const getStoriesApi = (params: { page: number }): Promise<storyType[]> =>
   axiosClient.get('story/all', { params });

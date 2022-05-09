@@ -5,7 +5,7 @@ import { LoginFormData, updateUserFormType, UserType } from '../../shared/types'
 
 export interface userState {
   currentUser: UserType | null;
-  onlineUsers: { userData: UserType; socketId: string }[];
+  onlineUsers: { userId: string; socketId: string }[];
   logging: boolean;
   error: null | string;
 }
@@ -89,7 +89,11 @@ export const userSlice = createSlice({
       state.error = action.payload;
     },
 
-    setOnlineUsers: (state, action: PayloadAction<{ userData: UserType; socketId: string }[]>) => {
+    addFriend(state, action: PayloadAction<string>) {
+      state.currentUser?.friends.push(action.payload);
+    },
+
+    setOnlineUsers: (state, action: PayloadAction<{ userId: string; socketId: string }[]>) => {
       state.onlineUsers = action.payload;
     },
   },
