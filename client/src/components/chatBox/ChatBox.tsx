@@ -107,7 +107,9 @@ const ChatBox: FC<ChatBoxProps> = ({
       return;
     }
     if (conversationId) {
-      const res = await createMessageApi({ content: messageContent, conversationId });
+      const textData = messageContent;
+      setMessageContent('');
+      const res = await createMessageApi({ content: textData, conversationId });
       socket.emit('newMessage', res, currentConversation);
       setMessages((prev) => [res, ...prev]);
       setConversations((prev) =>
@@ -117,7 +119,6 @@ const ChatBox: FC<ChatBoxProps> = ({
         prev.sort((a, b) => (a._id === res.conversation ? -1 : b._id === res.conversation ? 1 : 0))
       );
     }
-    setMessageContent('');
   };
 
   const handleChangeInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {

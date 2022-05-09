@@ -5,12 +5,11 @@
   background-color: $bg-gray-light;
   display: flex;
   padding-top: calc(90px + 5px);
+  flex-direction: column;
 
   .viewStoryPage-sidebar {
-    flex: 1;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 16px;
+    // flex: 1;
+    padding: 20px 16px;
     overflow-y: auto;
     flex-shrink: 0;
     background-color: white;
@@ -51,6 +50,7 @@
               color: $blue-500;
             }
             .create-story-title {
+              display: none;
               font-size: 16px;
               color: $text-gray-900;
               font-weight: 600;
@@ -69,8 +69,8 @@
       }
       .viewStoryPage-slide-list {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        // justify-content: center;
         gap: 6px;
         .viewStoryPage-slide-item {
           display: flex;
@@ -98,6 +98,7 @@
           }
 
           .viewStoryPage-slide-item-info {
+            display: none;
             h3 {
               font-size: 16px;
               color: $text-gray-900;
@@ -122,5 +123,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+}
+
+@media screen and (min-width: $ipad-screen) {
+  .viewStoryPage {
+    flex-direction: row;
+    justify-content: space-between;
+
+    .viewStoryPage-sidebar {
+      flex-shrink: 0;
+
+      .viewStoryPage-sidebar-top
+        .viewStoryPage-sidebar-create
+        .create-story
+        .create-story-wrapper
+        .create-story-title {
+        display: block;
+      }
+      .viewStoryPage-sidebar-bottom .viewStoryPage-slide-list {
+        flex-direction: column;
+
+        .viewStoryPage-slide-item .viewStoryPage-slide-item-info {
+          display: block;
+          width: max-content;
+        }
+      }
+    }
   }
 }

@@ -23,7 +23,7 @@ export async function createFriendRequestHandler(req, res) {
     const friendRequest = await FriendRequest.create(req.body);
     const fullFriendRequest = await FriendRequest.findById(friendRequest._id).populate({
       path: "requester",
-      select: "fullName avatar fullName",
+      select: "fullName avatar fullName username",
     });
 
     const newNotification = new Notification({

@@ -31,24 +31,24 @@ const Sidebar: FC<sidebarProps> = ({ className }) => {
           </div>
           <span>Newsfeed</span>
         </Link>
-        <Link to="/badges" className="sidebar-item">
+        {/* <Link to="/badges" className="sidebar-item">
           <div className="sidebar-item-icon bg-icon-2">
             <BiBadgeCheck />
           </div>
           <span>Badges</span>
-        </Link>
+        </Link> */}
         <Link to="/stories" className="sidebar-item">
           <div className="sidebar-item-icon bg-icon-3">
             <BsLightningCharge />
           </div>
           <span>Explore Stories</span>
         </Link>
-        <Link to="/groups" className="sidebar-item">
+        {/* <Link to="/groups" className="sidebar-item">
           <div className="sidebar-item-icon bg-icon-4">
             <BiGroup />
           </div>
           <span>Popular Groups</span>
-        </Link>
+        </Link> */}
         <Link to={`/${currentUser?.username}`} className="sidebar-item">
           <div className="sidebar-item-icon bg-icon-5">
             <BsPerson />
