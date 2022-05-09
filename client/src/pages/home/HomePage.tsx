@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { friendRequestType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import { socket } from 'utils/socket';
 import './home.scss';
@@ -13,6 +14,7 @@ import './home.scss';
 const HomePage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [friendsRequest, setFriendsRequest] = useState<friendRequestType[]>([]);
+  const isDarkMode = useAppSelector(selectTheme);
   useEffect(() => {
     document.title = 'Sociala.';
   }, []);
@@ -33,7 +35,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="homePage">
+      <div className={`homePage ${isDarkMode && 'dark'}`}>
         <div className="mainWrapper">
           <div className="home-main">
             <div className="home-main-left">

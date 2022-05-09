@@ -3,12 +3,14 @@ import { Action, combineReducers, configureStore, ThunkAction } from '@reduxjs/t
 import counterReducer from '../features/counter/counterSlice';
 import rootSaga from './sagas';
 import userReducer from './slice/userSlice';
+import themeReducer from './slice/themeSlice';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
   counter: counterReducer,
   user: userReducer,
+  theme: themeReducer,
 });
 
 export const store = configureStore({

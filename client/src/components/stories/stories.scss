@@ -53,4 +53,10 @@
       }
     }
   }
+
+  &.dark {
+    .create-story .create-story-wrapper {
+      background-color: $bg-dark-mode;
+    }
+  }
 }

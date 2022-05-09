@@ -53,6 +53,14 @@
     //   }
     // }
   }
+
+  &.dark {
+    background-color: $bg-dark-mode;
+    box-shadow: none;
+    .rightBar-list .rightBar-title {
+      color: white;
+    }
+  }
 }
 
 @media screen and (min-width: 1605px) {

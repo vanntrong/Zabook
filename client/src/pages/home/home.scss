@@ -2,6 +2,20 @@
 
 .homePage {
   background-color: $bg-greylight;
+
+  &.dark {
+    background-color: $bg-dark-mode-2;
+    .home-main .home-main-right .home-main-right-list {
+      background-color: $bg-dark-mode;
+      box-shadow: none;
+    }
+    .home-main .home-main-right .home-main-right-list .home-main-right-title h3 {
+      color: white;
+    }
+    .home-main .home-main-right .home-main-right-list .home-main-right-content p {
+      color: white;
+    }
+  }
 }
 .home-main {
   background-color: inherit;

@@ -61,6 +61,7 @@
         font-size: 14px;
         font-weight: 500;
         color: $text-gray-800;
+        letter-spacing: 0.5px;
       }
 
       .sidebar-item-icon {
@@ -95,6 +96,16 @@
         &.sidebar-icon-3 {
           color: $text-gray-800;
         }
+      }
+    }
+  }
+
+  &.dark {
+    background-color: $bg-dark-mode;
+    .sidebar-list {
+      background-color: $bg-dark-mode;
+      .sidebar-item span {
+        color: white;
       }
     }
   }

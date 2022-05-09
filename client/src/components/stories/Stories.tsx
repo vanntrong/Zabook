@@ -2,6 +2,8 @@ import React, { FC } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { storyType } from 'shared/types';
+import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import './stories.scss';
 import Story from './story/Story';
 
@@ -10,8 +12,9 @@ interface StoriesProps {
 }
 
 const Stories: FC<StoriesProps> = ({ stories }) => {
+  const isDarkMode = useAppSelector(selectTheme);
   return (
-    <div className="stories">
+    <div className={`stories ${isDarkMode && 'dark'}`}>
       <Link className="create-story" to="/stories/create">
         <div className="create-story-wrapper">
           <div className="create-story__button">

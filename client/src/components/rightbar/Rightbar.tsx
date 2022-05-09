@@ -2,6 +2,7 @@ import { getOnlineUsersApi } from 'api/userApi';
 import OnlineUser from 'components/onlineUser/OnlineUser';
 import React, { FC, useEffect } from 'react';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser, selectOnlineUsers } from 'store/slice/userSlice';
 import './rightbar.scss';
 
@@ -21,6 +22,7 @@ const RightBar: FC<RightbarProps> = ({ className }) => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [onlineList, setOnlineList] = React.useState<string[]>([]);
   const [onlineUsers, setOnlineUsers] = React.useState<onlineUserType[]>([]);
+  const isDarkMode = useAppSelector(selectTheme);
 
   useEffect(() => {
     setOnlineList(userOnlineList.map((user) => user.userId));
@@ -34,7 +36,7 @@ const RightBar: FC<RightbarProps> = ({ className }) => {
     getUserOnlineList();
   }, [onlineList]);
   return (
-    <div className="rightBar">
+    <div className={`rightBar ${isDarkMode && 'dark'}`}>
       <div className="rightBar-list">
         <h4 className="rightBar-title">CONTACTS</h4>
         {onlineUsers.length > 0 &&

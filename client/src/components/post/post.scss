@@ -195,6 +195,29 @@
       }
     }
   }
+
+  &.dark {
+    background-color: $bg-dark-mode;
+
+    .post-top .post-top-info .post-top-user-name {
+      color: white;
+      a {
+        color: white;
+      }
+    }
+
+    .post-content .post-content-text {
+      color: white;
+    }
+
+    .post-action .post-action-item span {
+      color: white;
+    }
+
+    .post-action .post-action-item {
+      color: white;
+    }
+  }
 }
 .cancel-delete,
 .confirm-delete {

@@ -17,6 +17,7 @@ import './navbar.scss';
 import { getAllNotificationApi } from '../../api/notificationApi';
 import { toast } from 'react-toastify';
 import { socket } from 'utils/socket';
+import { selectTheme } from 'store/slice/themeSlice';
 
 interface NavbarProps {
   className?: string;
@@ -30,6 +31,7 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
   const [isShowNotifications, setIsShowNotifications] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<notificationType[]>([]);
   const [unSeenNotifications, setUnSeenNotifications] = useState<notificationType[]>([]);
+  const isDarkMode = useAppSelector(selectTheme);
 
   const clickShowMenuMobileHandler = () => {
     if (!isMobileSideBarShow) {
@@ -65,7 +67,7 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
   }, []);
 
   return (
-    <div className="navbar">
+    <div className={`navbar ${isDarkMode && 'dark'}`}>
       <Link to="/" className="logo">
         <h2>Sociala.</h2>
       </Link>
@@ -155,10 +157,12 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
         <Link to="/messages" className="navbar-navigate-item">
           <BiMessage className="navbar-navigate-item-icon" />
         </Link>
-        <div className="navbar-navigate-item navbar-navigate-item-setting">
-          <FiSettings className="navbar-navigate-item-icon icon-rotate" />
-          <div className="setting-app-box"></div>
-        </div>
+        <Link to="/settings">
+          <div className="navbar-navigate-item navbar-navigate-item-setting">
+            <FiSettings className="navbar-navigate-item-icon icon-rotate" />
+            <div className="setting-app-box"></div>
+          </div>
+        </Link>
         <Link to={`/${currentUser?.username}`} className="navbar-user">
           <Avatar src={currentUser?.avatar} className="navbar-user-avatar" />
         </Link>
