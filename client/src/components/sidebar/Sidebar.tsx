@@ -22,7 +22,7 @@ const Sidebar: FC<sidebarProps> = ({ className }) => {
   };
 
   return (
-    <div className={`sidebar ${isDarkMode && 'dark'}`}>
+    <div className={`sidebar ${isDarkMode ? 'dark' : ''}`}>
       <div className="sidebar-list">
         <h4 className="sidebar-title">New Feeds</h4>
         <Link to="/" className="sidebar-item">

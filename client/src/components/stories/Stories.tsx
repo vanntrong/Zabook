@@ -14,7 +14,7 @@ interface StoriesProps {
 const Stories: FC<StoriesProps> = ({ stories }) => {
   const isDarkMode = useAppSelector(selectTheme);
   return (
-    <div className={`stories ${isDarkMode && 'dark'}`}>
+    <div className={`stories ${isDarkMode ? 'dark' : ''}`}>
       <Link className="create-story" to="/stories/create">
         <div className="create-story-wrapper">
           <div className="create-story__button">

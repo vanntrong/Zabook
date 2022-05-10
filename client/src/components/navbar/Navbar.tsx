@@ -18,6 +18,7 @@ import { getAllNotificationApi } from '../../api/notificationApi';
 import { toast } from 'react-toastify';
 import { socket } from 'utils/socket';
 import { selectTheme } from 'store/slice/themeSlice';
+import { IoArrowBackSharp } from 'react-icons/io5';
 
 interface NavbarProps {
   className?: string;
@@ -31,6 +32,7 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
   const [isShowNotifications, setIsShowNotifications] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<notificationType[]>([]);
   const [unSeenNotifications, setUnSeenNotifications] = useState<notificationType[]>([]);
+  const [isShowSearchBoxMobile, setIsShowSearchBoxMobile] = useState<boolean>(false);
   const isDarkMode = useAppSelector(selectTheme);
 
   const clickShowMenuMobileHandler = () => {
@@ -66,25 +68,87 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
     });
   }, []);
 
+  console.log(isShowSearchBox);
+
   return (
-    <div className={`navbar ${isDarkMode && 'dark'}`}>
-      <Link to="/" className="logo">
-        <h2>Sociala.</h2>
-      </Link>
+    <div className={`navbar ${isDarkMode ? 'dark' : ''}`}>
+      {!isShowSearchBoxMobile && (
+        <Link to="/" className="logo">
+          <h2>Sociala.</h2>
+        </Link>
+      )}
       <div className="navbar-navigate">
-        <div className="navbar-navigate-item">
-          <BiMessageRoundedDots className="navbar-navigate-item-icon" />
-        </div>
-        <div className="navbar-navigate-item">
-          <BsCameraVideo className="navbar-navigate-item-icon" />
-        </div>
-        <div className="navbar-navigate-item">
-          <AiOutlineSearch className="navbar-navigate-item-icon" />
-        </div>
-        <div className="navbar-menu" onClick={clickShowMenuMobileHandler}>
-          {!isMobileSideBarShow && <AiOutlineMenu />}
-          {isMobileSideBarShow && <AiOutlineClose />}
-        </div>
+        {!isShowSearchBoxMobile && (
+          <div
+            className="navbar-navigate-item"
+            onClick={() => {
+              setIsShowSearchBox(!isShowSearchBox);
+              setIsShowSearchBoxMobile(true);
+            }}
+          >
+            <AiOutlineSearch className="navbar-navigate-item-icon" />
+          </div>
+        )}
+
+        {isShowSearchBox && (
+          <SearchResultModal handleClose={setIsShowSearchBox} searchText={searchText} />
+        )}
+
+        {isShowSearchBoxMobile && (
+          <div className="input-search-mobile">
+            <div
+              className="input-search-mobile-icon"
+              onClick={() => {
+                setIsShowSearchBox(!isShowSearchBox);
+                setIsShowSearchBoxMobile(false);
+              }}
+            >
+              <IoArrowBackSharp />
+            </div>
+            <input
+              type="text"
+              autoFocus
+              placeholder="Start typing to search..."
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </div>
+        )}
+
+        {!isShowSearchBoxMobile && (
+          <Link to="/messages">
+            <div className="navbar-navigate-item">
+              <BiMessageRoundedDots className="navbar-navigate-item-icon" />
+            </div>
+          </Link>
+        )}
+        {!isShowSearchBoxMobile && (
+          <div
+            className="navbar-navigate-item"
+            style={{ position: 'relative' }}
+            onClick={() => setIsShowNotifications((prev) => !prev)}
+          >
+            <IoNotificationsOutline className="navbar-navigate-item-icon" />
+            {unSeenNotifications.length > 0 && (
+              <div className="notification-count">
+                <span>{unSeenNotifications.length}</span>
+              </div>
+            )}
+            {isShowNotifications && (
+              <Notifications
+                notifications={notifications}
+                setNotifications={setNotifications}
+                unSeenNotifications={unSeenNotifications}
+              />
+            )}
+          </div>
+        )}
+
+        {!isShowSearchBoxMobile && (
+          <div className="navbar-menu" onClick={clickShowMenuMobileHandler}>
+            {!isMobileSideBarShow && <AiOutlineMenu />}
+            {isMobileSideBarShow && <AiOutlineClose />}
+          </div>
+        )}
       </div>
       <div className="navbar-center-desktop">
         <div className="navbar-search-desktop">

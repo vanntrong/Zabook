@@ -214,6 +214,7 @@ const MessagesPage = () => {
             handleCreateSingleConversation={handleCreateSingleConversation}
             conversations={conversations}
             conversationNotSeenList={conversationNotSeenList}
+            className={isShowRightBar ? 'hide' : ''}
           />
           <div className="messagesPage-wrapper-center">
             {currentConversation && (

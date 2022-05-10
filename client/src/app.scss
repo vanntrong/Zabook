@@ -152,12 +152,14 @@ body {
 
 @media screen and (min-width: $laptop-screen) {
   .mainWrapper {
+    padding-top: 120px;
     padding-left: 290px;
   }
 }
 
 @media screen and (min-width: $desktop-screen) {
   .mainWrapper {
+    padding-top: 0;
     padding-top: calc(90px + 30px);
     padding-left: 280px;
     width: calc(990px + 280px);

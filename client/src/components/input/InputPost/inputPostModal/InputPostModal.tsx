@@ -65,7 +65,7 @@ export const SearchPeopleToTag: FC<SearchPeopleToTagProps> = ({
     setTagsPeople((prev) => prev.filter((tag) => tag !== id));
   };
   return (
-    <div className={`inputPostSearchPeople ${isDarkMode && 'dark'}`}>
+    <div className={`inputPostSearchPeople ${isDarkMode ? 'dark' : ''}`}>
       <div className="inputPostSearchPeople-top">
         <div onClick={onClose}>
           <Avatar className="inputPostSearchPeople-top-close">
@@ -227,7 +227,7 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
   };
   return (
     <>
-      <form className={`form-post-modal ${isDarkMode && 'dark'}`} onSubmit={submitHandler}>
+      <form className={`form-post-modal ${isDarkMode ? 'dark' : ''}`} onSubmit={submitHandler}>
         <div className="form-post-title">
           <h2>Create post</h2>
           <div onClick={hideButtonClickHandler} style={{ cursor: 'pointer' }}>

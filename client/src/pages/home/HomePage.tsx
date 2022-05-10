@@ -35,7 +35,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className={`homePage ${isDarkMode && 'dark'}`}>
+      <div className={`homePage ${isDarkMode ? 'dark' : ''}`}>
         <div className="mainWrapper">
           <div className="home-main">
             <div className="home-main-left">

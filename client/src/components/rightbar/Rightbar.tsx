@@ -36,7 +36,7 @@ const RightBar: FC<RightbarProps> = ({ className }) => {
     getUserOnlineList();
   }, [onlineList]);
   return (
-    <div className={`rightBar ${isDarkMode && 'dark'}`}>
+    <div className={`rightBar ${isDarkMode ? 'dark' : ''}`}>
       <div className="rightBar-list">
         <h4 className="rightBar-title">CONTACTS</h4>
         {onlineUsers.length > 0 &&
