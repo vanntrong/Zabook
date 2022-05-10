@@ -7,6 +7,11 @@ const postSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
+    audience: {
+      type: String,
+      enum: ["public", "friends", "private"],
+      default: "public",
+    },
     assets: [
       {
         media_type: String,

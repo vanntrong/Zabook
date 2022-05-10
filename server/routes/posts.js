@@ -22,6 +22,8 @@ router.delete("/:postId", verifyToken, postHandler.deletePostHandler);
 //like post
 router.patch("/:postId/like", verifyToken, postHandler.likePostHandler);
 
+router.put("/:postId/audience", verifyToken, postHandler.updateAudienceHandler);
+
 //create comment
 router.post("/:postId/comment", verifyToken, postHandler.createCommentHandler);
 

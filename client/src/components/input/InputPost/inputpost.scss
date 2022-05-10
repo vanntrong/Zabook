@@ -92,6 +92,27 @@
       align-items: center;
       gap: 0 10px;
       margin-bottom: 20px;
+
+      h3 {
+        font-weight: 600;
+      }
+
+      .form-post-audience {
+        display: flex;
+        align-items: center;
+        gap: 0 4px;
+        margin-top: 5px;
+        padding: 6px 4px;
+        border-radius: 4px;
+        background-color: rgba($color: #000000, $alpha: 0.2);
+        cursor: pointer;
+        width: max-content;
+        p {
+          text-transform: capitalize;
+          font-weight: 600;
+          font-size: 14px;
+        }
+      }
     }
     .form-post-content {
       textarea {
@@ -212,8 +233,8 @@
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   padding: 5px 10px;
   border-radius: 12px;
-  width: 500px;
-  height: 800px;
+  width: 280px;
+  height: 400px;
 
   .inputPostSearchPeople-top {
     display: flex;
@@ -400,5 +421,9 @@
 @media screen and (min-width: $ipad-screen) {
   .form-post-modal {
     width: 500px;
+  }
+  .inputPostSearchPeople {
+    width: 500px;
+    height: 600px;
   }
 }

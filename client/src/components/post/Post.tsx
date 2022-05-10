@@ -1,5 +1,5 @@
 import { Avatar, Paper } from '@mui/material';
-import { deletePostApi, likePostApi } from 'api/postApi';
+import { deletePostApi, likePostApi, updateAudienceApi } from 'api/postApi';
 import Backdrop from 'components/backdrop/Backdrop';
 import { Comments } from 'components/comments/Comments';
 import InputEditPostModal from 'components/input/InputPost/inputEditPostModal/InputEditPostModal';
@@ -21,12 +21,30 @@ import './post.scss';
 import PostAssets from './PostAssets';
 import { FacebookShareButton } from 'react-share';
 import { selectTheme } from 'store/slice/themeSlice';
+import { GiEarthAfricaEurope } from 'react-icons/gi';
+import { FaUserFriends } from 'react-icons/fa';
+import { BsFillShieldLockFill } from 'react-icons/bs';
+import ModalSelectAudience from 'components/modal/modalSelectAudience/ModalSelectAudience';
+import { toast } from 'react-toastify';
 
 interface PostProps {
   // className?: string;
   post: PostType;
   setPosts?: React.Dispatch<React.SetStateAction<PostType[]>>;
 }
+
+export const AudiencePostIcon: FC<{ audience: string }> = ({ audience }) => {
+  switch (audience) {
+    case 'public':
+      return <GiEarthAfricaEurope />;
+    case 'friends':
+      return <FaUserFriends />;
+    case 'private':
+      return <BsFillShieldLockFill />;
+    default:
+      return null;
+  }
+};
 
 const Post: FC<PostProps> = ({ post, setPosts }) => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -38,6 +56,7 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
   const [commentCount, setCommentCount] = useState<number>(post.comments.length);
   const [likeCount, setLikeCount] = useState<number>(post.likes?.length || 0);
   const [isHidePostContent, setIsHidePostContent] = useState<boolean>(post.content.length > 150);
+  const [isShowEditAudience, setIsShowEditAudience] = useState<boolean>(false);
   const isDarkMode = useAppSelector(selectTheme);
 
   const handleLikePost = async () => {
@@ -79,6 +98,17 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
     setCommentCount((prev) => prev + 1);
   }, []);
 
+  const onChangeAudience = async (audience: string) => {
+    try {
+      const res = await updateAudienceApi(post._id, audience);
+      if (setPosts) {
+        setPosts((prev) => prev.map((post) => (post._id === res._id ? res : post)));
+      }
+    } catch (error) {
+      toast.error(error.response.data);
+    }
+  };
+
   return (
     <>
       <Paper className={`post ${isDarkMode ? 'dark' : ''}`} elevation={0}>
@@ -113,7 +143,12 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
                   </div>
                 )}
               </h3>
-              <p className="post-top-user-time">{moment(post?.createdAt).fromNow()}</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0 5px' }}>
+                <div className="post-top-audience">
+                  <AudiencePostIcon audience={post.audience} />
+                </div>
+                <p className="post-top-user-time">{moment(post?.createdAt).fromNow()}</p>
+              </div>
             </div>
           </div>
           {currentUser?._id === post?.userPost._id && (
@@ -129,6 +164,14 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
                   <div className="post-setting-modal-item" onClick={handleClickOpenDialog}>
                     <MdDeleteOutline />
                     <span>Delete Post</span>
+                  </div>
+                  <hr />
+                  <div
+                    className="post-setting-modal-item"
+                    onClick={() => setIsShowEditAudience(true)}
+                  >
+                    <BsFillShieldLockFill />
+                    <span>Edit Audience</span>
                   </div>
                 </div>
               )}
@@ -187,6 +230,13 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
           setIsShowPostModal={setIsShowPostModal}
           post={post}
           setPosts={setPosts}
+        />
+      )}
+      {isShowEditAudience && (
+        <ModalSelectAudience
+          onClose={() => setIsShowEditAudience(false)}
+          audience={post.audience}
+          onChangeAudience={onChangeAudience}
         />
       )}
       <PopUp

@@ -9,7 +9,6 @@ const useFetchPosts = (page: number, user: UserType | null, limit: number = 10) 
   useEffect(() => {
     const getPostsOfUser = async (id: string) => {
       const posts = await getPostsApi(id, { page, limit });
-
       if (posts.length === 0) {
         setHasMore(false);
         setIsFetchingPosts(false);
