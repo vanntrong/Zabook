@@ -68,8 +68,6 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
     });
   }, []);
 
-  console.log(isShowSearchBox);
-
   return (
     <div className={`navbar ${isDarkMode ? 'dark' : ''}`}>
       {!isShowSearchBoxMobile && (
