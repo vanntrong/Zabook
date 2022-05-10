@@ -36,6 +36,24 @@
       background-color: white;
       border-radius: 6px;
       box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+      margin-bottom: 20px;
+      max-height: 600px;
+      overflow-y: scroll;
+      /* width */
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      /* Track */
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      /* Handle */
+      &::-webkit-scrollbar-thumb {
+        border-radius: 12px;
+        background: #a8a8a8;
+      }
 
       hr {
         border-bottom: 1px solid #f1f1f1;

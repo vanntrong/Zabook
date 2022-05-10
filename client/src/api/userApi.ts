@@ -1,4 +1,10 @@
-import { friendType, LoginFormData, SignUpFormData, UserType } from '../shared/types';
+import {
+  DifferentUserType,
+  friendType,
+  LoginFormData,
+  SignUpFormData,
+  UserType,
+} from '../shared/types';
 import axiosClient, { axiosAuthClient } from './index';
 
 interface loginResponse {
@@ -50,3 +56,6 @@ export const deleteFriendApi = (payload: { id: string; friendId: string }): Prom
 
 export const getOnlineUsersApi = (onlineList: string[]): Promise<UserType[]> =>
   axiosClient.post('users/online', { onlineList });
+
+export const getSuggestUserApi = (): Promise<DifferentUserType[]> =>
+  axiosClient.get('users/suggest');

@@ -1,0 +1,48 @@
+@import '../../shared/variable.scss';
+
+.suggestFriend {
+  .suggestFriend-info {
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+    .suggestFriend-avatar {
+      width: 45px;
+      height: 45px;
+    }
+    .suggestFriend-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: $text-gray-900;
+      margin-bottom: 5px;
+      width: max-content;
+    }
+  }
+  .suggestFriend-action {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+
+    .suggestFriend-button {
+      width: 100%;
+      max-width: 100px;
+      height: 36px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.9;
+      }
+      &.suggestFriend-button-confirm {
+        color: white;
+        background-image: linear-gradient(135deg, #05f, #09f);
+      }
+      &.suggestFriend-button-delete {
+        color: $text-gray-800;
+        background-color: $bg-gray;
+      }
+    }
+  }
+}
