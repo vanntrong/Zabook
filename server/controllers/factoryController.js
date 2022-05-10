@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import cloudinary from "../utils/cloudinary.js";
+import * as errorController from "./errorController.js";
 
 export async function createOne(Model, data, res) {
   const doc = await Model.create(data);
