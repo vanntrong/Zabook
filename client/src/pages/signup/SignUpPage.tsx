@@ -14,16 +14,32 @@ import { SignUpFormData } from '../../shared/types';
 import './SignUp.scss';
 
 const SignUpSchema = yup.object().shape({
-  firstName: yup.string().required('What is your first name?'),
-  lastName: yup.string().required('What is your last name?'),
-  email: yup.string().required('What is your email?').email('Email is not valid'),
+  firstName: yup
+    .string()
+    .required('What is your first name?')
+    .trim('The first name must not contain spaces')
+    .min(2, 'The first name must be at least 2 characters long')
+    .max(40, 'The first name must be less than 40 characters long'),
+  lastName: yup
+    .string()
+    .required('What is your last name?')
+    .trim('The last name must not contain spaces')
+    .min(2, 'The last name must be at least 2 characters long')
+    .max(40, 'The last name must be less than 40 characters long'),
+  email: yup
+    .string()
+    .required('What is your email?')
+    .email('Email is not valid')
+    .trim('The email must not contain spaces'),
   username: yup
     .string()
     .required('What is your username?')
+    .trim('The username must not contain spaces')
     .min(6, 'Username must be at least 6 characters'),
   password: yup
     .string()
     .required('What is your password?')
+    .trim('The password must not contain spaces')
     .min(6, 'Password must be at least 6 characters'),
   dateOfBirth: yup.string().required('What is your date of birth?'),
   gender: yup.string().required('What is your gender?').nullable(),
