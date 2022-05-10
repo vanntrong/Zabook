@@ -1,10 +1,12 @@
 import { getAllFriendRequestApi } from 'api/friendRequestApi';
+import { getSuggestUserApi } from 'api/userApi';
 import Feed from 'components/feed/Feed';
 import FriendRequest from 'components/friendRequest/FriendRequest';
 import withLayout from 'components/layout/Layout';
+import SuggestFriend from 'components/suggestFriend/SuggestFriend';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { friendRequestType } from 'shared/types';
+import { DifferentUserType, friendRequestType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
@@ -14,6 +16,7 @@ import './home.scss';
 const HomePage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   const [friendsRequest, setFriendsRequest] = useState<friendRequestType[]>([]);
+  const [suggestFriends, setSuggestFriends] = useState<DifferentUserType[]>([]);
   const isDarkMode = useAppSelector(selectTheme);
   useEffect(() => {
     document.title = 'Sociala.';
@@ -25,6 +28,14 @@ const HomePage = () => {
       setFriendsRequest((prev) => [...prev, ...res]);
     };
     getFriendsRequest();
+  }, []);
+
+  useEffect(() => {
+    const getFriendSuggest = async () => {
+      const res = await getSuggestUserApi();
+      setSuggestFriends(res);
+    };
+    getFriendSuggest();
   }, []);
 
   useEffect(() => {
@@ -62,6 +73,21 @@ const HomePage = () => {
                   ) : (
                     <p>No Friend Request</p>
                   )}
+                </div>
+              </div>
+              <div className="home-main-right-list">
+                <div className="home-main-right-title">
+                  <h3>Suggest Friends</h3>
+                </div>
+                <div className="home-main-right-content">
+                  {suggestFriends.length > 0 &&
+                    suggestFriends.map((user) => (
+                      <SuggestFriend
+                        user={user}
+                        key={user._id}
+                        setSuggestFriends={setSuggestFriends}
+                      />
+                    ))}
                 </div>
               </div>
             </div>

@@ -2,6 +2,7 @@ import { Avatar } from '@mui/material';
 import { acceptFriendRequestApi, declineFriendRequestApi } from 'api/friendRequestApi';
 import moment from 'moment';
 import React, { FC, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { friendRequestType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
 import { selectTheme } from 'store/slice/themeSlice';
@@ -44,7 +45,9 @@ const FriendRequest: FC<FriendRequestProps> = ({ friendRequest, setFriendsReques
       <div className="friend-request-info">
         <Avatar className="friend-request-avatar" src={friendRequest.requester.avatar} alt="" />
         <div className="friend-request-name">
-          <h4>{friendRequest.requester.fullName}</h4>
+          <Link to={`/${friendRequest.requester.username}`}>
+            <h4>{friendRequest.requester.fullName}</h4>
+          </Link>
           <span>{moment(friendRequest.createdAt).format('DD/MM/YYYY')}</span>
         </div>
       </div>

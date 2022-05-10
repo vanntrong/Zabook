@@ -37,4 +37,6 @@ router.delete("/:userId/friends/:friendId", verifyToken, userController.deleteFr
 //get user online
 router.post("/online", verifyToken, userController.getOnlineHandler);
 
+router.get("/suggest", verifyToken, userController.getSuggestionHandler);
+
 export default router;

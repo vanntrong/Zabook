@@ -280,3 +280,16 @@ export async function getOnlineHandler(req, res) {
     return errorController.serverErrorHandler(error, res);
   }
 }
+
+export async function getSuggestionHandler(req, res) {
+  try {
+    const user = await User.findById(req.user.id);
+    const userFriends = user.friends;
+    const usersSuggest = User.find({}).select("username fullName avatar").limit(20).sort({ createdAt: 1 });
+    res
+      .status(200)
+      .json((await usersSuggest).filter((user) => user.id !== req.user.id && !userFriends.includes(user.id)));
+  } catch (error) {
+    return errorController.serverErrorHandler(error, res);
+  }
+}
