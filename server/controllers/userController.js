@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import * as errorController from "./errorController.js";
 import * as factoryController from "./factoryController.js";
 import fullTextSearch from "fulltextsearch";
+import mongoose from "mongoose";
 const fullTextSearchVi = fullTextSearch.vi;
 
 export async function updateUserHandler(req, res) {
@@ -33,28 +34,82 @@ export async function deleteUserHandler(req, res) {
 
 export async function getPostsHandler(req, res) {
   try {
-    const posts = await Post.find({
-      $or: [{ userPost: req.params.userId }, { tagsPeople: { $in: req.params.userId } }],
-    })
-      .populate([
-        {
-          path: "userPost",
-          select: "fullName username avatar",
-        },
-        {
-          path: "tagsPeople",
-          select: "_id fullName username",
-        },
-        {
-          path: "comments",
-          select: "_id",
-        },
-      ])
-      .limit(req.query.limit)
-      .skip(req.query.limit * req.query.page)
-      .sort({ createdAt: -1 });
-
-    res.status(200).json(posts);
+    const existUser = await User.findById(req.params.userId);
+    if (req.params.userId !== req.user.id) {
+      if (existUser.friends.includes(req.user.id)) {
+        const posts = await Post.find({
+          $or: [{ userPost: req.params.userId }, { tagsPeople: { $in: req.params.userId } }],
+        })
+          .populate([
+            {
+              path: "userPost",
+              select: "fullName username avatar",
+            },
+            {
+              path: "tagsPeople",
+              select: "_id fullName username",
+            },
+            {
+              path: "comments",
+              select: "_id",
+            },
+          ])
+          .where("audience")
+          .in(["public", "friends"])
+          .limit(req.query.limit)
+          .skip(req.query.limit * req.query.page)
+          .sort({ createdAt: -1 });
+        return res.status(200).json(posts);
+      }
+      if (!existUser.friends.includes(req.user.id)) {
+        const posts = await Post.find({
+          $or: [{ userPost: req.params.userId }, { tagsPeople: { $in: req.params.userId } }],
+        })
+          .populate([
+            {
+              path: "userPost",
+              select: "fullName username avatar",
+            },
+            {
+              path: "tagsPeople",
+              select: "_id fullName username",
+            },
+            {
+              path: "comments",
+              select: "_id",
+            },
+          ])
+          .where("audience")
+          .equals("public")
+          .limit(req.query.limit)
+          .skip(req.query.limit * req.query.page)
+          .sort({ createdAt: -1 });
+        return res.status(200).json(posts);
+      }
+    }
+    if (req.params.userId === req.user.id) {
+      const posts = await Post.find({
+        $or: [{ userPost: req.params.userId }, { tagsPeople: { $in: req.params.userId } }],
+      })
+        .populate([
+          {
+            path: "userPost",
+            select: "fullName username avatar",
+          },
+          {
+            path: "tagsPeople",
+            select: "_id fullName username",
+          },
+          {
+            path: "comments",
+            select: "_id",
+          },
+        ])
+        .limit(req.query.limit)
+        .skip(req.query.limit * req.query.page)
+        .sort({ createdAt: -1 });
+      return res.status(200).json(posts);
+    }
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }
@@ -202,8 +257,12 @@ export async function getFriendPostHandler(req, res) {
         },
       },
     });
+
+    // "$or", ['friends.posts.audience.includes("public")', 'friends.posts.audience.includes("friends")']
     //format data
-    const posts = user.friends.map((friends) => friends.posts).flat(Infinity);
+    const posts = user.friends
+      .map((friends) => friends.posts.filter((post) => post.audience === "public" || post.audience === "friends"))
+      .flat(Infinity);
     res.status(200).json(posts);
   } catch (error) {
     errorController.serverErrorHandler(error, res);

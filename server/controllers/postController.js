@@ -37,7 +37,7 @@ export async function getPostHandler(req, res) {
     const post = await Post.findById(req.params.postId).populate([
       {
         path: "userPost",
-        select: "fullName username avatar",
+        select: "fullName username avatar friends",
       },
       {
         path: "comments",
@@ -49,10 +49,29 @@ export async function getPostHandler(req, res) {
         select: "_id fullName username",
       },
     ]);
+
     if (!post) {
       return errorController.errorHandler(res, "Post not found", 404);
     }
-    res.status(200).json(post);
+
+    switch (post.audience) {
+      case "public":
+        return res.status(200).json(post);
+      case "friends":
+        if (post.userPost.friends.includes(req.user.id)) {
+          return res.status(200).json(post);
+        } else {
+          return errorController.errorHandler(res, "You are not allowed to view this post", 403);
+        }
+      case "private":
+        if (post.userPost.id !== req.user.id) {
+          return errorController.errorHandler(res, "You are not allowed to view this post", 403);
+        } else {
+          return res.status(200).json(post);
+        }
+      default:
+        return errorController.errorHandler(res, "Post not found", 404);
+    }
   } catch (error) {
     errorController.serverErrorHandler(error, res);
   }
@@ -264,5 +283,34 @@ export async function deleteCommentHandler(req, res) {
     res.status(200).json("Comment deleted successfully");
   } catch (error) {
     errorController.serverErrorHandler(error, res);
+  }
+}
+
+export async function updateAudienceHandler(req, res) {
+  try {
+    if (!req.body.audience) {
+      return errorController.errorHandler(res, "Audience not found", 404);
+    }
+    const updatedPost = await Post.findOneAndUpdate(
+      { _id: req.params.postId, userPost: req.user.id },
+      { $set: { audience: req.body.audience } },
+      { new: true }
+    ).populate([
+      {
+        path: "userPost",
+        select: "fullName username avatar",
+      },
+      {
+        path: "comments",
+        select: "content createdAt",
+        populate: { path: "userComment", select: "fullName username avatar" },
+      },
+    ]);
+    if (!updatedPost) {
+      return errorController.errorHandler(res, "Post not found", 404);
+    }
+    return res.status(200).json(updatedPost);
+  } catch (error) {
+    return errorController.serverErrorHandler(error, res);
   }
 }

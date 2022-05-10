@@ -5,10 +5,14 @@ import Avatar from '@mui/material/Avatar';
 import { createPostApi } from 'api/postApi';
 import DragImage from 'components/dragImage/DragImage';
 import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading';
+import ModalSelectAudience from 'components/modal/modalSelectAudience/ModalSelectAudience';
+import { AudiencePostIcon } from 'components/post/Post';
 import { Picker } from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 import useSearchUser from 'hooks/useSearchUser';
 import React, { FC, useState } from 'react';
 import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai';
+import { BsFillCaretDownFill } from 'react-icons/bs';
 import { FaUserPlus } from 'react-icons/fa';
 import { IoArrowBackOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
@@ -148,11 +152,13 @@ interface InputPostModalProps {
 const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts }) => {
   const [isShowEmojiPicker, setIsShowEmojiPicker] = useState<boolean>(false);
   const [postContent, setPostContent] = useState<string>('');
+  const [audience, setAudience] = useState<'public' | 'friends' | 'private'>('public');
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [filesPreview, setFilesPreview] = useState<any[]>([]);
   const [assetsData, setAssetsData] = useState<any[]>([]);
   const [isShowDragAndDrop, setIsShowDragAndDrop] = useState<boolean>(false);
   const [isShowSearchTagPeople, setIsShowSearchTagPeople] = useState<boolean>(false);
+  const [isShowModalSelectAudience, setIsShowModalSelectAudience] = useState<boolean>(false);
   const [tagsPeople, setTagsPeople] = useState<string[]>([]);
   const currentUser = useAppSelector(selectCurrentUser);
   const isDarkMode = useAppSelector(selectTheme);
@@ -168,6 +174,7 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
       userPost: currentUser!._id,
       content: postContent,
       tagsPeople,
+      audience,
     };
     if (assetsData.length > 0) {
       data.assets = assetsData;
@@ -225,6 +232,12 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
   const handleCloseSearchTagPeople = () => {
     setIsShowSearchTagPeople(false);
   };
+
+  const hanldeCloseSelectAudience = () => {
+    setIsShowModalSelectAudience(false);
+  };
+
+  console.log(isShowEmojiPicker);
   return (
     <>
       <form className={`form-post-modal ${isDarkMode ? 'dark' : ''}`} onSubmit={submitHandler}>
@@ -242,6 +255,14 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
             <Avatar src={currentUser?.avatar} alt="" />
             <div className="form-post-user-info">
               <h3>{currentUser?.fullName}</h3>
+              <div
+                className="form-post-audience"
+                onClick={() => setIsShowModalSelectAudience(true)}
+              >
+                <AudiencePostIcon audience={audience} />
+                <p>{audience}</p>
+                <BsFillCaretDownFill size={15} />
+              </div>
             </div>
           </div>
           <div className="form-post-content">
@@ -261,7 +282,9 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
 
           <div className="emoji-picker">
             <div
-              onClick={() => setIsShowEmojiPicker(!isShowEmojiPicker)}
+              onClick={() => {
+                setIsShowEmojiPicker(!isShowEmojiPicker);
+              }}
               style={{ cursor: 'pointer' }}
             >
               <EmojiEmotionsOutlinedIcon htmlColor="#d3d8e0" fontSize="medium" />
@@ -315,6 +338,13 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
           onClose={handleCloseSearchTagPeople}
           setTagsPeople={setTagsPeople}
           tagsPeople={tagsPeople}
+        />
+      )}
+      {isShowModalSelectAudience && (
+        <ModalSelectAudience
+          onClose={hanldeCloseSelectAudience}
+          audience={audience}
+          setAudience={setAudience}
         />
       )}
 

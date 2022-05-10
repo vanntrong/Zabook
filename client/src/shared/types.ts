@@ -80,6 +80,7 @@ export interface PostType {
       postId: string;
     }
   ];
+  audience: 'public' | 'friends' | 'private';
   createdAt: Date;
 }
 
@@ -88,6 +89,7 @@ export interface formPostData {
   content: string;
   // assets?: [any];
   assets?: any;
+  audience: 'public' | 'friends' | 'private';
   tagsPeople: string[];
 }
 

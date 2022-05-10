@@ -22,5 +22,8 @@ export const likePostApi = (payload: {
 }): Promise<{ post: PostType; notification?: notificationType }> =>
   axiosClient.patch(`posts/${payload.id}/like`, { userId: payload.data });
 
+export const updateAudienceApi = (id: string, audience: string): Promise<PostType> =>
+  axiosClient.put(`posts/${id}/audience`, { audience });
+
 export const getFriendsPostsApi = (userId: string, params: { page: number }): Promise<PostType[]> =>
   axiosClient.get(`users/${userId}/friends/posts`, { params });
