@@ -53,6 +53,7 @@
       line-height: 1.25;
       background-color: $border-color;
       font-size: 14px;
+      word-break: break-word;
 
       &.deleted {
         background-color: inherit;
