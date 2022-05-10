@@ -81,7 +81,7 @@ const Post: FC<PostProps> = ({ post, setPosts }) => {
 
   return (
     <>
-      <Paper className={`post ${isDarkMode && 'dark'}`} elevation={0}>
+      <Paper className={`post ${isDarkMode ? 'dark' : ''}`} elevation={0}>
         <div className="post-top">
           <div className="post-top-info">
             <Avatar className="post-top-user-avatar" src={post?.userPost.avatar} alt="" />

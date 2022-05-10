@@ -3,14 +3,14 @@
 .notifications {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -60px;
   z-index: 9999;
-  transform: translateY(35px);
+  transform: translateY(50px);
   background-color: white;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 8px;
   padding-bottom: 15px;
-  max-height: 650px;
+  max-height: 300px;
   overflow-y: auto;
   // width: 100%;
   max-width: 320px;
@@ -80,5 +80,25 @@
     justify-content: center;
     gap: 10px;
     padding: 0 7.5px;
+  }
+}
+
+@media screen and (min-width: $tablet-screen) {
+  .notifications {
+    max-height: 400px;
+  }
+}
+
+@media screen and (min-width: $ipad-screen) {
+  .notifications {
+    right: 0;
+    transform: translateY(50px);
+  }
+}
+
+@media screen and (min-width: $laptop-screen) {
+  .notifications {
+    max-height: 600px;
+    transform: translateY(35px);
   }
 }

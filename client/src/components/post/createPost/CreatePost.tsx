@@ -21,7 +21,7 @@ const CreatePost: FC<CreatePostProps> = ({ setPosts }) => {
   const isDarkMode = useAppSelector(selectTheme);
   return (
     <>
-      <div className={`createPost ${isDarkMode && 'dark'}`}>
+      <div className={`createPost ${isDarkMode ? 'dark' : ''}`}>
         <div className="createPost-top" onClick={() => setIsShowCreatePostModal(true)}>
           <div className="createPost-top-icon">
             <BsPencil />

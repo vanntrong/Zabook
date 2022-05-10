@@ -15,6 +15,7 @@ interface Props {
   handleCreateSingleConversation: (userId: string) => Promise<void>;
   conversations: conversationType[];
   conversationNotSeenList: string[];
+  className?: string;
 }
 
 const SidebarMessagePage: FC<Props> = ({
@@ -22,6 +23,7 @@ const SidebarMessagePage: FC<Props> = ({
   handleCreateSingleConversation,
   conversations,
   conversationNotSeenList,
+  className,
 }) => {
   const [searchText, setSearchText] = useState('');
 
@@ -34,7 +36,7 @@ const SidebarMessagePage: FC<Props> = ({
     setSearchText('');
   };
   return (
-    <div className="messagesPage-wrapper-left">
+    <div className={`messagesPage-wrapper-left ${className}`}>
       <div className="messagesPage-wrapper-left-top">
         <Link to="/" className="logo">
           <h2>Sociala.</h2>

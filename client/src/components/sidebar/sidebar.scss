@@ -10,6 +10,7 @@
   left: 0;
   padding-left: 15px;
   padding-right: 15px;
+  padding-top: 60px;
   transition: all 0.3s ease-in-out;
   overflow-y: auto;
   opacity: 0;
@@ -111,7 +112,7 @@
   }
 }
 
-@media screen and (max-width: 769px) {
+@media screen and (max-width: 1023px) {
   .show {
     display: block;
     animation: sidebarIn 0.5s ease-in-out forwards;
@@ -123,6 +124,7 @@
 
 @media screen and (min-width: $laptop-screen) {
   .sidebar {
+    padding-top: 0;
     top: calc(96px + 4px);
     border-radius: 8px;
     background-color: $bg-greylight;

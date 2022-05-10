@@ -44,7 +44,7 @@ const OnlineUser: FC<Props> = ({ user }) => {
   const isDarkMode = useAppSelector(selectTheme);
   return (
     <Link to={`/${user.username}`}>
-      <div className={`online-user ${isDarkMode && 'dark'}`}>
+      <div className={`online-user ${isDarkMode ? 'dark' : ''}`}>
         <StyledBadge
           overlap="circular"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}

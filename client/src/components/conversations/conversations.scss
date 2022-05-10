@@ -3,11 +3,14 @@
 .conversations {
   display: flex;
   flex-direction: column;
+  // flex-direction: row;
+  // align-items: center;
   gap: 5px 0;
   overflow: scroll;
   height: 100%;
   padding-bottom: 10px;
   padding-right: 10px;
+  border-bottom: 1px solid $border-color;
 
   /* width */
   &::-webkit-scrollbar {

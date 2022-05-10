@@ -1,7 +1,8 @@
 @import '../../../shared/variable.scss';
 .search-result {
   position: absolute;
-  top: calc(100% + 5px);
+  top: calc(100%);
+  transform: translateY(5px);
   left: 0;
   right: 0;
   padding: 10px;

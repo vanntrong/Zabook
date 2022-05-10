@@ -40,7 +40,7 @@ const FriendRequest: FC<FriendRequestProps> = ({ friendRequest, setFriendsReques
     }
   };
   return (
-    <div className={`friend-request ${isDarkMode && 'dark'}`}>
+    <div className={`friend-request ${isDarkMode ? 'dark' : ''}`}>
       <div className="friend-request-info">
         <Avatar className="friend-request-avatar" src={friendRequest.requester.avatar} alt="" />
         <div className="friend-request-name">
