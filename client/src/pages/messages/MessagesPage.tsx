@@ -51,6 +51,7 @@ const MessagesPage = () => {
   const getConversations = async () => {
     const res = await getConversationsApi();
     setConversations(res);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -58,12 +59,11 @@ const MessagesPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!params.conversationId && conversations.length > 0) {
-      navigate(`/messages/${conversations[0]._id}`);
+    if (params.conversationId) {
+      setCurrenConversation(
+        conversations.find((conversation) => conversation._id === params.conversationId)
+      );
     }
-    setCurrenConversation(
-      conversations.find((conversation) => conversation._id === params.conversationId)
-    );
   }, [navigate, conversations, params.conversationId]);
 
   useEffect(() => {
@@ -236,13 +236,15 @@ const MessagesPage = () => {
                 </div>
               </div>
             )}
-            {currentConversation && (
+            {currentConversation ? (
               <ChatBox
                 setConversations={setConversations}
                 currentConversation={currentConversation}
                 setConversationNotSeenList={setConversationNotSeenList}
                 conversationNotSeenList={conversationNotSeenList}
               />
+            ) : (
+              <p className="no-conversation">Please choose one Conversation to chat</p>
             )}
             {!isLoading && conversations.length === 0 && (
               <p className="no-conversation">No Conversation</p>
