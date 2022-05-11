@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { BiBadgeCheck, BiGroup, BiNews } from 'react-icons/bi';
+import { BiNews } from 'react-icons/bi';
 import { BsChatLeft, BsLightningCharge, BsPerson } from 'react-icons/bs';
 import { FiLogOut, FiSettings } from 'react-icons/fi';
 import { Link } from 'react-router-dom';

@@ -5,20 +5,18 @@ import Notifications from 'components/notifications/Notifications';
 import React, { FC, useEffect, useState } from 'react';
 import { AiOutlineClose, AiOutlineHome, AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import { BiMessage, BiMessageRoundedDots } from 'react-icons/bi';
-import { BsCameraVideo, BsLightningCharge, BsPerson } from 'react-icons/bs';
+import { BsLightningCharge, BsPerson } from 'react-icons/bs';
 import { FiSettings } from 'react-icons/fi';
-// import { AiOutlineClose } from "react-icons/ai";
-import { IoNotificationsOutline } from 'react-icons/io5';
+import { IoArrowBackSharp, IoNotificationsOutline } from 'react-icons/io5';
 import { Link, NavLink } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { notificationType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
-import { selectCurrentUser } from 'store/slice/userSlice';
-import './navbar.scss';
-import { getAllNotificationApi } from '../../api/notificationApi';
-import { toast } from 'react-toastify';
-import { socket } from 'utils/socket';
 import { selectTheme } from 'store/slice/themeSlice';
-import { IoArrowBackSharp } from 'react-icons/io5';
+import { selectCurrentUser } from 'store/slice/userSlice';
+import { socket } from 'utils/socket';
+import { getAllNotificationApi } from '../../api/notificationApi';
+import './navbar.scss';
 
 interface NavbarProps {
   className?: string;

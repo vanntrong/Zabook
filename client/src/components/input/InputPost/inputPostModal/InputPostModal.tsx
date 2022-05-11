@@ -237,7 +237,6 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
     setIsShowModalSelectAudience(false);
   };
 
-  console.log(isShowEmojiPicker);
   return (
     <>
       <form className={`form-post-modal ${isDarkMode ? 'dark' : ''}`} onSubmit={submitHandler}>

@@ -27,7 +27,6 @@ const Feed = () => {
     const getFriendsPosts = async () => {
       setIsFetching(true);
       const res = await getFriendsPostsApi(currentUser!._id, { page });
-      console.log(res);
       if (res.length === 0) {
         setHasMore(false);
       }

@@ -126,7 +126,10 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
       <div className="userInfo">
         <div className="userInfo-wrapper">
           <div className="userInfo-background-image">
-            <img src="http://uitheme.net/sociala/images/u-bg.jpg" alt="" />
+            <img
+              src="https://res.cloudinary.com/drwm3i3g4/image/upload/v1652242981/u-bg_ru24wt.jpg"
+              alt=""
+            />
           </div>
           <div className="userInfo-avatar-and-name">
             <Avatar className="userInfo-avatar" src={user?.avatar} alt="" />

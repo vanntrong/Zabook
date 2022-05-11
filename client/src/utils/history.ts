@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-interface History {
+interface HistoryType {
   navigate: any;
   push: (page: any, ...rest: any) => void;
 }
 
-const History: History = {
+const History: HistoryType = {
   navigate: null,
   push: (page: any, ...rest: any) => History.navigate(page, ...rest),
 };
