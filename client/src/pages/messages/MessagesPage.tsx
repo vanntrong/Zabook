@@ -14,7 +14,7 @@ import ProgressLoading from 'components/loadings/progressLoading/ProgressLoading
 import RightbarMessagePage from 'components/rightbar/rightbarMessagePage/RightbarMessagePage';
 import SidebarMessagePage from 'components/sidebar/sidebarMessagePage/SidebarMessagePage';
 import React, { useEffect, useState } from 'react';
-import { BsFillCameraVideoFill, BsThreeDots } from 'react-icons/bs';
+import { BsThreeDots } from 'react-icons/bs';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { conversationType } from 'shared/types';
@@ -224,9 +224,6 @@ const MessagesPage = () => {
                   <h3>{nameOfConversation}</h3>
                 </div>
                 <div className="messagesPage-wrapper-center-top-right">
-                  <div className="messagesPage-wrapper-center-top-right-icon">
-                    <BsFillCameraVideoFill />
-                  </div>
                   <div
                     className="messagesPage-wrapper-center-top-right-icon"
                     onClick={() => setIsShowRightBar((prev) => !prev)}
