@@ -1,8 +1,20 @@
 import { getProfileApi } from 'api/userApi';
 import SimpleLoading from 'components/loadings/simpleLoading/SimpleLoading';
+import NotFoundPage from 'pages/404/NotFoundPage';
+import FriendsPage from 'pages/friends/FriendsPage';
+import FriendsRequestsPage from 'pages/friends/requests/FriendsRequestsPage';
+import HomePage from 'pages/home/HomePage';
+import MessagesPage from 'pages/messages/MessagesPage';
+import AssetsPage from 'pages/photo/AssetsPage';
+import PostViewPage from 'pages/postViewPage/PostViewPage';
+import ProfilePage from 'pages/profile/ProfilePage';
+import SettingPage from 'pages/setting/SettingPage';
+import SignupPage from 'pages/signup/SignUpPage';
+import CreateStoryPage from 'pages/stories/create/CreateStoryPage';
+import StoriesPage from 'pages/stories/StoriesPage';
 import ViewStoryPage from 'pages/stories/view/ViewStoryPage';
 import PrivateRoute from 'PrivateRoute';
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,20 +22,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
 import { socket } from 'utils/socket';
 import './app.scss';
-
-const Login = lazy(() => import('pages/login/Login'));
-const SignupPage = lazy(() => import('pages/signup/SignUpPage'));
-const HomePage = lazy(() => import('pages/home/HomePage'));
-const ProfilePage = lazy(() => import('pages/profile/ProfilePage'));
-const AssetsPage = lazy(() => import('pages/photo/AssetsPage'));
-const FriendsPage = lazy(() => import('pages/friends/FriendsPage'));
-const FriendsRequestsPage = lazy(() => import('pages/friends/requests/FriendsRequestsPage'));
-const SettingPage = lazy(() => import('pages/setting/SettingPage'));
-const NotFoundPage = lazy(() => import('pages/404/NotFoundPage'));
-const CreateStoryPage = lazy(() => import('pages/stories/create/CreateStoryPage'));
-const StoriesPage = lazy(() => import('pages/stories/StoriesPage'));
-const MessagesPage = lazy(() => import('pages/messages/MessagesPage'));
-const PostViewPage = lazy(() => import('pages/postViewPage/PostViewPage'));
+import LoginPage from './pages/login/Login';
 
 function App() {
   const user = useAppSelector(selectCurrentUser);
@@ -37,14 +36,9 @@ function App() {
         const data = await getProfileApi();
         dispatch(userAction.setUser(data));
       }
+      setIsFetchingUser(false);
     };
     getProfile();
-    const timer = setTimeout(() => {
-      setIsFetchingUser(false);
-    }, 500);
-    return () => {
-      clearTimeout(timer);
-    };
   }, [dispatch]);
 
   useEffect(() => {
@@ -60,147 +54,147 @@ function App() {
     <>
       {isFetchingUser && <SimpleLoading />}
       {!isFetchingUser && (
-        <Suspense fallback={<SimpleLoading />}>
-          <Routes>
-            {/* login route */}
-            <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
-            <Route path="/register" element={!user ? <SignupPage /> : <Navigate to="/" />} />
+        // <Suspense fallback={<SimpleLoading />}>
+        <Routes>
+          {/* login route */}
+          <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/" />} />
+          <Route path="/register" element={!user ? <SignupPage /> : <Navigate to="/" />} />
 
+          <Route
+            path="/"
+            element={
+              <PrivateRoute isFetchingUser={isFetchingUser}>
+                <HomePage />
+              </PrivateRoute>
+            }
+          />
+
+          {/* profile route */}
+          <Route path="/:username">
             <Route
-              path="/"
+              index
               element={
-                <PrivateRoute>
-                  <HomePage />
+                <PrivateRoute isFetchingUser={isFetchingUser}>
+                  <ProfilePage />
                 </PrivateRoute>
               }
             />
-
-            {/* profile route */}
-            <Route path="/:username">
-              <Route
-                index
-                element={
-                  <PrivateRoute>
-                    <ProfilePage />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="photos"
-                element={
-                  <PrivateRoute>
-                    <AssetsPage type="photos" />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="videos"
-                element={
-                  <PrivateRoute>
-                    <AssetsPage type="videos" />
-                  </PrivateRoute>
-                }
-              />
-              <Route path="friends">
-                <Route
-                  index
-                  element={
-                    <PrivateRoute>
-                      <FriendsPage />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="request"
-                  element={
-                    <PrivateRoute>
-                      <FriendsRequestsPage />
-                    </PrivateRoute>
-                  }
-                />
-              </Route>
-            </Route>
-
-            {/* badges route */}
             <Route
-              path="/badges"
+              path="photos"
               element={
-                <PrivateRoute>
-                  <p>Badges</p>
+                <PrivateRoute isFetchingUser={isFetchingUser}>
+                  <AssetsPage type="photos" />
                 </PrivateRoute>
               }
             />
-
-            {/* stories route */}
-            <Route path="/stories">
+            <Route
+              path="videos"
+              element={
+                <PrivateRoute isFetchingUser={isFetchingUser}>
+                  <AssetsPage type="videos" />
+                </PrivateRoute>
+              }
+            />
+            <Route path="friends">
               <Route
                 index
                 element={
-                  <PrivateRoute>
-                    <StoriesPage />
+                  <PrivateRoute isFetchingUser={isFetchingUser}>
+                    <FriendsPage />
                   </PrivateRoute>
                 }
               />
               <Route
-                path="create"
+                path="request"
                 element={
-                  <PrivateRoute>
-                    <CreateStoryPage />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path=":storyId"
-                element={
-                  <PrivateRoute>
-                    <ViewStoryPage />
+                  <PrivateRoute isFetchingUser={isFetchingUser}>
+                    <FriendsRequestsPage />
                   </PrivateRoute>
                 }
               />
             </Route>
+          </Route>
 
-            {/* messages route */}
+          {/* badges route */}
+          <Route
+            path="/badges"
+            element={
+              <PrivateRoute isFetchingUser={isFetchingUser}>
+                <p>Badges</p>
+              </PrivateRoute>
+            }
+          />
 
+          {/* stories route */}
+          <Route path="/stories">
             <Route
-              path="/settings"
+              index
               element={
-                <PrivateRoute>
-                  <SettingPage />
+                <PrivateRoute isFetchingUser={isFetchingUser}>
+                  <StoriesPage />
                 </PrivateRoute>
               }
             />
-            <Route path="/messages">
-              <Route
-                index
-                element={
-                  <PrivateRoute>
-                    <MessagesPage />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path=":conversationId"
-                element={
-                  <PrivateRoute>
-                    <MessagesPage />
-                  </PrivateRoute>
-                }
-              />
-            </Route>
-
             <Route
-              path="/posts/:postId"
+              path="create"
               element={
-                <PrivateRoute>
-                  <PostViewPage />
+                <PrivateRoute isFetchingUser={isFetchingUser}>
+                  <CreateStoryPage />
                 </PrivateRoute>
               }
             />
-            <Route path="/404" element={<NotFoundPage />} />
+            <Route
+              path=":storyId"
+              element={
+                <PrivateRoute isFetchingUser={isFetchingUser}>
+                  <ViewStoryPage />
+                </PrivateRoute>
+              }
+            />
+          </Route>
 
-            <Route path="*" element={<Navigate to={'/404'} />} />
-          </Routes>
-        </Suspense>
+          {/* messages route */}
+
+          <Route
+            path="/settings"
+            element={
+              <PrivateRoute isFetchingUser={isFetchingUser}>
+                <SettingPage />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/messages">
+            <Route
+              index
+              element={
+                <PrivateRoute isFetchingUser={isFetchingUser}>
+                  <MessagesPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path=":conversationId"
+              element={
+                <PrivateRoute isFetchingUser={isFetchingUser}>
+                  <MessagesPage />
+                </PrivateRoute>
+              }
+            />
+          </Route>
+
+          <Route
+            path="/posts/:postId"
+            element={
+              <PrivateRoute isFetchingUser={isFetchingUser}>
+                <PostViewPage />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/404" element={<NotFoundPage />} />
+
+          <Route path="*" element={<Navigate to={'/404'} />} />
+        </Routes>
+        // </Suspense>
       )}
       <ToastContainer
         position="top-right"

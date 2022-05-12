@@ -15,6 +15,9 @@
       color: $text-gray-900;
       margin-bottom: 5px;
       width: max-content;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
   .suggestFriend-action {
