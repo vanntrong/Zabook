@@ -4,9 +4,18 @@ import { Navigate } from 'react-router-dom';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 
-const PrivateRoute: FC = ({ children }) => {
+interface Props {
+  isFetchingUser: boolean;
+}
+
+const PrivateRoute: FC<Props> = ({ children, isFetchingUser }) => {
   const user = useAppSelector(selectCurrentUser);
-  return <>{user ? children : <Navigate to="/login" />}</>;
+  return (
+    <>
+      {!isFetchingUser && !user && <Navigate to="/login" />}
+      {!isFetchingUser && user && children}
+    </>
+  );
 };
 
 export default PrivateRoute;
