@@ -5,14 +5,17 @@ import useFetchStories from 'hooks/useFetchStories';
 import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import './storiesPage.scss';
 
 const StoriesPage = () => {
   const [page, setPage] = useState(0);
+  const isDarkMode = useAppSelector(selectTheme);
   const { stories, hasMore, isFetchingStories } = useFetchStories(page);
 
   return (
-    <div className="storiesPage">
+    <div className={`storiesPage ${isDarkMode ? 'dark' : ''}`}>
       <div className="mainWrapper">
         <div className="storiesPage-wrapper">
           <div className="storiesPage-header">

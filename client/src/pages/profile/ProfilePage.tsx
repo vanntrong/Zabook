@@ -17,12 +17,14 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import './profilepage.scss';
 
 const ProfilePage = () => {
   const [user, setUser] = useState<null | UserType>(null);
   const [page, setPage] = useState<number>(0);
+  const isDarkMode = useAppSelector(selectTheme);
   const limit = 30;
   const { posts, setPosts, hasMore, isFetchingPosts } = useFetchPosts(page, user, limit);
   const navigate = useNavigate();
@@ -64,8 +66,8 @@ const ProfilePage = () => {
       {!user ? (
         <SimpleLoading />
       ) : (
-        <div className="mainWrapper">
-          <div className="profilePage">
+        <div className={`profilePage ${isDarkMode ? 'dark' : ''}`}>
+          <div className="mainWrapper">
             <UserInfo user={user} />
             <div className="profile-laptop-wrapper">
               <div style={{ flex: '2' }}>

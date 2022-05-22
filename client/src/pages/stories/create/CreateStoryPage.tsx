@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { Player } from 'react-tuby';
 import 'react-tuby/css/main.css';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import { socket } from 'utils/socket';
 import { convertFileSize } from 'utils/upload';
@@ -21,10 +22,10 @@ export interface formSubmitStoryType {
 
 const CreateStoryPage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const [isShowPreview, setIsShowPreview] = useState<boolean>(false);
   const [file, setFile] = useState<{ media_type: string; url: string } | null>(null);
   const [filePreview, setFilePreview] = useState<{ media_type: string; url: string } | null>(null);
-  // const [content, setContent] = useState('');
   const [isPending, setIsPending] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
@@ -69,9 +70,7 @@ const CreateStoryPage = () => {
     if (file) {
       data.asset = file;
     }
-    // if (content.trim().length > 0) {
-    //   data.content = content;
-    // }
+
     const { story, notification } = await createStoryApi(data);
     setIsPending(false);
     setFile(null);
@@ -85,7 +84,7 @@ const CreateStoryPage = () => {
   return (
     <>
       <Navbar />
-      <div className="createStoryPage">
+      <div className={`createStoryPage ${isDarkMode ? 'dark' : ''}`}>
         <div className="createStoryPage-sidebar">
           <div className="createStoryPage-sidebar-top">
             <h1 className="createStoryPage-title">Your story</h1>

@@ -19,6 +19,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { conversationType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import { socket } from 'utils/socket';
 import { convertFileSize } from 'utils/upload';
@@ -27,6 +28,7 @@ import './messagesPage.scss';
 
 const MessagesPage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const [isShowRightBar, setIsShowRightBar] = useState(false);
   const [conversations, setConversations] = useState<conversationType[]>([]);
   const [currentConversation, setCurrenConversation] = useState<conversationType>();
@@ -207,7 +209,7 @@ const MessagesPage = () => {
 
   return (
     <>
-      <div className="messagesPage">
+      <div className={`messagesPage ${isDarkMode ? 'dark' : ''}`}>
         <div className="messagesPage-wrapper">
           <SidebarMessagePage
             setIsShowCreateGroupChatModal={setIsShowCreateGroupChatModal}

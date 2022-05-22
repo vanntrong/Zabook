@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DifferentUserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import { socket } from 'utils/socket';
 
@@ -16,6 +17,7 @@ interface Props {
 
 const SuggestFriend: FC<Props> = ({ user, setSuggestFriends }) => {
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const [isSendFriendRequest, setIsSendFriendRequest] = React.useState(false);
 
   const sendFriendRequestHandler = async () => {
@@ -35,7 +37,7 @@ const SuggestFriend: FC<Props> = ({ user, setSuggestFriends }) => {
     setIsSendFriendRequest(false);
   };
   return (
-    <div className="suggestFriend">
+    <div className={`suggestFriend ${isDarkMode ? 'dark' : ''}`}>
       <div className="suggestFriend-info">
         <Avatar src={user.avatar} className="suggestFriend-avatar" />
         <Link to={`/${user.username}`}>

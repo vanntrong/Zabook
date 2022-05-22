@@ -54,7 +54,8 @@ const Feed = () => {
         <div className="post-list">
           {posts?.length > 0 &&
             posts.map((post) => <Post key={post._id} post={post} setPosts={setPosts} />)}
-          {isFetching && <SkeletonLoading type="post" />}
+          {/* {isFetching && <SkeletonLoading type="post" />} */}
+          <SkeletonLoading type="post" />
           {!hasMore && (
             <p
               style={{

@@ -40,7 +40,6 @@ export async function createStoryHandler(req, res) {
         select: "username fullName avatar",
       },
     ]);
-
     res.status(201).json({ story: newStory, notification: fullNotification });
   } catch (error) {
     errorController.serverErrorHandler(error, res);
@@ -99,6 +98,7 @@ export async function getAllStoriesHandler(req, res) {
           storyId: { $push: "$_id" },
           count: { $sum: 1 },
           createdAt: { $first: "$createdAt" },
+          expiredAt: { $first: "$expiredAt" },
           asset: { $first: "$asset" },
           content: { $first: "$content" },
           views: { $first: "$views" },
@@ -134,6 +134,7 @@ export async function getAllStoriesHandler(req, res) {
           timing: 1,
           createdAt: 1,
           views: 1,
+          expiredAt: 1,
         },
       },
       {
@@ -219,6 +220,7 @@ export async function getAllStoriesHandler(req, res) {
         },
       },
     ]);
+
     res.status(200).json(storiesOfCurrentUser.concat(stories));
     // res.status(200).json(stories);
   } catch (error) {

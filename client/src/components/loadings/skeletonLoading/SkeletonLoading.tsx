@@ -3,18 +3,21 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 import './skeleton.scss';
+import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 
 interface SkeletonLoadingProps {
   type: 'post' | 'photo' | 'friend' | 'info' | 'story';
 }
 
 const SkeletonLoading: FC<SkeletonLoadingProps> = ({ type }) => {
+  const isDarkMode = useAppSelector(selectTheme);
   switch (type) {
     case 'post':
       return (
         <div
           style={{
-            backgroundColor: 'white',
+            backgroundColor: !isDarkMode ? 'white' : '#293145',
             padding: '25px',
             borderRadius: '8px',
             boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
@@ -44,7 +47,12 @@ const SkeletonLoading: FC<SkeletonLoadingProps> = ({ type }) => {
       );
     case 'info':
       return (
-        <div className="info-loading">
+        <div
+          className="info-loading"
+          style={{
+            backgroundColor: !isDarkMode ? 'white' : '#293145',
+          }}
+        >
           <Skeleton variant="circular" width={40} height={40} />
           <Skeleton variant="text" width={80} height={20} />
         </div>
@@ -63,7 +71,7 @@ const SkeletonLoading: FC<SkeletonLoadingProps> = ({ type }) => {
       );
     case 'story':
       return (
-        <div className="story-loading">
+        <div className={`story-loading ${isDarkMode ? 'dark' : ''}`}>
           <Stack spacing={15}>
             <div className="story-loading-wrapper">
               <Skeleton variant="circular" width={80} height={70} />

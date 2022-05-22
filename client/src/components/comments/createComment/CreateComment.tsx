@@ -2,6 +2,7 @@ import { Avatar } from '@mui/material';
 import React, { FC, useState } from 'react';
 import { GrSend } from 'react-icons/gr';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import './createComment.scss';
 
@@ -12,6 +13,7 @@ interface CreateCommentProps {
 
 const CreateComment: FC<CreateCommentProps> = ({ postId, onSubmit }) => {
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const [commentText, setCommentText] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,7 +30,7 @@ const CreateComment: FC<CreateCommentProps> = ({ postId, onSubmit }) => {
     setCommentText('');
   };
   return (
-    <div className="createComment">
+    <div className={`createComment ${isDarkMode ? 'dark' : ''}`}>
       <Avatar
         className="createComment-user-avatar"
         src={currentUser?.avatar}

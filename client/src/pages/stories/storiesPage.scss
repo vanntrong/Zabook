@@ -103,6 +103,18 @@
       }
     }
   }
+
+  &.dark {
+    background-color: $bg-dark-mode-2;
+
+    .storiesPage-wrapper .storiesPage-header {
+      background-color: $bg-dark-mode;
+
+      h2 {
+        color: white;
+      }
+    }
+  }
 }
 
 @media screen and (min-width: $tablet-screen) {

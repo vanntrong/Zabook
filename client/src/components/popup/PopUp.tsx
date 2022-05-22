@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
+import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import './popup.scss';
 
 interface PopUpProps {
@@ -10,10 +12,11 @@ interface PopUpProps {
 }
 
 const PopUp: FC<PopUpProps> = ({ isOpen, onClose, onConfirm, type }) => {
+  const isDarkMode = useAppSelector(selectTheme);
   return (
     <>
       {isOpen ? (
-        <div className="pop-up">
+        <div className={`pop-up ${isDarkMode ? 'dark' : ''}`}>
           <div className="pop-up-top">
             <h2>Delete {type}?</h2>
             <div className="pop-up-top-close" onClick={onClose}>

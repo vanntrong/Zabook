@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { updateUserFormType } from 'shared/types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser, selectLogging, userAction } from 'store/slice/userSlice';
 import './settingPage.scss';
 
@@ -34,6 +35,7 @@ const genderOptions = [
 
 const SettingPage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const dispatch = useAppDispatch();
   const initFormValue: updateUserFormType = {
     firstName: currentUser?.firstName,
@@ -84,7 +86,7 @@ const SettingPage = () => {
   };
   return (
     <>
-      <div className="setting">
+      <div className={`setting ${isDarkMode ? 'dark' : ''}`}>
         <div className="mainWrapper">
           <div className="setting-wrapper">
             <h2>Edit profile</h2>
@@ -201,7 +203,7 @@ const SettingPage = () => {
                       name="relationship"
                     >
                       {relationshipOptions.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
+                        <MenuItem key={option.value} value={option.value} className="form-select">
                           {option.value}
                         </MenuItem>
                       ))}
@@ -218,7 +220,7 @@ const SettingPage = () => {
                       name="gender"
                     >
                       {genderOptions.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
+                        <MenuItem key={option.value} value={option.value} className="form-select">
                           {option.value}
                         </MenuItem>
                       ))}

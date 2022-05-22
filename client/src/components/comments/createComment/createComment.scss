@@ -35,4 +35,19 @@
       color: red;
     }
   }
+
+  &.dark {
+    .createComment-input {
+      input {
+        background-color: transparent;
+        color: white;
+        &::placeholder {
+          color: white;
+        }
+      }
+      button {
+        color: white;
+      }
+    }
+  }
 }

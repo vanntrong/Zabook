@@ -112,6 +112,44 @@
     display: flex;
     flex-direction: column;
   }
+
+  &.dark {
+    background-color: $bg-dark-mode-2;
+
+    .profile-about {
+      background-color: $bg-dark-mode;
+      box-shadow: none;
+
+      h2 {
+        color: white;
+      }
+
+      .profile-bio p {
+        color: white;
+      }
+
+      .profile-info-list .profile-info-item {
+        color: white;
+        span {
+          color: white;
+        }
+      }
+    }
+
+    .profile-preview-photos {
+      background-color: $bg-dark-mode;
+      box-shadow: none;
+
+      .profile-preview-photos-title h2 {
+        color: white;
+      }
+
+      .profile-preview-photos-button {
+        color: white;
+        background-color: $bg-dark-mode-2;
+      }
+    }
+  }
 }
 
 @media screen and (min-width: $tablet-screen) {

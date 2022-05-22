@@ -58,6 +58,7 @@
       margin-top: 10px;
       margin-bottom: 15px;
       margin-left: 10px;
+      color: $black-color;
     }
     .search-history__list {
       display: flex;
@@ -70,6 +71,13 @@
         font-size: 14px;
         color: #999;
       }
+    }
+  }
+
+  &.dark {
+    background-color: $bg-dark-mode;
+    .search-history h3 {
+      color: white;
     }
   }
 }

@@ -9,6 +9,7 @@ import { GrSend } from 'react-icons/gr';
 import { MdDeleteOutline } from 'react-icons/md';
 import { commentType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 
 import './comment.scss';
@@ -21,6 +22,7 @@ interface CommentProps {
 
 const Comment: FC<CommentProps> = ({ comment, onSubmit, onDeleteComment }) => {
   const idCurrentUser = useAppSelector(selectCurrentUser)?._id;
+  const isDarkMode = useAppSelector(selectTheme);
   const [isShowCommentPopup, setIsShowCommentPopup] = useState<boolean>(false);
   const [isShowCommentEdit, setIsShowCommentEdit] = useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>(comment.content);
@@ -61,7 +63,7 @@ const Comment: FC<CommentProps> = ({ comment, onSubmit, onDeleteComment }) => {
   };
 
   return (
-    <div className="comment">
+    <div className={`comment ${isDarkMode ? 'dark' : ''}`}>
       <Avatar src={comment.userComment.avatar} />
       {!isShowCommentEdit && (
         <>

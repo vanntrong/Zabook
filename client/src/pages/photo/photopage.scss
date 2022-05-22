@@ -27,6 +27,18 @@
       }
     }
   }
+
+  &.dark {
+    background-color: $bg-dark-mode-2;
+
+    .photo-list {
+      .photo-item {
+        img {
+          filter: brightness(0.8);
+        }
+      }
+    }
+  }
 }
 
 @media screen and (min-width: $mobile-screen) {

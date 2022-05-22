@@ -3,6 +3,7 @@ import { Avatar } from '@mui/material';
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
 import './resultuser.scss';
 
@@ -17,8 +18,9 @@ interface SearchResultUserProps {
 }
 
 const SearchResultUser: FC<SearchResultUserProps> = ({ user, handleClick }) => {
+  const isDarkMode = useAppSelector(selectTheme);
   return (
-    <div className="result">
+    <div className={`result ${isDarkMode ? 'dark' : ''}`}>
       <Link to={`/${user.username}`} className="result-info" onClick={handleClick}>
         <Avatar src={user.avatar} alt={user.fullName} />
         <div className="result-info__name">{user.fullName}</div>
@@ -34,8 +36,9 @@ interface HistoryResultUserProps {
 }
 
 const HistoryResultUser: FC<HistoryResultUserProps> = ({ user, handleClick, handleDelete }) => {
+  const isDarkMode = useAppSelector(selectTheme);
   return (
-    <div className="result">
+    <div className={`result ${isDarkMode ? 'dark' : ''}`}>
       <Link to={`/${user.username}`} className="result-info" onClick={handleClick}>
         <Avatar src={user.avatar} alt={user.fullName} />
         <div className="result-info__name">{user.fullName}</div>

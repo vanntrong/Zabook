@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { conversationType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 
 import './conversation.scss';
@@ -15,13 +16,14 @@ interface conversationProps {
 
 const Conversation: FC<conversationProps> = ({ conversation, isNotSeen }) => {
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const { conversationId } = useParams();
   return (
     <Link to={`/messages/${conversation?._id}`}>
       <div
         className={`conversation ${
           conversationId && conversationId === conversation?._id ? 'active' : ''
-        }`}
+        } ${isDarkMode ? 'dark' : ''}`}
       >
         <Avatar
           className="conversation-avatar"

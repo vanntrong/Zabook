@@ -144,4 +144,18 @@
       }
     }
   }
+
+  &.dark {
+    .comment-content {
+      background-color: $bg-dark-mode-2;
+
+      .comment-user {
+        color: white;
+      }
+
+      .comment-text {
+        color: white;
+      }
+    }
+  }
 }

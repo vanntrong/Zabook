@@ -64,6 +64,16 @@
     background-color: $blue-400;
     margin-left: auto;
   }
+
+  &.dark {
+    background-color: $bg-dark-mode;
+    &:hover {
+      background-color: $bg-dark-mode-2;
+    }
+    .conversation-name {
+      color: white;
+    }
+  }
 }
 
 @media screen and (min-width: $tablet-screen) {

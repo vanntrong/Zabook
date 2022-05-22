@@ -243,7 +243,7 @@ const InputPostModal: FC<InputPostModalProps> = ({ setIsShowPostModal, setPosts 
         <div className="form-post-title">
           <h2>Create post</h2>
           <div onClick={hideButtonClickHandler} style={{ cursor: 'pointer' }}>
-            <Avatar>
+            <Avatar className="form-post-close">
               <CloseIcon />
             </Avatar>
           </div>
