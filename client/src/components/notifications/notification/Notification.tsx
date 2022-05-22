@@ -5,6 +5,8 @@ import { AiFillHeart } from 'react-icons/ai';
 import { FaCommentAlt, FaHistory, FaUserCheck, FaUserFriends } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { notificationType } from 'shared/types';
+import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import './notification.scss';
 
 interface Props {
@@ -30,12 +32,13 @@ const NotificationBadge: FC<{ type: string }> = ({ type }) => {
 };
 
 const Notification: FC<Props> = ({ notification, onSeen }) => {
+  const isDarkMode = useAppSelector(selectTheme);
   return (
     <Link to={notification.link} onClick={() => onSeen(notification._id)}>
       <div
         className={`notification notification-${notification.type} ${
           notification.isRead ? 'notification-read' : ''
-        }`}
+        } ${isDarkMode ? 'dark' : ''}`}
       >
         <div style={{ position: 'relative' }}>
           <Avatar className="notification-avatar" />

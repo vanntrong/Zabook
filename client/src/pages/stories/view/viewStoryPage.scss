@@ -124,6 +124,45 @@
     justify-content: center;
     align-items: center;
   }
+
+  &.dark {
+    .viewStoryPage-sidebar {
+      background-color: $bg-dark-mode;
+
+      .viewStoryPage-sidebar-top {
+        h1 {
+          color: white;
+        }
+        .viewStoryPage-sidebar-create {
+          .create-story .create-story-wrapper .create-story-title {
+            color: white;
+          }
+          h3 {
+            color: white;
+          }
+        }
+      }
+
+      .viewStoryPage-sidebar-bottom {
+        h2 {
+          color: white;
+        }
+        .viewStoryPage-slide-list .viewStoryPage-slide-item {
+          .viewStoryPage-slide-item-info h3 {
+            color: white;
+          }
+          &:hover,
+          &.active {
+            background-color: $bg-dark-mode-2;
+          }
+        }
+      }
+    }
+
+    .viewStoryPage-main {
+      background-color: $bg-dark-mode-2;
+    }
+  }
 }
 
 @media screen and (min-width: $ipad-screen) {

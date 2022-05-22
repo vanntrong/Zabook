@@ -129,6 +129,22 @@
       }
     }
   }
+
+  &.dark {
+    background-color: $bg-dark-mode;
+    box-shadow: none;
+
+    .userInfo-wrapper .userInfo-avatar-and-name .userInfo-name h2 {
+      color: white;
+    }
+
+    .userInfo-navigate .userInfo-navigate-item.active {
+      border-bottom-color: white;
+      span {
+        color: white;
+      }
+    }
+  }
 }
 
 @media screen and (min-width: $ipad-screen) {

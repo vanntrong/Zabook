@@ -17,7 +17,6 @@
   align-items: center;
   gap: 0 10px;
   padding: 10px 20px;
-  background-color: white;
   min-width: 300px;
   min-height: 60px;
   border-radius: 8px;
@@ -45,6 +44,10 @@
     display: flex;
     align-items: center;
     gap: 0 10px;
+  }
+
+  &.dark {
+    background-color: $bg-dark-mode;
   }
 }
 

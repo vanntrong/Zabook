@@ -1,3 +1,4 @@
+@import '../../../../shared/variable.scss';
 .result {
   padding: 5px 10px;
   display: flex;
@@ -18,5 +19,14 @@
     text-decoration: none;
     font-weight: 500;
     width: 100%;
+  }
+
+  &.dark {
+    .result-info {
+      color: white;
+    }
+    &:hover {
+      background-color: $bg-dark-mode-2;
+    }
   }
 }

@@ -15,6 +15,7 @@ import { FiUserCheck, FiUserX } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 import { friendRequestType, UserType } from 'shared/types';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
 import { socket } from 'utils/socket';
 import './userinfo.scss';
@@ -25,6 +26,7 @@ interface UserInfoProps {
 
 const UserInfo: FC<UserInfoProps> = ({ user }) => {
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const [isSendFriendRequest, setIsSendFriendRequest] = useState(false);
   const [isReceivedFriendRequest, setIsReceivedFriendRequest] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -123,7 +125,7 @@ const UserInfo: FC<UserInfoProps> = ({ user }) => {
 
   return (
     <>
-      <div className="userInfo">
+      <div className={`userInfo ${isDarkMode ? 'dark' : ''}`}>
         <div className="userInfo-wrapper">
           <div className="userInfo-background-image">
             <img

@@ -12,6 +12,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import './photopage.scss';
 
@@ -24,6 +25,7 @@ const AssetsPage: FC<Props> = ({ type }) => {
   const [page, setPage] = useState<number>(0);
   const { posts, hasMore, isFetchingPosts } = useFetchPosts(page, user, 30);
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const navigate = useNavigate();
   const params = useParams();
   const [userAssets, setUserAssets] = useState<any[]>([]);
@@ -70,7 +72,7 @@ const AssetsPage: FC<Props> = ({ type }) => {
       {!user ? (
         <SimpleLoading />
       ) : (
-        <div className="photos">
+        <div className={`photos ${isDarkMode ? 'dark' : ''}`}>
           <div className="mainWrapper">
             <InfiniteScroll
               dataLength={posts.length}

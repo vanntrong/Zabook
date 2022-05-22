@@ -80,4 +80,13 @@
       opacity: 0.6;
     }
   }
+
+  &.dark {
+    .notification-content-time {
+      color: white;
+    }
+    &:hover {
+      background-color: $bg-dark-mode-2;
+    }
+  }
 }

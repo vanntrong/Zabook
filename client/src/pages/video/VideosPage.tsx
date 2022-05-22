@@ -4,12 +4,14 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 
 import './videosPage.scss';
 
 const VideosPage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const [user, setUser] = useState<null | UserType>(null);
   const params = useParams();
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ const VideosPage = () => {
     document.title = `${user?.firstName} ${user?.lastName} | Zabook`;
   }, [user?.firstName, user?.lastName]);
   return (
-    <div className="videos">
+    <div className={`videos ${isDarkMode ? 'dark' : ''}`}>
       <div className="mainWrapper">
         <div className="videosWrapper">
           <UserInfo user={user} />

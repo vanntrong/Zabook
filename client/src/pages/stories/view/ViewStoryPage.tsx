@@ -11,17 +11,19 @@ import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import Navbar from './../../../components/navbar/Navbar';
 import './viewStoryPage.scss';
+import { selectTheme } from '../../../store/slice/themeSlice';
 
 const ViewStoryPage = () => {
   const params = useParams();
   const [page, setPage] = useState<number>(0);
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const { stories, hasMore, isFetchingStories } = useFetchStories(page);
 
   return (
     <>
       <Navbar />
-      <div className="viewStoryPage">
+      <div className={`viewStoryPage ${isDarkMode ? 'dark' : ''}`}>
         <div className="viewStoryPage-sidebar">
           <div className="viewStoryPage-sidebar-top">
             <h1>Stories</h1>

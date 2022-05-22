@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectCurrentUser, userAction } from 'store/slice/userSlice';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import './friendpage.scss';
+import { selectTheme } from 'store/slice/themeSlice';
 
 export interface FriendInfoProps {
   friend: friendType;
@@ -21,7 +22,6 @@ export interface FriendInfoProps {
 
 const FriendInfo: FC<FriendInfoProps> = ({ friend, user, onDelete }) => {
   const currentUser = useAppSelector(selectCurrentUser);
-
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const handleClosePopup = () => {
@@ -65,6 +65,7 @@ const FriendsPage = () => {
   const params = useParams();
   const navigate = useNavigate();
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const [isFetchingFriendsInfo, setIsFetchingFriendsInfo] = useState<boolean>(false);
   const [friendList, setFriendList] = useState<friendType[]>([]);
   const dispatch = useAppDispatch();
@@ -115,7 +116,7 @@ const FriendsPage = () => {
   };
   return (
     <>
-      <div className="friends">
+      <div className={`friends ${isDarkMode ? 'dark' : ''}`}>
         <div className="mainWrapper">
           <div className="friends-wrapper">
             <div className="friends-page-header">

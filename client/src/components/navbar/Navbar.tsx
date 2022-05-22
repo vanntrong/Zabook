@@ -6,15 +6,16 @@ import React, { FC, useEffect, useState } from 'react';
 import { AiOutlineClose, AiOutlineHome, AiOutlineMenu, AiOutlineSearch } from 'react-icons/ai';
 import { BiMessage, BiMessageRoundedDots } from 'react-icons/bi';
 import { BsLightningCharge, BsPerson } from 'react-icons/bs';
-import { FiSettings } from 'react-icons/fi';
+import { BsSun, BsMoon } from 'react-icons/bs';
 import { IoArrowBackSharp, IoNotificationsOutline } from 'react-icons/io5';
 import { Link, NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { notificationType } from 'shared/types';
-import { useAppSelector } from 'store/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import { socket } from 'utils/socket';
+import { themeActions } from '../../store/slice/themeSlice';
 import { getAllNotificationApi } from '../../api/notificationApi';
 import './navbar.scss';
 
@@ -29,9 +30,11 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
   const [isMobileSideBarShow, setIsMobileSideBarShow] = useState<boolean>(false);
   const [isShowNotifications, setIsShowNotifications] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<notificationType[]>([]);
+  const [isLoadingNotification, setIsLoadingNotification] = useState<boolean>(false);
   const [unSeenNotifications, setUnSeenNotifications] = useState<notificationType[]>([]);
   const [isShowSearchBoxMobile, setIsShowSearchBoxMobile] = useState<boolean>(false);
   const isDarkMode = useAppSelector(selectTheme);
+  const dispatch = useAppDispatch();
 
   const clickShowMenuMobileHandler = () => {
     if (!isMobileSideBarShow) {
@@ -47,12 +50,14 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
   useEffect(() => {
     const getAllNotification = async () => {
       try {
+        setIsLoadingNotification(true);
         const res = await getAllNotificationApi();
         setNotifications(res);
         setUnSeenNotifications(res.filter((notify) => !notify.isRead));
       } catch (error) {
         toast.error(error.response.data);
       }
+      setIsLoadingNotification(false);
     };
     getAllNotification();
   }, []);
@@ -65,6 +70,11 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
       }
     });
   }, []);
+
+  const toggleThemeHandler = () => {
+    dispatch(themeActions.toggleDarkMode());
+    localStorage.setItem('isDarkMode', isDarkMode);
+  };
 
   return (
     <div className={`navbar ${isDarkMode ? 'dark' : ''}`}>
@@ -131,6 +141,7 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
             )}
             {isShowNotifications && (
               <Notifications
+                isLoadingNotification={isLoadingNotification}
                 notifications={notifications}
                 setNotifications={setNotifications}
                 unSeenNotifications={unSeenNotifications}
@@ -195,12 +206,14 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
       </div>
 
       <div className="navbar-navigate-desktop">
-        <div
-          className="navbar-navigate-item"
-          style={{ position: 'relative' }}
-          onClick={() => setIsShowNotifications((prev) => !prev)}
-        >
-          <IoNotificationsOutline className="navbar-navigate-item-icon" />
+        <div className="navbar-navigate-item" style={{ position: 'relative' }}>
+          <IoNotificationsOutline
+            className="navbar-navigate-item-icon"
+            onClick={() => {
+              setIsShowNotifications((prev) => !prev);
+              console.log('Clicked!');
+            }}
+          />
           {unSeenNotifications.length > 0 && (
             <div className="notification-count">
               <span>{unSeenNotifications.length}</span>
@@ -209,6 +222,7 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
           {isShowNotifications && (
             <Notifications
               notifications={notifications}
+              isLoadingNotification={isLoadingNotification}
               setNotifications={setNotifications}
               unSeenNotifications={unSeenNotifications}
             />
@@ -217,12 +231,18 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
         <Link to="/messages" className="navbar-navigate-item">
           <BiMessage className="navbar-navigate-item-icon" />
         </Link>
-        <Link to="/settings">
-          <div className="navbar-navigate-item navbar-navigate-item-setting">
-            <FiSettings className="navbar-navigate-item-icon icon-rotate" />
-            <div className="setting-app-box"></div>
-          </div>
-        </Link>
+        <div
+          className="navbar-navigate-item navbar-navigate-item-setting"
+          onClick={toggleThemeHandler}
+        >
+          {isDarkMode ? (
+            <BsSun className="navbar-navigate-item-icon icon-rotate" />
+          ) : (
+            <BsMoon className="navbar-navigate-item-icon icon-rotate" />
+          )}
+
+          <div className="setting-app-box"></div>
+        </div>
         <Link to={`/${currentUser?.username}`} className="navbar-user">
           <Avatar src={currentUser?.avatar} className="navbar-user-avatar" />
         </Link>

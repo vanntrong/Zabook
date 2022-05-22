@@ -198,6 +198,9 @@
     .form-post-title h2 {
       color: white;
     }
+    .form-post-close {
+      background-color: $bg-dark-mode;
+    }
     hr {
       border-bottom: 1px solid white;
     }
@@ -217,6 +220,14 @@
         background-color: $bg-dark-mode;
         &::placeholder {
           color: white;
+        }
+      }
+
+      .form-post-submit {
+        color: white;
+        background-color: $bg-dark-mode;
+        &:disabled {
+          opacity: 0.1;
         }
       }
     }
@@ -384,8 +395,13 @@
     background-color: $bg-dark-mode;
     box-shadow: none;
 
-    .inputPostSearchPeople-top h3 {
-      color: white;
+    .inputPostSearchPeople-top {
+      h3 {
+        color: white;
+      }
+      .inputPostSearchPeople-top-close {
+        background-color: $bg-dark-mode-2;
+      }
     }
 
     .result {
@@ -402,6 +418,16 @@
       background-color: $bg-dark-mode-2;
       .tagPeople-item h4 {
         color: white;
+      }
+    }
+
+    .inputPostSearchPeople-center .inputPostSearchPeople-input {
+      background-color: $bg-dark-mode-2;
+      input {
+        color: white;
+        &::placeholder {
+          color: white;
+        }
       }
     }
   }

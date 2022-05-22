@@ -294,6 +294,75 @@
       }
     }
   }
+
+  &.dark {
+    background-color: $bg-dark-mode-2;
+
+    .messagesPage-wrapper .messagesPage-wrapper-left {
+      background-color: $bg-dark-mode;
+      .messagesPage-wrapper-left-input-search {
+        background-color: $bg-dark-mode-2;
+        input {
+          color: white;
+          &::placeholder {
+            color: white;
+          }
+        }
+        .messagesPage-searchResult-list {
+          background-color: $bg-dark-mode-2;
+          .messagesPage-searchResult-item {
+            background-color: $bg-dark-mode;
+            span {
+              color: white;
+            }
+          }
+        }
+      }
+      .messagesPage-wrapper-left-top .messagesPage-wrapper-left-top-title {
+        color: white;
+      }
+    }
+    .messagesPage-wrapper .messagesPage-wrapper-center {
+      .messagesPage-wrapper-center-top {
+        background-color: $bg-dark-mode;
+
+        .messagesPage-wrapper-center-top-left {
+          h3 {
+            color: white;
+          }
+          &:hover {
+            background-color: $bg-dark-mode-2;
+          }
+        }
+      }
+    }
+
+    .messagesPage-wrapper .messagesPage-wrapper-right {
+      background-color: $bg-dark-mode;
+      .messagesPage-wrapper-right-top h3 {
+        color: white;
+      }
+      .messagesPage-wrapper-right-options .messagesPage-wrapper-right-options-item {
+        &:hover {
+          background-color: $bg-dark-mode-2;
+        }
+      }
+    }
+
+    .chatBox {
+      .chatBox-input,
+      .chatBox-messages {
+        background-color: $bg-dark-mode;
+      }
+      .chatBox-input form input {
+        background-color: $bg-dark-mode-2;
+        color: white;
+        &::placeholder {
+          color: white;
+        }
+      }
+    }
+  }
 }
 
 .change-chat-name {

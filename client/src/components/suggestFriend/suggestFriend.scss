@@ -48,4 +48,10 @@
       }
     }
   }
+
+  &.dark {
+    .suggestFriend-info .suggestFriend-name {
+      color: white;
+    }
+  }
 }

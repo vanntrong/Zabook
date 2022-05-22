@@ -3,6 +3,7 @@ import ResultUser from 'components/modal/searchResultModal/resultuser/ResultUser
 import useSearchUser from 'hooks/useSearchUser';
 import React, { FC, useEffect, useState } from 'react';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 import './searchResultModal.scss';
 
@@ -29,6 +30,7 @@ interface userHistoryInfoType {
 const SearchResultModal: FC<SearchResultModalProps> = ({ handleClose, searchText }) => {
   const [historySearchResultInfo, setHistorySearchResultInfo] = useState<userHistoryInfoType[]>([]);
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
 
   const { searchResult } = useSearchUser(searchText);
 
@@ -41,7 +43,7 @@ const SearchResultModal: FC<SearchResultModalProps> = ({ handleClose, searchText
   }, [currentUser]);
 
   return (
-    <div className="search-result">
+    <div className={`search-result ${isDarkMode ? 'dark' : ''}`}>
       <div className="search-result__top"></div>
       <div className="search-result__list"></div>
       <div className="search-history">

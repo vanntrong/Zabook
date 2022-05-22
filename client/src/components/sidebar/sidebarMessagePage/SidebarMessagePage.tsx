@@ -8,6 +8,7 @@ import { IoCreateOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { conversationType } from 'shared/types';
 import { useAppSelector } from 'store/hooks';
+import { selectTheme } from 'store/slice/themeSlice';
 import { selectCurrentUser } from 'store/slice/userSlice';
 
 interface Props {
@@ -26,6 +27,7 @@ const SidebarMessagePage: FC<Props> = ({
   className,
 }) => {
   const [searchText, setSearchText] = useState('');
+  const isDarkMode = useAppSelector(selectTheme);
 
   const { searchResult } = useSearchUser(searchText);
 
@@ -46,11 +48,11 @@ const SidebarMessagePage: FC<Props> = ({
           className="messagesPage-wrapper-left-top-button"
           onClick={() => setIsShowCreateGroupChatModal(true)}
         >
-          <IoCreateOutline />
+          <IoCreateOutline color={isDarkMode ? 'white' : 'black'} />
         </div>
       </div>
       <div className="messagesPage-wrapper-left-input-search">
-        <AiOutlineSearch />
+        <AiOutlineSearch color={isDarkMode ? 'white' : 'black'} />
         <input
           type="text"
           placeholder="Search Messenger"
