@@ -100,8 +100,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("createConversation", ({ creator, conversation }) => {
-    // const userReceived = conversation.members.filter((member) => member._id !== creator);
-
     conversation.members.forEach((user) => {
       if (user._id !== creator) {
         const socketId = getSocketId(user._id);
@@ -111,8 +109,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("change-group-info", (userChange, group, message) => {
-    // const userReceived = group.members.filter((member) => member._id !== userChange._id);
-
     group.members.forEach((user) => {
       const socketId = getSocketId(user._id);
       if (user._id !== userChange._id) {
@@ -122,13 +118,6 @@ io.on("connection", (socket) => {
         io.to(socketId).emit("getMessage", message);
       }
     });
-
-    // if (message) {
-    //   group.members.forEach((member) => {
-    //     const socketId = getSocketId(member._id);
-    //     io.to(socketId).emit("getMessage", message);
-    //   });
-    // }
   });
 
   socket.on("typing", (room) => {

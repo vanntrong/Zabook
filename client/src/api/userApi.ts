@@ -27,6 +27,16 @@ export const loginUser = (data: LoginFormData): Promise<loginResponse> =>
 //get profile of current user
 export const getProfileApi = (): Promise<UserType> => axiosClient.get('auth');
 
+export const changePasswordApi = (payload: {
+  id: string;
+  oldPassword: string;
+  newPassword: string;
+}): Promise<any> =>
+  axiosClient.put(`auth/${payload.id}/password`, {
+    oldPassword: payload.oldPassword,
+    newPassword: payload.newPassword,
+  });
+
 //get profile of other user
 export const getProfileOtherApi = (username: string): Promise<UserType> =>
   axiosClient.get(`users/${username}/profile`);
@@ -59,3 +69,12 @@ export const getOnlineUsersApi = (onlineList: string[]): Promise<UserType[]> =>
 
 export const getSuggestUserApi = (): Promise<DifferentUserType[]> =>
   axiosClient.get('users/suggest');
+
+export const requestForgotPasswordApi = (email: string): Promise<any> =>
+  axiosClient.post('auth/forgot-password', { email });
+
+export const resetPasswordApi = (payload: {
+  email: string;
+  newPassword: string;
+  code: string;
+}): Promise<any> => axiosClient.post('auth/reset-password', payload);

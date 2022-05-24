@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-// import mongoose_fuzzy_searching from "mongoose-fuzzy-searching";
 
 const userSchema = mongoose.Schema(
   {

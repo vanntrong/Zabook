@@ -10,6 +10,10 @@ router.post("/register", authController.registerHandler);
 //login
 router.post("/login", authController.loginHandler);
 
+router.post("/forgot-password", authController.forgotHandler);
+
+router.post("/reset-password", authController.resetPasswordHandler);
+
 //change password
 router.put("/:userId/password", verifyToken, authController.changePasswordHandler);
 
