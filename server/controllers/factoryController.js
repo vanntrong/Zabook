@@ -12,7 +12,7 @@ export async function createOne(Model, data, res) {
 }
 
 export async function updateOne(Model, id, update, res, populate = null) {
-  const newDoc = await Model.findByIdAndUpdate(id, update, { new: true }).populate(populate);
+  const newDoc = await Model.findByIdAndUpdate(id, update, { new: true, runValidators: true }).populate(populate);
 
   if (!newDoc) {
     return res.status(404).json("Document not found");
@@ -88,4 +88,12 @@ export async function createPostThenReturnWithUserInfo(Model, data, res) {
     .catch((error) => errorController.serverErrorHandler(error, res));
 
   res.status(201).json(post);
+}
+
+export function generateCode(length) {
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += Math.round(Math.random() * 9);
+  }
+  return result;
 }

@@ -23,6 +23,7 @@ import { selectCurrentUser, userAction } from 'store/slice/userSlice';
 import { socket } from 'utils/socket';
 import './app.scss';
 import LoginPage from './pages/login/Login';
+import ForgotPasswordPage from './pages/forgot/ForgotPasswordPage';
 
 function App() {
   const user = useAppSelector(selectCurrentUser);
@@ -190,6 +191,8 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/404" element={<NotFoundPage />} />
 
           <Route path="*" element={<Navigate to={'/404'} />} />
