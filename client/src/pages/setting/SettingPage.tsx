@@ -137,7 +137,7 @@ const SettingPage = () => {
         navigate('/');
       }
     } catch (error) {
-      console.log(error.response.data);
+      toast.error(error.response.data);
     }
   };
   return (
