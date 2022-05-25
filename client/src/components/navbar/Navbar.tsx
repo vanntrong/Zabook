@@ -73,7 +73,7 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
 
   const toggleThemeHandler = () => {
     dispatch(themeActions.toggleDarkMode());
-    localStorage.setItem('isDarkMode', isDarkMode);
+    localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
   };
 
   return (
@@ -211,11 +211,15 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
             className="navbar-navigate-item-icon"
             onClick={() => {
               setIsShowNotifications((prev) => !prev);
-              console.log('Clicked!');
             }}
           />
           {unSeenNotifications.length > 0 && (
-            <div className="notification-count">
+            <div
+              className="notification-count"
+              onClick={() => {
+                setIsShowNotifications((prev) => !prev);
+              }}
+            >
               <span>{unSeenNotifications.length}</span>
             </div>
           )}

@@ -54,25 +54,27 @@ const Login = () => {
       <div className="login-main">
         <h3>Login into your account</h3>
         <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-          <div className="login-input-wrapper">
+          <label className="login-input-wrapper" htmlFor="emailOrUsername">
             <EmailOutlinedIcon />
             <input
               type="text"
               autoComplete="off"
               placeholder="Username or email address"
+              id="emailOrUsername"
               {...register('emailOrUsername')}
             />
-          </div>
+          </label>
           {errors.emailOrUsername && <p className="error">{errors.emailOrUsername.message}</p>}
-          <div className="login-input-wrapper">
+          <label className="login-input-wrapper" htmlFor="password">
             <LockOutlinedIcon />
             <input
               type="password"
               autoComplete="off"
               placeholder="Password"
+              id="password"
               {...register('password')}
             />
-          </div>
+          </label>
           {errors.password && <p className="error">{errors.password.message}</p>}
           <div className="password-forgot">
             <Link to="/forgot-password">

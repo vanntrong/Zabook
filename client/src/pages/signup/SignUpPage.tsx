@@ -76,61 +76,66 @@ const SignupPage = () => {
         <form className="sign-up-main" onSubmit={handleSubmit(onSubmit)}>
           <h3>Create your account</h3>
           <div className="sign-up-input-wrapper">
-            <div className="sign-up-input-item">
+            <label className="sign-up-input-item" htmlFor="firstName">
               <PersonOutlineOutlinedIcon />
               <input
                 type="text"
                 placeholder="First Name"
                 autoComplete="off"
+                id="firstName"
                 {...register('firstName')}
               />
-            </div>
-            <div className="sign-up-input-item">
+            </label>
+            <label className="sign-up-input-item" htmlFor="lastName">
               <PersonOutlineOutlinedIcon />
               <input
                 type="text"
                 placeholder="Last Name"
                 autoComplete="off"
+                id="lastName"
                 {...register('lastName')}
               />
-            </div>
+            </label>
           </div>
           <div className="error-wrapper">
             {errors.firstName && <p className="error">{errors.firstName.message}</p>}
             {errors.lastName && <p className="error error-1">{errors.lastName.message}</p>}
           </div>
-          <div className="sign-up-input-item">
+          <label className="sign-up-input-item" htmlFor="email">
             <EmailOutlinedIcon />
             <input
               type="email"
               placeholder="Your Email Address"
               autoComplete="off"
+              id="email"
               {...register('email')}
             />
-          </div>
+          </label>
           {errors.email && <p className="error">{errors.email.message}</p>}
-          <div className="sign-up-input-item">
+          <label className="sign-up-input-item" htmlFor="username">
             <AccountCircleOutlinedIcon />
             <input
               type="text"
               placeholder="Your Username"
               autoComplete="off"
+              id="username"
               {...register('username')}
             />
-          </div>
+          </label>
           {errors.username && <p className="error">{errors.username.message}</p>}
-          <div className="sign-up-input-item">
+          <label className="sign-up-input-item" htmlFor="password">
             <LockOutlinedIcon />
             <input
               type="password"
               placeholder="New Password"
               autoComplete="off"
+              id="password"
               {...register('password')}
             />
-          </div>
+          </label>
           {errors.password && <p className="error">{errors.password.message}</p>}
           <label htmlFor="dateOfBirth">Date of birth</label>
-          <div className="sign-up-input-item">
+          <label className="sign-up-input-item" htmlFor="dateOfBirth">
             <input
               type="date"
               placeholder="Your Birthday"
@@ -138,7 +143,7 @@ const SignupPage = () => {
               autoComplete="off"
               {...register('dateOfBirth')}
             />
-          </div>
+          </label>
           {errors.dateOfBirth && <p className="error">{errors.dateOfBirth.message}</p>}
           <label htmlFor="gender">Gender</label>
           <div className="input-gender-wrapper">

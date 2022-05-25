@@ -203,6 +203,14 @@ const StoryPlayer: FC<StoryPlayerProps> = ({ userPost }) => {
                       src={story.asset.url}
                       dimensions={{ width: '100%', height: '100%' }}
                       playerRef={arrayVideoRef[index]}
+                      keyboardShortcut={{
+                        pause: false,
+                        forward: true,
+                        rewind: true,
+                        fullScreen: true,
+                        mute: true,
+                        subtitle: true,
+                      }}
                     >
                       {(ref, props) => (
                         <video
