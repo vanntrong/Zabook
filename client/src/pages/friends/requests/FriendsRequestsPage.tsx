@@ -9,12 +9,14 @@ import './friendRequestPage.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from 'store/hooks';
 import { selectCurrentUser } from 'store/slice/userSlice';
+import { selectTheme } from 'store/slice/themeSlice';
 
 const FriendsRequestsPage = () => {
   const [friendsRequest, setFriendsRequest] = useState<friendRequestType[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const currentUser = useAppSelector(selectCurrentUser);
+  const isDarkMode = useAppSelector(selectTheme);
   const [isFetchingFriendRequest, setIsFetchingFriendRequest] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
@@ -39,7 +41,7 @@ const FriendsRequestsPage = () => {
     getFriendsRequest();
   }, [page]);
   return (
-    <div className="friendsRequestsPage">
+    <div className={`friendsRequestsPage ${isDarkMode ? 'dark' : ''}`}>
       <div className="mainWrapper">
         <div className="friendsRequestsPage-wrapper">
           <div className="friendsRequestsPage-header">

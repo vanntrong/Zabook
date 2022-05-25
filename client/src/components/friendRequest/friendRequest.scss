@@ -1,6 +1,8 @@
 @import '../../shared/variable.scss';
 
 .friend-request {
+  padding: 10px;
+  border-radius: 8px;
   .friend-request-info {
     display: flex;
     align-items: center;
@@ -64,6 +66,7 @@
     margin-top: 10px;
   }
   &.dark {
+    background-color: $bg-dark-mode;
     .friend-request-info .friend-request-name h4,
     .friend-request-info .friend-request-name span {
       color: white;

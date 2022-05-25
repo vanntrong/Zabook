@@ -1,12 +1,17 @@
+@import '../../shared/variable.scss';
 .postViewPage {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
 
   .postViewPage-wrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+  }
+
+  &.dark {
+    background-color: $bg-dark-mode-2;
   }
 }

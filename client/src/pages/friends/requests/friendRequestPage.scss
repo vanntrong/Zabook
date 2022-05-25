@@ -26,9 +26,21 @@
     }
 
     .friendsRequestsPage-list {
+      margin-top: 40px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-gap: 15px;
+    }
+  }
+
+  &.dark {
+    background-color: $bg-dark-mode-2;
+    .friendsRequestsPage-wrapper .friendsRequestsPage-header {
+      background-color: $bg-dark-mode;
+
+      h2 {
+        color: white;
+      }
     }
   }
 }
